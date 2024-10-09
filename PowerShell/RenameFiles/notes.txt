@@ -1,0 +1,27 @@
+--------------------------- Handling the execution policy ---------------------------
+https://learn.microsoft.com/fr-fr/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.4
+
+
+> Get-ExecutionPolicy -List
+
+        Scope ExecutionPolicy
+        ----- ---------------
+MachinePolicy       Undefined
+   UserPolicy       Undefined
+      Process       Undefined
+  CurrentUser       Undefined
+ LocalMachine       Undefined
+
+
+# Give access
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
+
+# Clean up to default value 
+Set-ExecutionPolicy -ExecutionPolicy Undefined -Scope CurrentUser
+
+
+--------------------------- How to get the version de PowerShell ---------------------------
+> $PSVersionTable
+
+--------------------------- PowerShell Microsoft documentation ---------------------------
+https://learn.microsoft.com/fr-fr/powershell/module/microsoft.powershell.management/?view=powershell-7.4
