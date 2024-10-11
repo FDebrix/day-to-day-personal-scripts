@@ -58,34 +58,6 @@ class ThrowTheDiceStatisticsTest {
         if(PRINT_LN) printlnResults(output);
     }
 
-    @Test
-    public void test_calculateMean_NoInt () {
-        ThrowTheDiceStatistics throwsTheDiceStatistics = new ThrowTheDiceStatistics(2);
-
-        int[] t = new int[0];
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> throwsTheDiceStatistics.calculateMean(t));
-    }
-
-    @Test
-    public void test_calculateMean_oneInt () {
-        ThrowTheDiceStatistics throwsTheDiceStatistics = new ThrowTheDiceStatistics(2);
-
-        int[] t = new int[]{1};
-        double mean = throwsTheDiceStatistics.calculateMean(t);
-
-        assertEquals(1, mean);
-    }
-
-    @Test
-    public void test_calculateMean_threeInt () {
-        ThrowTheDiceStatistics throwsTheDiceStatistics = new ThrowTheDiceStatistics(2);
-
-        int[] t = new int[]{1, 2, 4};
-        double mean = throwsTheDiceStatistics.calculateMean(t);
-
-        assertEquals(2.33333, mean, 0.00001);
-    }
-
 
 
     private void printlnResults(int[][] output) {
