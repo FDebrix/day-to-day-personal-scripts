@@ -8,7 +8,7 @@ public class ThrowTheDiceStatistics {
     public static final int NB_SIDES_MIN = 2; // a coin
     public static final int NB_SIDES_MAX = 20; // performance purpose - arbitrary value for now
 
-    private int nbSidesOfTheDice = 0 ;
+    private int nbSidesOfTheDice = -1;
 
 
     /**
