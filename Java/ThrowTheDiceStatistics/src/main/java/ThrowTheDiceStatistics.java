@@ -32,6 +32,7 @@ public class ThrowTheDiceStatistics {
         }
 
         throwTheDiceAndReturnSideValues(nbOfThrows)
+                // TODO replace with a function
                 .forEach(oneThrow -> {
                     throwResults[oneThrow - 1][1]++;
                 });

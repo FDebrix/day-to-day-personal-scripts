@@ -1,5 +1,6 @@
 package test.java;
 
+import main.java.MathUtils;
 import main.java.ThrowTheDiceStatistics;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ class ThrowTheDiceStatisticsTest {
 
     @BeforeAll
     public static void configure() {
-        PRINT_LN = false;
+        PRINT_LN = true;
     }
 
     @Test
@@ -48,16 +49,31 @@ class ThrowTheDiceStatisticsTest {
 
     @Test
     public void test_throwsTheDice_throw10TimesA4SidesDice() {
-        int nbSidesOfTheDice = 10;
-        int nbOfThrow = 10000000;
+        int nbSidesOfTheDice = 6;
+        int nbOfThrow = 600000000;
         ThrowTheDiceStatistics throwsTheDiceStatistics = new ThrowTheDiceStatistics(nbSidesOfTheDice);
 
         int[][] output = throwsTheDiceStatistics.throwsTheDice(nbOfThrow);
 
         validateOutput(nbSidesOfTheDice, nbOfThrow, output);
         if(PRINT_LN) printlnResults(output);
+
+        calculateStandardDeviation(output);
     }
 
+    // TODO push this into ThrowTheDiceStatistics - this is the beginning of the fun
+    private void calculateStandardDeviation(int[][] inputInt) {
+        double[]  inputDouble = new double [inputInt.length];
+        for(int i = 0; i < inputInt.length; i++) {
+            inputDouble[i] = inputInt[i][1];
+        }
+
+
+        double mean = MathUtils.getInstance().calculateMean(inputDouble);
+        double standardDeviation = MathUtils.getInstance().calculateStandardDeviation((inputDouble));
+
+        if(PRINT_LN) System.out.println(String.format("The mean is %s, the standard deviation is %s, the division is %s.", mean, standardDeviation, standardDeviation/mean*100));
+    }
 
 
     private void printlnResults(int[][] output) {

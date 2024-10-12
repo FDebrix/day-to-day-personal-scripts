@@ -14,7 +14,7 @@ public class MathUtils {
         return THE_INSTANCE;
     }
 
-    public double calculateMean(int[] values) {
+    public double calculateMean(double[] values) {
         validateNotEmpty(values);
 
         double sum = 0;
@@ -24,19 +24,36 @@ public class MathUtils {
         return sum / values.length;
     }
 
-        /*
-    public double calculateVariance(double[] data, double mean) {
-        double variance = 0;
-        for (double value : data) {
-            variance += Math.pow(value - mean, 2);
-        }
-        return variance / (data.length - 1);
-    }
-     */
+    public double calculateVariance(double[] values) {
+        validateNotEmpty(values);
 
-    private void validateNotEmpty(int[] values) {
+        double mean = calculateMean(values);
+
+        return calculateVariance (values, mean);
+    }
+
+    public double calculateStandardDeviation(double[] values) {
+        validateNotEmpty(values);
+
+        return Math.sqrt(calculateVariance(values));
+    }
+
+
+
+    private double calculateVariance(double[] values, double mean) {
+        double sumOfSquareOfTheDiff = 0;
+        for (double value : values) {
+            sumOfSquareOfTheDiff += Math.pow(value - mean, 2);
+        }
+
+        // Should we divide by "values.length" or "values.length - 1"? LOL. In our context, we will use "values.length"
+        // Explanation in French https://www.amq.math.ca/wp-content/uploads/bulletin/vol55/no2/07-maitre-Stat-mai-2015.pdf
+        // Explanation in English https://www.reddit.com/r/learnmath/comments/lvxik0/comment/gpecma2/
+        return sumOfSquareOfTheDiff / (values.length);
+    }
+
+    private void validateNotEmpty(double[] values) {
         if (values.length == 0)
             throw new IllegalArgumentException("The input array cannot be empty");
     }
-
 }
