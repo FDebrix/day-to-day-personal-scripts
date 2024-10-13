@@ -32,15 +32,9 @@ public class MathUtils {
         return calculateVariance (values, mean);
     }
 
-    public double calculateStandardDeviation(double[] values) {
+    public double calculateVariance(double[] values, double mean) {
         validateNotEmpty(values);
 
-        return Math.sqrt(calculateVariance(values));
-    }
-
-
-
-    private double calculateVariance(double[] values, double mean) {
         double sumOfSquareOfTheDiff = 0;
         for (double value : values) {
             sumOfSquareOfTheDiff += Math.pow(value - mean, 2);
@@ -51,6 +45,21 @@ public class MathUtils {
         // Explanation in English https://www.reddit.com/r/learnmath/comments/lvxik0/comment/gpecma2/
         return sumOfSquareOfTheDiff / (values.length);
     }
+
+    public double calculateStandardDeviation(double[] values) {
+        validateNotEmpty(values);
+
+        double variance = calculateVariance(values);
+
+        return calculateStandardDeviation(variance);
+    }
+
+    public double calculateStandardDeviation(double variance) {
+        return Math.sqrt(variance);
+    }
+
+
+
 
     private void validateNotEmpty(double[] values) {
         if (values.length == 0)
