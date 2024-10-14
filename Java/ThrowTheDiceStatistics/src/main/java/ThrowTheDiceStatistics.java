@@ -16,6 +16,7 @@ public class ThrowTheDiceStatistics {
     /**
      * Set the number of sides of the dice.
      * @param nbSidesOfTheDice the value should respect the limits NB_SIDES_MIN (inclusively) and NB_SIDES_MAX (inclusively)
+     * @throws IllegalArgumentException in case the number of sides of the dice is too small or too big.
      */
     public ThrowTheDiceStatistics (int nbSidesOfTheDice){
         validateNbSidesOfTheDice(nbSidesOfTheDice);
@@ -57,7 +58,7 @@ public class ThrowTheDiceStatistics {
      * @return the standard deviation of each batch and the standard deviation of the sum of all the batches.
      * @throws IllegalArgumentException in case the number of throws to do is too big
      */
-    public double[][] throwTheDice(int nbOfThrowPerBatch, int nbOfBatch) {
+    public double[][] throwTheDice(int nbOfThrowPerBatch, int nbOfBatch) throws IllegalArgumentException {
         validateLimitOfAllTheThrows(nbOfThrowPerBatch, nbOfBatch);
 
         int[] allTheBatch = buildArrayForThrowResults();
@@ -127,7 +128,7 @@ public class ThrowTheDiceStatistics {
         return new Random().ints(nbOfThrows, 1, this.nbSidesOfTheDice + 1);
     }
 
-    private void validateLimitOfAllTheThrows(int nbOfThrowPerBatch, int nbOfBatch) {
+    private void validateLimitOfAllTheThrows(int nbOfThrowPerBatch, int nbOfBatch) throws IllegalArgumentException {
         try {
             Math.multiplyExact(nbOfThrowPerBatch, nbOfBatch);
         } catch (ArithmeticException e) {
@@ -135,7 +136,7 @@ public class ThrowTheDiceStatistics {
         }
     }
 
-    private void validateNbSidesOfTheDice(int nbSidesOfTheDice) {
+    private void validateNbSidesOfTheDice(int nbSidesOfTheDice) throws IllegalArgumentException {
         if(nbSidesOfTheDice < NB_SIDES_MIN)
             throw new IllegalArgumentException(String.format("A dice should have at less %s sides - this is a coin", NB_SIDES_MIN));
         if(nbSidesOfTheDice > NB_SIDES_MAX)

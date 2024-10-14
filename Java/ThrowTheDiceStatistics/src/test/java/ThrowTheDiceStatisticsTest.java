@@ -12,7 +12,7 @@ class ThrowTheDiceStatisticsTest {
 
     @BeforeAll
     public static void configure() {
-        PRINT_LN = false;
+        PRINT_LN = true;
     }
 
     @Test
@@ -73,30 +73,23 @@ class ThrowTheDiceStatisticsTest {
 
         // In order to import into a sheet
         for(double[] standardDeviationResult : standardDeviationResults) {
-            System.out.printlf("%d - %.3f - %.0f - %.3f - %.9f",
+            System.out.printf("%.0f - %.3f - %.0f - %.3f - %.9f%n",
                     standardDeviationResult[0], standardDeviationResult[1], standardDeviationResult[2], standardDeviationResult[3],
                     (standardDeviationResult[3] / standardDeviationResult[2] / nbSidesOfTheDice));
         }
 
         // To display
         for(double[] standardDeviationResult : standardDeviationResults) {
-            System.out.println(String.format("A batch of %.0f with SD %.3f. The sum is %.0f with SD %.3f and %.9f percentage",
+            System.out.printf("A batch of %.0f with SD %.3f. The sum is %.0f with SD %.3f and %.9f percentage%n",
                     standardDeviationResult[0], standardDeviationResult[1], standardDeviationResult[2], standardDeviationResult[3],
-                    standardDeviationResult[3] / standardDeviationResult[2] / nbSidesOfTheDice));
-        }
-    }
-
-    private void printlnResults(String functionName, int[] output) {
-        System.out.println(String.format("Results of the run for the function %s.", functionName));
-        for (int i = 0; i < output.length; i ++) {
-            System.out.println(String.format("The side %s was returned %s.", i + 1, output[i]));
+                    standardDeviationResult[3] / standardDeviationResult[2] / nbSidesOfTheDice);
         }
     }
 
     private void printlnResults(int[] output) {
-        System.out.println("Results of the run.");
+        System.out.printf("Results of the run.%n");
         for (int i = 0; i < output.length; i ++) {
-            System.out.println(String.format("The side %s was returned %s.", i + 1, output[i]));
+            System.out.printf("The side %d was returned %d.%n", i + 1, output[i]);
         }
     }
 
@@ -105,8 +98,8 @@ class ThrowTheDiceStatisticsTest {
 
         int nbOfThrowInTheOutput = 0;
 
-        for(int i = 0; i < output.length ; i++) {
-            nbOfThrowInTheOutput += output[i];
+        for (int j : output) {
+            nbOfThrowInTheOutput += j;
         }
 
         assertEquals(expectedNbOfThrowDone, nbOfThrowInTheOutput);
