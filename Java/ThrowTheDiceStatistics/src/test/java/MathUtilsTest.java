@@ -9,7 +9,13 @@ import java.lang.reflect.Modifier;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class MathUtilsTest {
+class MathUtilsTest {
+
+    private static final double[] VALUES =  new double[]{3, 5, 7, 9, 11};
+    private static final double MEAN_OF_THE_VALUES = 7;
+    private static final double VARIANCE_OF_THE_VALUES = 8;
+    private static final double STANDARD_DEVIATION_OF_THE_VALUES = 2.82842;
+
 
     // TODO I copy paste this logic from Stack Overflow - I want to review deeper
     @Test
@@ -35,23 +41,12 @@ public class MathUtilsTest {
     }
 
     @Test
-    public void test_calculateMean_oneInt () {
+    public void test_calculateMean_FiveInt(){
         MathUtils instance = MathUtils.getInstance();
-        double[] t = new double[]{1};
 
-        double mean = instance.calculateMean(t);
+        double mean = instance.calculateMean(VALUES);
 
-        assertEquals(1, mean);
-    }
-
-    @Test
-    public void test_calculateMean_threeInt () {
-        MathUtils instance = MathUtils.getInstance();
-        double[] t = new double[]{1, 2, 4};
-
-        double mean = instance.calculateMean(t);
-
-        assertEquals(2.33333, mean, 0.00001);
+        assertEquals(MEAN_OF_THE_VALUES, mean, 0.1);
     }
 
     @Test
@@ -63,38 +58,40 @@ public class MathUtilsTest {
     }
 
     @Test
-    public void test_calculateMean_fourInt(){
-        MathUtils instance = MathUtils.getInstance();
-        double[] t = getValues();
-
-        double mean = instance.calculateMean(t);
-
-        assertEquals(7, mean, 0.1);
-    }
-
-
-
-    @Test
     public void test_calculateVariance_fourInt(){
         MathUtils instance = MathUtils.getInstance();
-        double[] t = getValues();
 
-        double variance = instance.calculateVariance(t) ;
+        double variance = instance.calculateVariance(VALUES) ;
 
-        assertEquals(8, variance, 0.1);
+        assertEquals(VARIANCE_OF_THE_VALUES, variance, 0.1);
+    }
+
+    @Test
+    public void test_calculateVariance_withMeanFourInt(){
+        MathUtils instance = MathUtils.getInstance();
+
+        double mean = instance.calculateMean(VALUES);
+        double variance = instance.calculateVariance(VALUES, mean) ;
+
+        assertEquals(VARIANCE_OF_THE_VALUES, variance, 0.1);
     }
 
     @Test
     public void test_calculateStandardDeviation_fourInt(){
         MathUtils instance = MathUtils.getInstance();
-        double[] t = getValues();
 
-        double standardDeviation = instance.calculateStandardDeviation(t) ;
+        double standardDeviation = instance.calculateStandardDeviation(VALUES) ;
 
-        assertEquals(2.82842, standardDeviation, 0.00001);
+        assertEquals(STANDARD_DEVIATION_OF_THE_VALUES, standardDeviation, 0.00001);
     }
 
-    private static double[] getValues() {
-        return new double[]{3, 5, 7, 9, 11};
+    @Test
+    public void test_calculateStandardDeviation_fromVariance(){
+        MathUtils instance = MathUtils.getInstance();
+
+        double variance = instance.calculateVariance(VALUES) ;
+        double standardDeviation = instance.calculateStandardDeviation(variance) ;
+
+        assertEquals(STANDARD_DEVIATION_OF_THE_VALUES, standardDeviation, 0.00001);
     }
 }

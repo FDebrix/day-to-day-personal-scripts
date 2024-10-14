@@ -7,7 +7,8 @@ public class MathUtils {
     private MathUtils() {
     }
 
-    // If I recall, should be synchronized for multi threading env
+    // If I recall, should be synchronized for multi threading env. Don't really cary in current context.
+    // Can be replace by Spring Boot
     public static MathUtils getInstance() {
         if (THE_INSTANCE == null)
             THE_INSTANCE = new MathUtils();
@@ -57,8 +58,6 @@ public class MathUtils {
     public double calculateStandardDeviation(double variance) {
         return Math.sqrt(variance);
     }
-
-
 
 
     private void validateNotEmpty(double[] values) {
