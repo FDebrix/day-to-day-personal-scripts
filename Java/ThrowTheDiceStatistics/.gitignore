@@ -1,8 +1,9 @@
 ### IntelliJ IDEA ###
 out/
+src/oneRun/
 !**/src/main/**/out/
 !**/src/test/**/out/
-!**/src/oneRun/**
+
 ThrowTheDiceStatistics.iml
 .idea
 
