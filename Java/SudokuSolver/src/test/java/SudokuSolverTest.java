@@ -4,8 +4,7 @@ import main.java.SudokuSolver;
 import main.java.SudokuSquare;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuSolverTest {
 
@@ -24,7 +23,7 @@ public class SudokuSolverTest {
 
     @Test
     public void test_constructor() {
-        SudokuSolver solver = new SudokuSolver(SUDOKU_TO_RESOLVE);
+        new SudokuSolver(SUDOKU_TO_RESOLVE);
     }
 
     @Test
@@ -33,7 +32,7 @@ public class SudokuSolverTest {
                 {0, 1, 7, 0, 4, 5, 0, 0, 0},
                 {0, 9, 4, 0, 2, 0, 8}};
 
-        Throwable exception = assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> new SudokuSolver(sudokuToResolve));
     }
 
@@ -48,35 +47,42 @@ public class SudokuSolverTest {
 
     @Test
     public void test_convertArrayToSudokuSquare(){
+        int nbRows = SUDOKU_TO_RESOLVE.length;
+        int nbColumns = SUDOKU_TO_RESOLVE[0].length;
         SudokuSolver solver = new SudokuSolver(SUDOKU_TO_RESOLVE);
         SudokuSquare[][] sudokuSquares = solver.convertArrayToSudokuSquare();
 
-        assertEquals(SUDOKU_TO_RESOLVE.length, sudokuSquares.length);
+        assertEquals(nbRows, sudokuSquares.length);
 
         for (int i = 0 ; i < SUDOKU_TO_RESOLVE.length ; i++) {
-            assertEquals(SUDOKU_TO_RESOLVE[i].length, sudokuSquares[i].length);
+            assertEquals(nbColumns, sudokuSquares[i].length);
         }
 
-        assertEquals(1, SUDOKU_TO_RESOLVE[0][1]);
-        // TODO
-        // assertEquals(1, sudokuSquares[0][1].getWinnerValue());
-    }
-
-
-    /*
-    private void areSame(int[][] sudokuExpected, int[][] sudokuOutput) {
-        System.out.printf("exp %s output %s", sudokuExpected, sudokuOutput);
-        assertEquals(sudokuExpected.length, sudokuOutput.length);
-        for (int i = 0 ; i < sudokuExpected.length ; i++) {
-            assertEquals(sudokuExpected[i].length, sudokuOutput[i].length);
-        }
-        for (int i = 0 ; i < sudokuExpected.length ; i++) {
-            for (int j = 0 ; j < sudokuExpected[i].length ; j++) {
-                System.out.printf("i %s, j %s, expected %s, output %s%n", i, j, sudokuExpected[i][j], sudokuOutput[i][j]);
-                assertEquals(sudokuExpected[i][j], sudokuOutput[i][j]);
+        for(int i = 0 ; i < nbRows ; i++) {
+            for (int j = 0; j < nbColumns; j++) {
+                if (SUDOKU_TO_RESOLVE[i][j] != 0) {
+                    assertTrue(sudokuSquares[i][j].isWinnerValueFound());
+                    assertEquals(SUDOKU_TO_RESOLVE[i][j], sudokuSquares[i][j].getWinnerValue());
+                }
+                else {
+                    assertFalse(sudokuSquares[i][j].isWinnerValueFound());
+                }
             }
         }
+
+        // solver.printlnFoundValues();
+        //solver.printlnRemainingPossibleValues();
     }
 
-     */
+    @Test
+    public void test_run() {
+        SudokuSolver solver = new SudokuSolver(SUDOKU_TO_RESOLVE);
+        solver.convertArrayToSudokuSquare();
+        solver.printlnRemainingPossibleValues();
+        solver.letDoAFirstRun();
+        System.out.println("\nAFTER\n");
+        solver.printlnRemainingPossibleValues();
+    }
+
+
 }
