@@ -27,6 +27,10 @@ public class SudokuSquare {
 
 
     public SudokuSquare(int nbPossibleValues) {
+        this(nbPossibleValues, 0);
+    }
+
+    public SudokuSquare(int nbPossibleValues, int defaultWinner) {
         validateNbPossibleValues(nbPossibleValues);
 
         this.possibleValues = new ValueState[nbPossibleValues + 1];
@@ -37,6 +41,8 @@ public class SudokuSquare {
         for (int i = 1 ; i < this.possibleValues.length ; i++) {
             this.possibleValues[i] = POSSIBLE_VALUE;
         }
+
+        setInitialWinner(defaultWinner);
     }
 
     // Used for unittests. Need to revisit to make it protected or package visibility.
@@ -52,14 +58,6 @@ public class SudokuSquare {
             computeWinnerValue(value);
         else
             computeLoserValue(value);
-    }
-
-    // 0 means that the value is unknown for now
-    // else that means the value is known
-    public void setInitialValue(int value) {
-        if(value == 0)
-            return;
-        setWinnerValue (value);
     }
 
     public void setWinnerValue(int value) {
@@ -182,6 +180,14 @@ public class SudokuSquare {
         if(nbOfPOSSIBLE_VALUE == 1) {
             computeWinnerValue(lastValuePOSSIBLE_VALUE);
         }
+    }
+
+    // 0 means that the value is unknown for now
+    // else that means the value is known
+    private void setInitialWinner(int value) {
+        if(value == 0)
+            return;
+        setWinnerValue (value);
     }
 
     private void validateNewStateIsWinnerOrLoser(ValueState newState) {

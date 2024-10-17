@@ -25,8 +25,7 @@ public class SudokuSolver {
 
         for(int i = 0 ; i < nbRows ; i++) {
             for(int j = 0 ; j < nbColumns ; j++) {
-                this.sudokuSquares[i][j] = new SudokuSquare(nbPossibleValues);
-                this.sudokuSquares[i][j].setInitialValue(sudokuToResolve[i][j]);
+                this.sudokuSquares[i][j] = new SudokuSquare(nbPossibleValues, sudokuToResolve[i][j]);
             }
         }
         System.out.println("AFTER THE CONVERSION - BEGIN");
