@@ -10,7 +10,6 @@ import static main.java.SudokuSquare.ValueState.*;
  */
 public class SudokuSquare {
 
-
     public enum ValueState {
         POSSIBLE_VALUE, WINNER_VALUE, LOSER_VALUE
     }
@@ -20,8 +19,15 @@ public class SudokuSquare {
     private static final int MIN_POSSIBLE_VALUES = 4;
 
     // The possible values of the square. The index i is used for the value i.
+    // A value starts in the state "POSSIBLE_VALUE" and then can just move to
+    // "WINNER_VALUE" or "LOSER_VALUE". There is no way to change from "WINNER_VALUE"
+    // to "LOSER_VALUE", or vice versa.
     private ValueState[] possibleValues;
+
+    // As soon as we found the winner value, we save it into attribute #foundValue.
+    // We can have used possibleValues[0] to save it. But I prefer to keep the code clear.
     private int foundValue = NOT_FOUND_YET;
+
     // TODO - I am under impression this responsibility should not be in the current class
     private boolean winnerValueDigestedAtTheSudokuLayer = false;
 
@@ -83,10 +89,36 @@ public class SudokuSquare {
         return winnerValueDigestedAtTheSudokuLayer;
     }
 
-    // TODO: the returned value can be NOT_FOUND_YET
-    // To use OptionalInt ? Then probably delete #public boolean isWinnerValueFound()
+    // The returned value can be NOT_FOUND_YET - this is correct
     public int getWinnerValue() {
         return this.foundValue;
+    }
+
+    public int[] getPossibleValues() {
+        // TODO - we are looping two times on possibleValues
+        int nbOfPossibleValues = countValuesInState_POSSIBLE_VALUE();
+
+        int[] valueInStatePossibleValue = new int[nbOfPossibleValues];
+        int indexForNextPossibleValue = 0;
+
+        for(int i = 0 ; i < possibleValues.length ; i++) {
+            if (possibleValues[i] == POSSIBLE_VALUE) {
+                valueInStatePossibleValue[indexForNextPossibleValue] = i;
+                indexForNextPossibleValue++;
+            }
+        }
+        return valueInStatePossibleValue;
+    }
+
+    private int countValuesInState_POSSIBLE_VALUE() {
+        int nbOfPossibleValues = 0;
+
+        for(int i = 0 ; i < possibleValues.length ; i++) {
+            if (possibleValues[i] == POSSIBLE_VALUE) {
+                nbOfPossibleValues++ ;
+            }
+        }
+        return nbOfPossibleValues;
     }
 
     @Override
@@ -182,8 +214,8 @@ public class SudokuSquare {
         }
     }
 
-    // 0 means that the value is unknown for now
-    // else that means the value is known
+    // 0 means that the winner value is unknown for now
+    // else that means the winner value is known
     private void setInitialWinner(int value) {
         if(value == 0)
             return;

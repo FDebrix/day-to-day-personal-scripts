@@ -342,4 +342,36 @@ public class SudokuSquareTest {
 
         assertEquals("2", possibleValues);
     }
+
+    @Test
+    public void test_getPossibleValues_noChangeAfterConstruction() {
+        int nbPossibleValues = 4;
+        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+
+        int[] expectedPossibleValues = {1, 2, 3, 4};
+        int[] outputPossibleValues = theSquare.getPossibleValues();
+        assertArrayEquals(expectedPossibleValues, outputPossibleValues);
+    }
+
+    @Test
+    public void test_getPossibleValues_setOnLoser() {
+        int nbPossibleValues = 4;
+        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        theSquare.setLoserValue(2);
+
+        int[] expectedPossibleValues = {1, 3, 4};
+        int[] outputPossibleValues = theSquare.getPossibleValues();
+        assertArrayEquals(expectedPossibleValues, outputPossibleValues);
+    }
+
+    @Test
+    public void test_getPossibleValues_setOnWinner() {
+        int nbPossibleValues = 4;
+        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        theSquare.setWinnerValue(2);
+
+        int[] expectedPossibleValues = {};
+        int[] outputPossibleValues = theSquare.getPossibleValues();
+        assertArrayEquals(expectedPossibleValues, outputPossibleValues);
+    }
 }
