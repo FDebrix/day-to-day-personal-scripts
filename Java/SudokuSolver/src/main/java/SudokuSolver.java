@@ -74,6 +74,8 @@ public class SudokuSolver {
     }
 
 
+    // TODO I AM HERE
+    // goal is to replace #handleWinnerValueAvailableOnlyInOneSquareINITIAL
     private void handleWinnerValueAvailableOnlyInOneSquare() {
         for(int i = 0 ; i < sudokuRowSize ; i++) {
             List<SudokuSquare> oneLine = getSquaresOfTheRow(i);
@@ -83,6 +85,9 @@ public class SudokuSolver {
             List<SudokuSquare> oneLine = getSquaresOfTheCol(i);
             handleListOfSquares(oneLine);
         }
+    }
+
+    private void handleListOfSquares(List<SudokuSquare> oneLine) {
     }
 
     private List<SudokuSquare> getSquaresOfTheCol(int colId) {
