@@ -31,12 +31,17 @@ public class SudokuSquare {
     // TODO - I am under impression this responsibility should not be in the current class
     private boolean winnerValueDigestedAtTheSudokuLayer = false;
 
+    // The position of the square into the sudoku
+    private int rowId = -1;
+    private int colId = -1;
 
-    public SudokuSquare(int nbPossibleValues) {
-        this(nbPossibleValues, 0);
+
+
+    public SudokuSquare(int nbPossibleValues, int rowId, int colId) {
+        this(nbPossibleValues, 0, rowId, colId);
     }
 
-    public SudokuSquare(int nbPossibleValues, int defaultWinner) {
+    public SudokuSquare(int nbPossibleValues, int defaultWinner, int rowId, int colId) {
         validateNbPossibleValues(nbPossibleValues);
 
         this.possibleValues = new ValueState[nbPossibleValues + 1];
@@ -48,7 +53,18 @@ public class SudokuSquare {
             this.possibleValues[i] = POSSIBLE_VALUE;
         }
 
+        this.rowId = rowId;
+        this.colId = colId;
+
         setInitialWinner(defaultWinner);
+    }
+
+
+    public int getRowId() {
+        return rowId;
+    }
+    public int getColId() {
+        return colId;
     }
 
     // Used for unittests. Need to revisit to make it protected or package visibility.

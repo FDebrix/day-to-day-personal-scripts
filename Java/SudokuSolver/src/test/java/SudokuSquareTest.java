@@ -10,16 +10,18 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuSquareTest {
 
+
+    private static final int NB_POSSIBLE_VALUE = 4;
+
     @Test
     public void test_constructor_nbPossibleValuesTooSmall() {
         assertThrows(IllegalArgumentException.class,
-                () -> new SudokuSquare(0));
+                () -> buildSudokuSquare(0));
     }
 
     @Test
     public void test_changeStateOfAValue_indexTooSmall() {
-        int nbPossibleValues = 4;
-        SudokuSquare aSquareWith4PossibleValues = new SudokuSquare(nbPossibleValues);
+        SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE);
 
         assertThrows(IllegalArgumentException.class,
                 () -> aSquareWith4PossibleValues.changeStateOfAValue(0, LOSER_VALUE));
@@ -27,8 +29,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_changeStateOfAValue_indexTooBig() {
-        int nbPossibleValues = 4;
-        SudokuSquare aSquareWith4PossibleValues = new SudokuSquare(nbPossibleValues);
+        SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE);
 
         assertThrows(IllegalArgumentException.class,
                 () -> aSquareWith4PossibleValues.changeStateOfAValue(5, LOSER_VALUE));
@@ -36,9 +37,11 @@ public class SudokuSquareTest {
 
     @Test
     public void test_constructor_getValueState_4PossibleValues() {
-        int nbPossibleValues = 4;
-        int sizeOfTheOutputTable = nbPossibleValues + 1;
-        SudokuSquare aSquareWith4PossibleValues = new SudokuSquare(nbPossibleValues);
+        int sizeOfTheOutputTable = NB_POSSIBLE_VALUE + 1;
+        int rowId = 1;
+        int colId = 2;
+        SudokuSquare aSquareWith4PossibleValues =
+                new SudokuSquare(NB_POSSIBLE_VALUE, rowId, 2);
 
         ValueState[] valueStates = aSquareWith4PossibleValues.getValueState();
 
@@ -48,13 +51,14 @@ public class SudokuSquareTest {
         for (int i = 1 ; i < valueStates.length ; i++) {
             assertEquals(POSSIBLE_VALUE, valueStates[i]);
         }
+        assertEquals(rowId, aSquareWith4PossibleValues.getRowId());
+        assertEquals(colId, aSquareWith4PossibleValues.getColId());
     }
 
     @Test
     public void test_constructor_getValueState_4PossibleValuesAndInitialValue0() {
-        int nbPossibleValues = 4;
-        int sizeOfTheOutputTable = nbPossibleValues + 1;
-        SudokuSquare aSquareWith4PossibleValues = new SudokuSquare(nbPossibleValues, 0);
+        int sizeOfTheOutputTable = NB_POSSIBLE_VALUE + 1;
+        SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE, 0);
 
         ValueState[] valueStates = aSquareWith4PossibleValues.getValueState();
 
@@ -68,10 +72,9 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setInitialValue_winnerValue() {
-        int nbPossibleValues = 4;
         int winnerValue = 2;
 
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues, winnerValue);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE, winnerValue);
 
         ValueState[] valueStates = theSquare.getValueState();
 
@@ -86,8 +89,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_changeStateOfAValue_LOSER_VALUE() {
-        int nbPossibleValues = 4;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         ValueState[] valueStates = theSquare.getValueState();
 
         assertEquals(LOSER_VALUE, valueStates[0]);
@@ -111,8 +113,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_changeStateOfAValue_notPossibleToSetPOSSIBLE_VALUE(){
-        int nbPossibleValues = 4;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
 
         assertThrows(IllegalArgumentException.class,
                 () -> theSquare.changeStateOfAValue(3, POSSIBLE_VALUE));
@@ -121,8 +122,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setWinnerValue_indexTooBig() {
-        int nbPossibleValues = 4;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
 
         assertThrows(IllegalArgumentException.class,
                 () -> theSquare.setWinnerValue(5));
@@ -130,9 +130,8 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setWinnerValue() {
-        int nbPossibleValues = 4;
         int winnerValue = 3;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         ValueState[] valueStates = theSquare.getValueState();
 
         assertEquals(LOSER_VALUE, valueStates[0]);
@@ -156,9 +155,8 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setWinnerValue_cannotUpdateALoserValue() {
-        int nbPossibleValues = 4;
         int value3 = 3;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         theSquare.setLoserValue(value3);
 
         assertThrows(IllegalStateException.class,
@@ -167,10 +165,9 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setLoserValue_tooSmall() {
-        int nbPossibleValues = 4;
         int value0 = 0;
 
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
 
         assertThrows(IllegalArgumentException.class,
                 () -> theSquare.setLoserValue(value0));
@@ -178,10 +175,9 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setLoserValue() {
-        int nbPossibleValues = 4;
         int value3 = 3;
 
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         ValueState[] valueStates = theSquare.getValueState();
 
         assertEquals(LOSER_VALUE, valueStates[0]);
@@ -201,9 +197,8 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setLoserValue_cannotUpdateAWinnerValue() {
-        int nbPossibleValues = 4;
         int value3 = 3;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         theSquare.setWinnerValue(value3);
 
         assertThrows(IllegalStateException.class,
@@ -212,9 +207,8 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setLoserValue_whenRemainOneAutomaticallySetToWinnerValue() {
-        int nbPossibleValues = 4;
         int winnerValue = 2;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         ValueState[] valueStates = theSquare.getValueState();
 
         theSquare.setLoserValue(1);
@@ -236,10 +230,9 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setLoserValue_whenWinnerValueAlreadyFound() {
-        int nbPossibleValues = 4;
         int winnerValue = 4;
 
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         theSquare.setLoserValue(1);
         theSquare.setLoserValue(3);
         theSquare.setWinnerValue(winnerValue);
@@ -254,9 +247,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setLoserValue_shouldBeAbleToSetTwoTimesTheSameValue() {
-        int nbPossibleValues = 4;
-
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         theSquare.setLoserValue(1);
         theSquare.setLoserValue(1);
         assertFalse(theSquare.isWinnerValueFound());
@@ -264,9 +255,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setWinnerValue_shouldBeAbleToSetTwoTimesTheSameValue() {
-        int nbPossibleValues = 4;
-
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         theSquare.setWinnerValue(1);
         theSquare.setWinnerValue(1);
         assertTrue(theSquare.isWinnerValueFound());
@@ -274,9 +263,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setWinnerValue_shouldNotBeAbleToSetAnotherWinnerValue() {
-        int nbPossibleValues = 4;
-
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         theSquare.setWinnerValue(1);
 
         assertThrows(IllegalStateException.class,
@@ -285,25 +272,20 @@ public class SudokuSquareTest {
 
     @Test
     public void test_winnerValueDigestedAtTheSudokuLayer() {
-        int nbPossibleValues = 4;
-
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         assertFalse(theSquare.winnerValueDigestedAtTheSudokuLayer());
     }
 
     @Test
     public void test_setWinnerValueDigestedAtTheSudokuLayer_whenWinnerValueNotFoundYet(){
-        int nbPossibleValues = 4;
-
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         assertThrows(IllegalStateException.class,
                 () -> theSquare.setWinnerValueDigestedAtTheSudokuLayer());
     }
 
     @Test
     public void test_setWinnerValueDigestedAtTheSudokuLayer_whenWinnerValueFound(){
-        int nbPossibleValues = 4;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         theSquare.setWinnerValue(3);
 
         theSquare.setWinnerValueDigestedAtTheSudokuLayer();
@@ -313,8 +295,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_toString() {
-        int nbPossibleValues = 4;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
 
         String possibleValues = theSquare.toString();
 
@@ -323,8 +304,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_toString_oneLoserValue() {
-        int nbPossibleValues = 4;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         theSquare.setLoserValue(2);
 
         String possibleValues = theSquare.toString();
@@ -334,8 +314,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_toString_oneWinnerValue() {
-        int nbPossibleValues = 4;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         theSquare.setWinnerValue(2);
 
         String possibleValues = theSquare.toString();
@@ -345,8 +324,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_getPossibleValues_noChangeAfterConstruction() {
-        int nbPossibleValues = 4;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
 
         int[] expectedPossibleValues = {1, 2, 3, 4};
         int[] outputPossibleValues = theSquare.getPossibleValues();
@@ -355,8 +333,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_getPossibleValues_setOnLoser() {
-        int nbPossibleValues = 4;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         theSquare.setLoserValue(2);
 
         int[] expectedPossibleValues = {1, 3, 4};
@@ -366,12 +343,20 @@ public class SudokuSquareTest {
 
     @Test
     public void test_getPossibleValues_setOnWinner() {
-        int nbPossibleValues = 4;
-        SudokuSquare theSquare = new SudokuSquare(nbPossibleValues);
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
         theSquare.setWinnerValue(2);
 
         int[] expectedPossibleValues = {};
         int[] outputPossibleValues = theSquare.getPossibleValues();
         assertArrayEquals(expectedPossibleValues, outputPossibleValues);
+    }
+
+
+    private static SudokuSquare buildSudokuSquare(int nbPossibleValues, int defaultWinner) {
+        return new SudokuSquare(nbPossibleValues, defaultWinner,0, 0);
+    }
+
+    private static SudokuSquare buildSudokuSquare(int nbPossibleValues) {
+        return new SudokuSquare(nbPossibleValues, 0, 0);
     }
 }
