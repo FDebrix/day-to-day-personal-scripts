@@ -16,7 +16,7 @@ public class SudokuSolver {
 
     public SudokuSolver (int[][] sudoKuToResolve, int regionRowSize, int regionColSize,
                          int sudokuRowSize, int sudokuColSize) {
-        validateConstructorParamaters(
+        validateConstructorParameters(
                 sudoKuToResolve, regionRowSize, regionColSize, sudokuRowSize, sudokuColSize);
 
         this.regionRowSize = regionRowSize;
@@ -74,20 +74,56 @@ public class SudokuSolver {
     }
 
 
-    // TODO I AM HERE
+    // TODO
     // goal is to replace #handleWinnerValueAvailableOnlyInOneSquareINITIAL
     private void handleWinnerValueAvailableOnlyInOneSquare() {
         for(int i = 0 ; i < sudokuRowSize ; i++) {
-            List<SudokuSquare> oneLine = getSquaresOfTheRow(i);
-            handleListOfSquares(oneLine);
+            List<SudokuSquare> oneRow = getSquaresOfTheRow(i);
+            handleListOfSquaresHaveAllSolutions(oneRow);
         }
         for(int i = 0 ; i < sudokuColSize ; i++) {
-            List<SudokuSquare> oneLine = getSquaresOfTheCol(i);
-            handleListOfSquares(oneLine);
+            List<SudokuSquare> oneCol = getSquaresOfTheCol(i);
+            handleListOfSquaresHaveAllSolutions(oneCol);
+        }
+
+        int nbRegionRow = sudokuRowSize / regionRowSize;
+        int nbRegionCol = sudokuColSize / regionColSize;
+
+        for(int i = 0 ; i < nbRegionRow ; i++) {
+            for(int j = 0 ; j < nbRegionCol ; j++) {
+                List<SudokuSquare> oneRegion = getSquaresOfTheRegion(i, j);
+                handleListOfSquaresHaveAllSolutions(oneRegion);
+            }
         }
     }
 
-    private void handleListOfSquares(List<SudokuSquare> oneLine) {
+    private void handleListOfSquaresHaveAllSolutions(List<SudokuSquare> listOfSquares) {
+        validateSizeListOfSquares(listOfSquares);
+
+        // I AM HERE
+    }
+
+    private void validateSizeListOfSquares(List<SudokuSquare> listOfSquares) {
+        if(listOfSquares.size() != regionColSize * regionRowSize)
+            throw new IllegalStateException("The size of the list " + listOfSquares.size()
+                    + "does not match the multiplication of the size in column of a region "
+                    + regionColSize + " and tje size in row of a region " + regionRowSize
+            );
+    }
+
+    private List<SudokuSquare> getSquaresOfTheRegion(int regionRowId, int regionColId) {
+        List<SudokuSquare> list = new ArrayList<>();
+
+        int[] columnIdsOfTheRegion = getColumnIdsOfRegionColumnId(regionColId);
+        int[] rowIdsOfTheRegion = getRowIdsOfRegionRowId(regionRowId);
+
+        for(int columnIdOfTheRegion : columnIdsOfTheRegion) {
+            for (int rowIdOfTheRegion : rowIdsOfTheRegion) {
+                list.add(sudokuSquares[rowIdOfTheRegion][columnIdOfTheRegion]);
+            }
+        }
+
+        return list;
     }
 
     private List<SudokuSquare> getSquaresOfTheCol(int colId) {
@@ -282,7 +318,7 @@ public class SudokuSolver {
     // TODO
     // Let be more drastic and validate that the input is respecting "normal" size
     // https://en.wikipedia.org/wiki/Sudoku#Variations_of_grid_sizes_or_region_shapes
-    private void validateConstructorParamaters(int[][] sudoKuToResolve,
+    private void validateConstructorParameters(int[][] sudoKuToResolve,
                                                int regionRowSize, int regionColSize,
                                                int sudokuRowSize, int sudokuColSize) {
 
