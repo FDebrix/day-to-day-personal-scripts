@@ -45,19 +45,6 @@ public class SudokuSolverTest {
             {0, 0, 6, 0, 0, 0, 2, 7, 0}
     };
 
-
-    private final int[][] SUDOKU_1_9x9_MEDIUM_EXPECTED_TEMP = {
-            {-1, 6, -1, -1, 1, 2, 3, 5, 7},
-            {-1, 5, 3, 7, 8, -1, -1, 2, 4},
-            {-1, 2, 7, -1, -1, 3, -1, -1, 9},
-            {2, 3, 4, 6, 7, 8, 5, 9, 1},
-            {6, 9, 5, 3, 4, 1, 7, 8, 2},
-            {8, 7, 1, -1, 2, -1, -1, -1, 3},
-            {7, 1, -1, 2, -1, -1, -1, 3, -1},
-            {5, -1, 2, -1, 3, 7, 9, -1, 6},
-            {3, -1, 6, -1, -1, -1, 2, 7, -1}
-    };
-
     private final int[][] SUDOKU_1_9x9_MEDIUM_EXPECTED = {
             {4, 6, 8, 9, 1, 2, 3, 5, 7},
             {9, 5, 3, 7, 8, 6, 1, 2, 4},
@@ -179,7 +166,7 @@ public class SudokuSolverTest {
         assertEquals(SUDOKU_1_9x9_MEDIUM[0].length, output[0].length);
 
 
-        assertArrayEquals(SUDOKU_1_9x9_MEDIUM_EXPECTED_TEMP, output);
+        assertArrayEquals(SUDOKU_1_9x9_MEDIUM_EXPECTED, output);
     }
 
 

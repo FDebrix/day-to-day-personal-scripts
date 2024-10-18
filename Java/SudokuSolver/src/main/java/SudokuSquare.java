@@ -41,7 +41,7 @@ public class SudokuSquare {
         this(nbPossibleValues, 0, rowId, colId);
     }
 
-    public SudokuSquare(int nbPossibleValues, int defaultWinner, int rowId, int colId) {
+    public SudokuSquare(int nbPossibleValues, int defaultValue, int rowId, int colId) {
         validateNbPossibleValues(nbPossibleValues);
 
         this.possibleValues = new ValueState[nbPossibleValues + 1];
@@ -56,7 +56,7 @@ public class SudokuSquare {
         this.rowId = rowId;
         this.colId = colId;
 
-        setInitialWinner(defaultWinner);
+        setInitialValue(defaultValue);
     }
 
 
@@ -129,9 +129,9 @@ public class SudokuSquare {
     private int countValuesInState_POSSIBLE_VALUE() {
         int nbOfPossibleValues = 0;
 
-        for(int i = 0 ; i < possibleValues.length ; i++) {
-            if (possibleValues[i] == POSSIBLE_VALUE) {
-                nbOfPossibleValues++ ;
+        for (ValueState possibleValue : possibleValues) {
+            if (possibleValue == POSSIBLE_VALUE) {
+                nbOfPossibleValues++;
             }
         }
         return nbOfPossibleValues;
@@ -232,7 +232,7 @@ public class SudokuSquare {
 
     // 0 means that the winner value is unknown for now
     // else that means the winner value is known
-    private void setInitialWinner(int value) {
+    private void setInitialValue(int value) {
         if(value == 0)
             return;
         setWinnerValue (value);

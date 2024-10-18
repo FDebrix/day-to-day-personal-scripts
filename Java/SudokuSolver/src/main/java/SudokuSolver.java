@@ -1,8 +1,6 @@
 package main.java;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class SudokuSolver {
 
@@ -55,9 +53,7 @@ public class SudokuSolver {
 
             // As long as #handleWinnerNotDigested is digesting, we don't run deeper algorithms
             if( !foundAWinnerNotDigested) {
-                for(int i = 0 ; i < sudokuSquares.length ; i++) {
-                    handleWinnerValueAvailableOnlyInOneSquareINITIAL(i);
-                }
+                handleWinnerValueAvailableOnlyInOneSquare();
             }
         }
     }
@@ -74,8 +70,8 @@ public class SudokuSolver {
     }
 
 
-    // TODO
-    // goal is to replace #handleWinnerValueAvailableOnlyInOneSquareINITIAL
+    // TODO write javadoc
+    // Second algorithm
     private void handleWinnerValueAvailableOnlyInOneSquare() {
         for(int i = 0 ; i < sudokuRowSize ; i++) {
             List<SudokuSquare> oneRow = getSquaresOfTheRow(i);
@@ -97,10 +93,50 @@ public class SudokuSolver {
         }
     }
 
+    // to rename
     private void handleListOfSquaresHaveAllSolutions(List<SudokuSquare> listOfSquares) {
         validateSizeListOfSquares(listOfSquares);
 
+        //List<List<SudokuSquare>> squaresPerPossibleValues = new ArrayList<List<SudokuSquare>>(sudokuColSize + 1);
+
+        List<List<SudokuSquare>> squaresPerPossibleValues = buildEmptySquaresPerPossibleValues();
+
+        for(SudokuSquare aSquare : listOfSquares) {
+            if(aSquare.isWinnerValueFound()) {
+                squaresPerPossibleValues.get(aSquare.getWinnerValue()).add(aSquare);
+            }
+            else {
+                int[] possibleValues = aSquare.getPossibleValues();
+
+                //System.out.println("The possible values :" + aSquare.toString());
+                for(int possibleValue : possibleValues) {
+                    squaresPerPossibleValues.get(possibleValue).add(aSquare);
+                }
+            }
+        }
+
+        for(int i = 0 ; i < squaresPerPossibleValues.size() ; i++) {
+            List<SudokuSquare> squaresForOnePossibleValue = squaresPerPossibleValues.get(i);
+            if(squaresForOnePossibleValue.size() == 1
+                    && ! squaresForOnePossibleValue.getFirst().isWinnerValueFound() ){
+
+                squaresForOnePossibleValue.getFirst().setWinnerValue(i);
+            }
+        }
+
+        System.out.println("Squares per possible values:\n" + squaresPerPossibleValues);
         // I AM HERE
+    }
+
+    private List<List<SudokuSquare>> buildEmptySquaresPerPossibleValues() {
+        List<List<SudokuSquare>> squaresPerPossibleValues = new ArrayList<List<SudokuSquare>>();
+
+        for (int i = 0 ; i < sudokuColSize + 1 ; i++) {
+            squaresPerPossibleValues.add(i, new ArrayList<SudokuSquare>());
+        }
+
+        //System.out.println("sudokuColSize " + sudokuColSize + ", the size" + squaresPerPossibleValues.size());
+        return squaresPerPossibleValues;
     }
 
     private void validateSizeListOfSquares(List<SudokuSquare> listOfSquares) {
@@ -114,8 +150,8 @@ public class SudokuSolver {
     private List<SudokuSquare> getSquaresOfTheRegion(int regionRowId, int regionColId) {
         List<SudokuSquare> list = new ArrayList<>();
 
-        int[] columnIdsOfTheRegion = getColumnIdsOfRegionColumnId(regionColId);
         int[] rowIdsOfTheRegion = getRowIdsOfRegionRowId(regionRowId);
+        int[] columnIdsOfTheRegion = getColumnIdsOfRegionColumnId(regionColId);
 
         for(int columnIdOfTheRegion : columnIdsOfTheRegion) {
             for (int rowIdOfTheRegion : rowIdsOfTheRegion) {
@@ -144,60 +180,6 @@ public class SudokuSolver {
         }
 
         return list;
-    }
-
-
-    private void handleWinnerValueAvailableOnlyInOneSquareINITIAL(int columnId) {
-        // 0 = default value
-        // -1 = the value is a winner value
-        // else = the number of time the value is still possible
-        // There are 10 values for a 9 size sudoku
-        int[] countNbOfEachValue={0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-        // TODO
-        // HARD CODED TO handle the column 2 ONLY FOR NOW
-        int nbRows = sudokuToResolve.length;
-        for (int i = 0 ; i < nbRows ; i++) {
-            if (sudokuSquares[i][columnId].isWinnerValueFound()) {
-                System.out.println("\t" + i + ", "+ columnId + "- winner value" + sudokuSquares[i][columnId].getWinnerValue());
-                // TODO
-                // if the value is already -1 => exception!
-                countNbOfEachValue[sudokuSquares[i][columnId].getWinnerValue()] = -1;
-            }
-            else {
-                System.out.println("\t" + i + ", "+ columnId+ " + - NOT winner value" + Arrays.toString(sudokuSquares[i][columnId].getPossibleValues()));
-                int[] valuesInStatePossible = sudokuSquares[i][columnId].getPossibleValues();
-                for(int aValueInStatePossible : valuesInStatePossible) {
-                    countNbOfEachValue[aValueInStatePossible] ++;
-                }
-            }
-        }
-
-        System.out.println("Count:" + Arrays.toString(countNbOfEachValue));
-
-        for(int i = 0; i < countNbOfEachValue.length ; i++) {
-
-            if(countNbOfEachValue[i] == 1) {
-                int[] winnerValue = {i};
-
-                for (int j = 0 ; j < nbRows ; j++) {
-                    if (! sudokuSquares[j][columnId].isWinnerValueFound()
-                            && containsTheValue(sudokuSquares[j][columnId].getPossibleValues(), i)) {
-
-                        sudokuSquares[j][columnId].setWinnerValue(i);
-                    }
-                }
-            }
-        }
-    }
-
-    private boolean containsTheValue(int[] possibleValues, int searchedValue) {
-        for(int possibleValue : possibleValues) {
-            if(possibleValue == searchedValue) {
-                return true;
-            }
-        }
-        return false;
     }
 
     // First algorithm: clean up around a winner value.
