@@ -112,15 +112,15 @@ public class SudokuSolverTest {
     };
 
     private final int[][] SUDOKU_1_9x9_EXPERT_EXPECTED = {
-            {0, 0, 0, 5, 0, 0, 0, 0, 0},
-            {0, 0, 0, 8, 4, 2, 7, 9, 5},
-            {5, 9, 0, 7, 0, 0, 0, 0, 0},
-            {4, 0, 6, 0, 0, 0, 8, 0, 2},
-            {0, 0, 8, 0, 7, 6, 0, 0, 0},
-            {0, 0, 0, 2, 8, 0, 0, 3, 6},
-            {0, 0, 9, 6, 0, 8, 1, 5, 0},
-            {7, 0, 0, 0, 5, 0, 0, 4, 8},
-            {0, 0, 5, 0, 0, 0, 0, 0, 3}
+            {8, 7, 4, 5, 6, 9, 3, 6, 1},
+            {1, 6, 3, 8, 4, 2, 7, 9, 5},
+            {5, 9, 2, 7, 6, 1, 3, 8, 4},
+            {4, 3, 6, 1, 9, 5, 8, 7, 2},
+            {2, 5, 8, 3, 7, 6, 4, 1, 9},
+            {9, 1, 7, 2, 8, 4, 5, 3, 6},
+            {3, 4, 9, 6, 2, 8, 1, 5, 7},
+            {7, 2, 1, 9, 5, 3, 9, 4, 8},
+            {6, 8, 5, 4, 1, 7, 9, 2, 3}
     };
 
     // https://sudoku.com/fr/difficile/
@@ -158,7 +158,7 @@ public class SudokuSolverTest {
     public void test_getSudoku() {
         SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_SIMPLE, 3, 3, 9, 9);
 
-        int[][] sudokuOutput = solver.getSudoku();
+        int[][] sudokuOutput = solver.getSudokuToResolve();
 
         assertEquals(SUDOKU_1_9x9_SIMPLE, sudokuOutput);
     }
@@ -168,7 +168,7 @@ public class SudokuSolverTest {
         int nbRows = SUDOKU_1_9x9_SIMPLE.length;
         int nbColumns = SUDOKU_1_9x9_SIMPLE[0].length;
         SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_SIMPLE, 3, 3, 9, 9);
-        SudokuSquare[][] sudokuSquares = solver.convertArrayToSudokuSquare();
+        SudokuSquare[][] sudokuSquares = solver.getSudokuSquares();
 
         assertEquals(nbRows, sudokuSquares.length);
 
@@ -194,11 +194,22 @@ public class SudokuSolverTest {
     }
 
     @Test
+    public void test_run_2x2() {
+        SudokuSolver solver = new SudokuSolver(SUDOKU_1_2x2, 2, 2, 4, 4);
+
+        solver.resolveTheSudoku();
+
+        int[][] output = solver.getWinnerValues();
+        assertEquals(SUDOKU_1_2x2.length, output.length);
+        assertEquals(SUDOKU_1_2x2[0].length, output[0].length);
+        assertArrayEquals(SUDOKU_1_2x2_EXPECTED, output);
+    }
+
+    @Test
     public void test_run_9x9_simple() {
         SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_SIMPLE, 3, 3, 9, 9);
-        solver.convertArrayToSudokuSquare();
 
-        solver.letDoAFirstRun();
+        solver.resolveTheSudoku();
 
         int[][] output = solver.getWinnerValues();
         assertEquals(SUDOKU_1_9x9_SIMPLE.length, output.length);
@@ -209,14 +220,12 @@ public class SudokuSolverTest {
     @Test
     public void test_run_9x9_medium() {
         SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_MEDIUM, 3, 3, 9, 9);
-        solver.convertArrayToSudokuSquare();
 
-        solver.letDoAFirstRun();
+        solver.resolveTheSudoku();
 
         int[][] output = solver.getWinnerValues();
         assertEquals(SUDOKU_1_9x9_MEDIUM.length, output.length);
         assertEquals(SUDOKU_1_9x9_MEDIUM[0].length, output[0].length);
-
 
         assertArrayEquals(SUDOKU_1_9x9_MEDIUM_EXPECTED, output);
     }
@@ -224,14 +233,12 @@ public class SudokuSolverTest {
     @Test
     public void test_run_9x9_difficile() {
         SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_DIFFICILE, 3, 3, 9, 9);
-        solver.convertArrayToSudokuSquare();
 
-        solver.letDoAFirstRun();
+        solver.resolveTheSudoku();
 
         int[][] output = solver.getWinnerValues();
         assertEquals(SUDOKU_1_9x9_DIFFICILE.length, output.length);
         assertEquals(SUDOKU_1_9x9_DIFFICILE[0].length, output[0].length);
-
 
         assertArrayEquals(SUDOKU_1_9x9_DIFFICILE_EXPECTED, output);
     }
@@ -240,9 +247,8 @@ public class SudokuSolverTest {
     @Test
     public void test_run_9x9_expert() {
         SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_EXPERT, 3, 3, 9, 9);
-        solver.convertArrayToSudokuSquare();
 
-        solver.letDoAFirstRun();
+        solver.resolveTheSudoku();
 
         System.out.println("\nEXPERT\n");
         solver.printlnRemainingPossibleValues();
@@ -253,19 +259,5 @@ public class SudokuSolverTest {
 
 
         assertArrayEquals(SUDOKU_1_9x9_EXPERT_EXPECTED, output);
-    }
-
-
-    @Test
-    public void test_run_2x2() {
-        SudokuSolver solver = new SudokuSolver(SUDOKU_1_2x2, 2, 2, 4, 4);
-        solver.convertArrayToSudokuSquare();
-
-        solver.letDoAFirstRun();
-
-        int[][] output = solver.getWinnerValues();
-        assertEquals(SUDOKU_1_2x2.length, output.length);
-        assertEquals(SUDOKU_1_2x2[0].length, output[0].length);
-        assertArrayEquals(SUDOKU_1_2x2_EXPECTED, output);
     }
 }

@@ -9,6 +9,7 @@ public class SudokuSolver {
     private int regionColSize = 0;
     private int sudokuRowSize = 0;
     private int sudokuColSize = 0;
+
     private SudokuSquare[][] sudokuSquares;
 
 
@@ -22,14 +23,21 @@ public class SudokuSolver {
         this.sudokuRowSize = sudokuRowSize;
         this.sudokuColSize = sudokuColSize;
         this.sudokuToResolve = sudoKuToResolve;
+
+        convertArrayToSudokuSquare();
     }
 
-    public int[][] getSudoku() {
+    public int[][] getSudokuToResolve() {
         return this.sudokuToResolve;
     }
 
+    public SudokuSquare[][] getSudokuSquares() {
+        return sudokuSquares;
+    }
 
-    public SudokuSquare[][] convertArrayToSudokuSquare() {
+
+
+    private void convertArrayToSudokuSquare() {
         int nbPossibleValues = sudokuRowSize;
         this.sudokuSquares = new SudokuSquare[sudokuRowSize][sudokuColSize];
 
@@ -38,22 +46,26 @@ public class SudokuSolver {
                 this.sudokuSquares[i][j] = new SudokuSquare(nbPossibleValues, sudokuToResolve[i][j], i, j);
             }
         }
-        return this.sudokuSquares;
     }
 
-    public void letDoAFirstRun() {
+    public void resolveTheSudoku() {
+        List<List<SudokuSquare>> listOfSquares = getAllListsOfSquaresWhichShouldContainAllValues() ;
 
         for(int k = 0 ; k < 10 ; k++) {
             boolean foundAWinnerNotDigested = handleWinnerNotDigested();
 
             //System.out.println("\n\nk:" + k);
-            printlnRemainingPossibleValues();
+            //printlnRemainingPossibleValues();
 
             if(allWinnerFound()) break;
 
             // As long as #handleWinnerNotDigested is digesting, we don't run deeper algorithms
             if( !foundAWinnerNotDigested) {
-                handleWinnerValueAvailableOnlyInOneSquare();
+                handleTheWinnerValuesOnlyAvailableInOneSquare(listOfSquares);
+
+                if(allWinnerFound()) break;
+
+
             }
         }
     }
@@ -70,16 +82,25 @@ public class SudokuSolver {
     }
 
 
-    // TODO write javadoc
-    // Second algorithm
-    private void handleWinnerValueAvailableOnlyInOneSquare() {
+    // Second algorithm : find the value only available in one place
+    // Let assume we have a 9 x9 sudoku. On one row, we have the follow possible values:
+    //                      8,9 | 3 | 7 | 4 | 5 | 1 | 8,9 | 2,8 | 6
+    // Only 3 squares are not resolved yet. In the position 8, we can see the possibles values 2 and 8.
+    // 2 is not possible in other squares. Then even if there are 2 possibles values in the position 8,
+    // we know for sure that 2 is the winner value in the position 8. We can update this line to
+    //                      8,9 | 3 | 7 | 4 | 5 | 1 | 8,9 | 2 | 6
+    private void handleTheWinnerValuesOnlyAvailableInOneSquare(List<List<SudokuSquare>> listOfSquares) {
+        listOfSquares.forEach(this::handleTheWinnerValuesOnlyAvailableInOneSquareOneList);
+    }
+
+    private List<List<SudokuSquare>> getAllListsOfSquaresWhichShouldContainAllValues() {
+        List<List<SudokuSquare>> allBlocksOfSquares = new ArrayList<List<SudokuSquare>>();
+
         for(int i = 0 ; i < sudokuRowSize ; i++) {
-            List<SudokuSquare> oneRow = getSquaresOfTheRow(i);
-            handleListOfSquaresHaveAllSolutions(oneRow);
+            allBlocksOfSquares.add(getSquaresOfTheRow(i));
         }
         for(int i = 0 ; i < sudokuColSize ; i++) {
-            List<SudokuSquare> oneCol = getSquaresOfTheCol(i);
-            handleListOfSquaresHaveAllSolutions(oneCol);
+            allBlocksOfSquares.add(getSquaresOfTheCol(i));
         }
 
         int nbRegionRow = sudokuRowSize / regionRowSize;
@@ -87,17 +108,16 @@ public class SudokuSolver {
 
         for(int i = 0 ; i < nbRegionRow ; i++) {
             for(int j = 0 ; j < nbRegionCol ; j++) {
-                List<SudokuSquare> oneRegion = getSquaresOfTheRegion(i, j);
-                handleListOfSquaresHaveAllSolutions(oneRegion);
+                allBlocksOfSquares.add(getSquaresOfTheRegion(i, j));
             }
         }
+        return allBlocksOfSquares;
     }
 
-    // to rename
-    private void handleListOfSquaresHaveAllSolutions(List<SudokuSquare> listOfSquares) {
-        validateSizeListOfSquares(listOfSquares);
 
-        //List<List<SudokuSquare>> squaresPerPossibleValues = new ArrayList<List<SudokuSquare>>(sudokuColSize + 1);
+    // to rename
+    private void handleTheWinnerValuesOnlyAvailableInOneSquareOneList(List<SudokuSquare> listOfSquares) {
+        validateSizeListOfSquares(listOfSquares);
 
         List<List<SudokuSquare>> squaresPerPossibleValues = buildEmptySquaresPerPossibleValues();
 
@@ -108,7 +128,6 @@ public class SudokuSolver {
             else {
                 int[] possibleValues = aSquare.getPossibleValues();
 
-                //System.out.println("The possible values :" + aSquare.toString());
                 for(int possibleValue : possibleValues) {
                     squaresPerPossibleValues.get(possibleValue).add(aSquare);
                 }
@@ -123,9 +142,6 @@ public class SudokuSolver {
                 squaresForOnePossibleValue.getFirst().setWinnerValue(i);
             }
         }
-
-        //System.out.println("Squares per possible values:\n" + squaresPerPossibleValues);
-        // I AM HERE
     }
 
     private List<List<SudokuSquare>> buildEmptySquaresPerPossibleValues() {
@@ -135,7 +151,6 @@ public class SudokuSolver {
             squaresPerPossibleValues.add(i, new ArrayList<SudokuSquare>());
         }
 
-        //System.out.println("sudokuColSize " + sudokuColSize + ", the size" + squaresPerPossibleValues.size());
         return squaresPerPossibleValues;
     }
 
@@ -184,7 +199,7 @@ public class SudokuSolver {
 
     // First algorithm: clean up around a winner value.
     // The algorithm checks one time all the squares of the sudoku:
-    // the square has a winner value but the cleanup was not done on the line, the row and the region.
+    // The square has a winner value but the cleanup was not done on the line, the row and the region.
     private boolean handleWinnerNotDigested() {
         boolean foundWinnerNotDigested = false;
 
@@ -202,8 +217,8 @@ public class SudokuSolver {
     }
 
     private boolean isWinnerValueButNotYetDigest(int i, int j) {
-        return sudokuSquares[i][j].isWinnerValueFound()
-                && !sudokuSquares[i][j].winnerValueDigestedAtTheSudokuLayer();
+        return this.sudokuSquares[i][j].isWinnerValueFound()
+                && !this.sudokuSquares[i][j].winnerValueDigestedAtTheSudokuLayer();
     }
 
     private boolean allWinnerFound() {
