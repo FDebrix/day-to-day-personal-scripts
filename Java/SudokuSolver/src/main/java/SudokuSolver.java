@@ -46,7 +46,7 @@ public class SudokuSolver {
         for(int k = 0 ; k < 10 ; k++) {
             boolean foundAWinnerNotDigested = handleWinnerNotDigested();
 
-            System.out.println("\n\nk:" + k);
+            //System.out.println("\n\nk:" + k);
             printlnRemainingPossibleValues();
 
             if(allWinnerFound()) break;
@@ -124,7 +124,7 @@ public class SudokuSolver {
             }
         }
 
-        System.out.println("Squares per possible values:\n" + squaresPerPossibleValues);
+        //System.out.println("Squares per possible values:\n" + squaresPerPossibleValues);
         // I AM HERE
     }
 
