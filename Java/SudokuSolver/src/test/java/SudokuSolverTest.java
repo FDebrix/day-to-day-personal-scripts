@@ -112,14 +112,14 @@ public class SudokuSolverTest {
     };
 
     private final int[][] SUDOKU_1_9x9_EXPERT_EXPECTED = {
-            {8, 7, 4, 5, 6, 9, 3, 6, 1},
+            {8, 7, 4, 5, 3, 9, 2, 6, 1},
             {1, 6, 3, 8, 4, 2, 7, 9, 5},
             {5, 9, 2, 7, 6, 1, 3, 8, 4},
             {4, 3, 6, 1, 9, 5, 8, 7, 2},
             {2, 5, 8, 3, 7, 6, 4, 1, 9},
             {9, 1, 7, 2, 8, 4, 5, 3, 6},
             {3, 4, 9, 6, 2, 8, 1, 5, 7},
-            {7, 2, 1, 9, 5, 3, 9, 4, 8},
+            {7, 2, 1, 9, 5, 3, 6, 4, 8},
             {6, 8, 5, 4, 1, 7, 9, 2, 3}
     };
 
@@ -168,7 +168,7 @@ public class SudokuSolverTest {
         int nbRows = SUDOKU_1_9x9_SIMPLE.length;
         int nbColumns = SUDOKU_1_9x9_SIMPLE[0].length;
         SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_SIMPLE, 3, 3, 9, 9);
-        SudokuSquare[][] sudokuSquares = solver.getSudokuSquares();
+        SudokuSquare[][] sudokuSquares = solver.getSudokuSquaresForTheValue();
 
         assertEquals(nbRows, sudokuSquares.length);
 
