@@ -1,8 +1,13 @@
 package test.java;
 
+import main.java.BroadcastWinner;
+import main.java.SudokuRegion;
 import main.java.SudokuSquare;
 import main.java.SudokuSquare.ValueState;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static main.java.SudokuSquare.NOT_FOUND_YET;
 import static main.java.SudokuSquare.ValueState.*;
@@ -68,6 +73,16 @@ public class SudokuSquareTest {
         for (int i = 1 ; i < valueStates.length ; i++) {
             assertEquals(POSSIBLE_VALUE, valueStates[i]);
         }
+    }
+
+    @Test
+    public void test_setBroadcastWinner_NotNull () {
+        SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE, 0);
+        List<SudokuSquare> squares = Arrays.asList(aSquareWith4PossibleValues);
+        BroadcastWinner region = new SudokuRegion(squares);
+
+        assertThrows(IllegalArgumentException.class,
+                () -> aSquareWith4PossibleValues.setBroadcastWinner(null));
     }
 
     @Test
@@ -352,11 +367,24 @@ public class SudokuSquareTest {
     }
 
 
-    private static SudokuSquare buildSudokuSquare(int nbPossibleValues, int defaultWinner) {
-        return new SudokuSquare(nbPossibleValues, defaultWinner,0, 0);
+    private SudokuSquare buildSudokuSquare(int nbPossibleValues, int initialValue) {
+        SudokuSquare square = new SudokuSquare(nbPossibleValues, 0, 0);
+        setBroadcastWinner(square);
+        square.setInitialValue(initialValue);
+
+        return square;
     }
 
-    private static SudokuSquare buildSudokuSquare(int nbPossibleValues) {
-        return new SudokuSquare(nbPossibleValues, 0, 0);
+    private SudokuSquare buildSudokuSquare(int nbPossibleValues) {
+        SudokuSquare square =  new SudokuSquare(nbPossibleValues, 0, 0);
+        setBroadcastWinner(square);
+
+        return square;
+    }
+
+    private void setBroadcastWinner(SudokuSquare square) {
+        List<SudokuSquare> squares = Arrays.asList(square);
+        BroadcastWinner region = new SudokuRegion(squares);
+        square.setBroadcastWinner(region);
     }
 }

@@ -1,12 +1,14 @@
 package main.java;
 
+import java.util.List;
 import java.util.StringJoiner;
 
 import static main.java.SudokuSquare.ValueState.*;
 
 /**
- * A square in a sudoku can have multiple values. The number of values depend on the size of the sudoku.
- * At minimum, a square should have 4 different possible values. THe smallest possible value must be 1.
+ * A sudoku is composer of squares. A square in a sudoku can have multiple values.
+ * The number of values depend on the size of the sudoku.
+ * At minimum, a square should have 4 different possible values. THe smallest possible value for a square must be 1.
  */
 public class SudokuSquare {
 
@@ -18,10 +20,11 @@ public class SudokuSquare {
 
     private static final int MIN_POSSIBLE_VALUES = 4;
 
-    // The possible values of the square. The index i is used for the value i.
-    // A value starts in the state "POSSIBLE_VALUE" and then can just move to
-    // "WINNER_VALUE" or "LOSER_VALUE". There is no way to change from "WINNER_VALUE"
-    // to "LOSER_VALUE", or vice versa.
+    // The possible values of the square.
+    // - the index i is used for the possible value i,
+    // - the index 0 is not used.
+    // A value starts in the state "POSSIBLE_VALUE" and then can just move to "WINNER_VALUE" or "LOSER_VALUE".
+    // There is no way to change from "WINNER_VALUE" to "LOSER_VALUE", or vice versa.
     private ValueState[] possibleValues;
 
     // As soon as we found the winner value, we save it into attribute #foundValue.
@@ -35,13 +38,10 @@ public class SudokuSquare {
     private int rowId = -1;
     private int colId = -1;
 
+    private BroadcastWinner broadcastWinner;
 
 
     public SudokuSquare(int nbPossibleValues, int rowId, int colId) {
-        this(nbPossibleValues, 0, rowId, colId);
-    }
-
-    public SudokuSquare(int nbPossibleValues, int defaultValue, int rowId, int colId) {
         validateNbPossibleValues(nbPossibleValues);
 
         this.possibleValues = new ValueState[nbPossibleValues + 1];
@@ -55,10 +55,14 @@ public class SudokuSquare {
 
         this.rowId = rowId;
         this.colId = colId;
-
-        setInitialValue(defaultValue);
     }
 
+    public void setBroadcastWinner(BroadcastWinner theBroadcastWinner) {
+        if(theBroadcastWinner == null)
+            throw new IllegalArgumentException("The input broadcast winner cannot by null");
+
+        this.broadcastWinner = theBroadcastWinner;
+    }
 
     public int getRowId() {
         return rowId;
@@ -177,7 +181,7 @@ public class SudokuSquare {
         if(is_WINNER_VALUE(value))
             return;
 
-        // We have a winner value already, but it is different of the input value.
+        // We have a winner value already, but its value is different of the input value.
         if(isWinnerValueFound()) {
             throw new IllegalStateException(
                     String.format("The value %s was set as the winner value. Then it should not be possible that %s now is the winner value.",
@@ -188,6 +192,11 @@ public class SudokuSquare {
             throw new IllegalStateException(
                     String.format("The value %s was set previously in the state %s. Then it cannot be updated to %s.",
                             value, possibleValues[value], WINNER_VALUE));
+        }
+
+        // TODO to remove after the complete refactoring
+        if(broadcastWinner == null) {
+            throw new IllegalStateException("Cannot compute a winner value without a broadcast winner");
         }
 
         this.possibleValues[value] = WINNER_VALUE;
@@ -232,7 +241,7 @@ public class SudokuSquare {
 
     // 0 means that the winner value is unknown for now
     // else that means the winner value is known
-    private void setInitialValue(int value) {
+    public void setInitialValue(int value) {
         if(value == 0)
             return;
         setWinnerValue (value);

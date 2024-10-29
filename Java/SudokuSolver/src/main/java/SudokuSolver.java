@@ -17,8 +17,9 @@ public class SudokuSolver {
 
     public SudokuSolver (int[][] sudoKuToResolve, int regionRowSize, int regionColSize,
                          int sudokuRowSize, int sudokuColSize) {
-        validateConstructorParameters(
-                sudoKuToResolve, regionRowSize, regionColSize, sudokuRowSize, sudokuColSize);
+
+        // TODO add a light unitest to cover the fact we are validating the input
+        SudokuBuilder.getInstance().buildSudoku(sudoKuToResolve, regionRowSize, regionColSize, sudokuRowSize, sudokuColSize);
 
         this.regionRowSize = regionRowSize;
         this.regionColSize = regionColSize;
@@ -45,7 +46,12 @@ public class SudokuSolver {
 
         for(int i = 0 ; i < sudokuRowSize ; i++) {
             for(int j = 0 ; j < sudokuColSize ; j++) {
-                this.sudokuSquares[i][j] = new SudokuSquare(nbPossibleValues, sudokuToResolve[i][j], i, j);
+                this.sudokuSquares[i][j] = new SudokuSquare(nbPossibleValues, i, j);
+                // TODO
+                List<SudokuSquare> squares = Arrays.asList(this.sudokuSquares[i][j]);
+                BroadcastWinner region = new SudokuRegion(squares);
+                this.sudokuSquares[i][j].setBroadcastWinner(region);
+                this.sudokuSquares[i][j].setInitialValue(sudokuToResolve[i][j]);
             }
         }
     }
@@ -494,32 +500,5 @@ public class SudokuSolver {
             }
             System.out.print("\n");
         }
-    }
-
-    // TODO
-    // Let be more drastic and validate that the input is respecting "normal" size
-    // https://en.wikipedia.org/wiki/Sudoku#Variations_of_grid_sizes_or_region_shapes
-    private void validateConstructorParameters(int[][] sudoKuToResolve,
-                                               int regionRowSize, int regionColSize,
-                                               int sudokuRowSize, int sudokuColSize) {
-
-        if(sudoKuToResolve.length != sudokuRowSize)
-            throw new IllegalArgumentException("The number of rows "+ sudokuRowSize
-                    +" is not consistent with the size of the sudoku" + sudoKuToResolve.length + ".");
-
-        for (int i = 0; i < sudoKuToResolve.length ; i++) {
-            int[] aRow = sudoKuToResolve[i];
-            if (aRow.length != sudokuColSize)
-                throw new IllegalArgumentException("The size " + aRow.length +
-                        " of the row " + i + " is not consistent with expectation" +sudokuColSize+ ".");
-        }
-
-        if( (sudokuRowSize/regionRowSize)*regionRowSize != sudokuRowSize)
-            throw new IllegalArgumentException("The region row size "+ regionRowSize +
-                    " is not proportional with the sudoku row size " + sudokuRowSize + ".");
-
-        if( (sudokuColSize/regionColSize)*regionColSize != sudokuColSize)
-            throw new IllegalArgumentException("The region column size "+ regionColSize +
-                    " is not proportional with the sudoku column size " + sudokuColSize + ".");
     }
 }
