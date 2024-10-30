@@ -13,53 +13,46 @@ public class SudokuBuilder {
     private int sudokuColSize;
     private int regionRowSize;
     private int regionColSize;
+    private int nbPossibleValues ;
 
 
     public SudokuBuilder() { }
 
     public SudokuSquare[][]  buildSudoku(int[][] theSudokuToConvert) {
+        validateInputSudoku(theSudokuToConvert);
         sudokuToConvert = theSudokuToConvert;
 
         sudokuRowSize = sudokuToConvert.length;
         sudokuColSize = sudokuToConvert[0].length;
-        validateSizes();
+        validateSudokuSizes9Or4();
 
-        regionRowSize = sudokuRowSize == 9 ? 3 : sudokuRowSize == 4 ? 2 : -1;
-        regionColSize = sudokuColSize == 9 ? 3 : sudokuColSize == 4 ? 2 : -1;
-        validateRegionSizes();
+        regionRowSize = sudokuRowSize == 9 ? 3 : 2;
+        regionColSize = sudokuColSize == 9 ? 3 : 2;
 
-        validateConstructorParameters();
+        nbPossibleValues = sudokuRowSize;
 
         return convertIntToSudokuSquare();
     }
 
-
-    // TODO to implement
-    private void validateRegionSizes() {
+    private void validateInputSudoku(int[][] theSudokuToConvert) {
+        if(theSudokuToConvert.length != theSudokuToConvert[0].length) {
+            throw new IllegalArgumentException("The input sudoku is not a square.");
+        }
     }
 
-    // TODO to implement
-    private void validateSizes() {
-        // regionRowSize must be equal to regionColSize
-        // and let see the valid sizes
+    private void validateSudokuSizes9Or4() {
+        if(sudokuRowSize != 9 && sudokuRowSize != 4)
+            throw new IllegalArgumentException("Only sudoku of size 4 or 9 are allowed. You provided a sudoku of row size " + sudokuRowSize);
     }
-/*
-    public SudokuSquare[][]  buildSudoku(int[][] sudokuToConvert, int sudokuRowSize, int sudokuColSize,
-                                         int regionRowSize, int regionColSize) {
 
-        validateConstructorParameters(sudokuToConvert, regionRowSize, regionColSize, sudokuRowSize, sudokuColSize);
-
-        return convertIntToSudokuSquare(sudokuToConvert, sudokuRowSize, sudokuColSize, regionRowSize, regionColSize);
-    }*/
 
     private SudokuSquare[][] convertIntToSudokuSquare() {
-        int nbPossibleValues = sudokuRowSize;
 
-        SudokuSquare[][] sudokuSquares = buildSudokuSquaresAndDefaultBroadcastWinner(sudokuRowSize, sudokuColSize, nbPossibleValues);
+        SudokuSquare[][] sudokuSquares = buildSudokuSquaresAndSetDefaultBroadcastWinner();
 
-        createHorizontalRegionsAndAddToSquares(sudokuSquares, sudokuRowSize, sudokuColSize);
-        createVerticalRegionsAndAddToSquares(sudokuSquares, sudokuRowSize, sudokuColSize);
-        createSubgridRegionsAndAddToSquare(sudokuSquares, sudokuRowSize, sudokuColSize, regionRowSize, regionColSize);
+        createHorizontalRegionsAndAddToSquares(sudokuSquares);
+        createVerticalRegionsAndAddToSquares(sudokuSquares);
+        createSubgridRegionsAndAddToSquare(sudokuSquares);
 
         for(int i = 0 ; i < sudokuRowSize ; i++) {
             for(int j = 0 ; j < sudokuColSize ; j++) {
@@ -70,8 +63,7 @@ public class SudokuBuilder {
         return sudokuSquares;
     }
 
-    private void createSubgridRegionsAndAddToSquare(SudokuSquare[][] sudokuSquares,
-                                                    int sudokuRowSize, int sudokuColSize, int regionRowSize, int regionColSize) {
+    private void createSubgridRegionsAndAddToSquare(SudokuSquare[][] sudokuSquares) {
         int nbSubgridRow = sudokuRowSize / regionRowSize;
         int nbSubgridCol = sudokuColSize / regionColSize;
 
@@ -94,7 +86,7 @@ public class SudokuBuilder {
         }
     }
 
-    private void createVerticalRegionsAndAddToSquares(SudokuSquare[][] sudokuSquares, int sudokuRowSize, int sudokuColSize) {
+    private void createVerticalRegionsAndAddToSquares(SudokuSquare[][] sudokuSquares) {
         for(int i = 0 ; i < sudokuColSize ; i++) {
             List<SudokuSquare> squaresOnTheCol = new ArrayList<>();
             SudokuRegion verticalRegion = new SudokuRegion(squaresOnTheCol);
@@ -107,7 +99,7 @@ public class SudokuBuilder {
         }
     }
 
-    private void createHorizontalRegionsAndAddToSquares(SudokuSquare[][] sudokuSquares, int sudokuRowSize, int sudokuColSize) {
+    private void createHorizontalRegionsAndAddToSquares(SudokuSquare[][] sudokuSquares) {
         for(int i = 0 ; i < sudokuRowSize ; i++) {
             List<SudokuSquare> squaresOnTheRow = new ArrayList<>();
             SudokuRegion horizontalRegion = new SudokuRegion(squaresOnTheRow);
@@ -120,7 +112,7 @@ public class SudokuBuilder {
         }
     }
 
-    private SudokuSquare[][] buildSudokuSquaresAndDefaultBroadcastWinner(int sudokuRowSize, int sudokuColSize, int nbPossibleValues) {
+    private SudokuSquare[][] buildSudokuSquaresAndSetDefaultBroadcastWinner() {
         SudokuSquare[][] sudokuSquares = new SudokuSquare[sudokuRowSize][sudokuColSize];
 
         for(int i = 0; i < sudokuRowSize; i++) {
@@ -132,6 +124,8 @@ public class SudokuBuilder {
         return sudokuSquares;
     }
 
+    // legacy code - to remove?
+    /*
     // TODO
     // Let be more drastic and validate that the input is respecting "normal" size
     // https://en.wikipedia.org/wiki/Sudoku#Variations_of_grid_sizes_or_region_shapes
@@ -156,4 +150,5 @@ public class SudokuBuilder {
             throw new IllegalArgumentException("The region column size "+ regionColSize +
                     " is not proportional with the sudoku column size " + sudokuColSize + ".");
     }
+     */
 }

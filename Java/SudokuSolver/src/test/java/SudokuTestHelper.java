@@ -2,6 +2,19 @@ package test.java;
 
 public interface SudokuTestHelper {
 
+    int[][] SUDOKU_INVALID = {
+            {0, 0, 0, 4},
+            {0, 0, 0},
+            {2, 0, 0, 3}
+    };
+
+    int[][] SUDOKU_INVALID_5_5 = {
+            {0, 0, 0, 4,1},
+            {0, 0, 0, 2, 3},
+            {2, 0, 0, 3, 0},
+            {0, 0, 0, 2, 3},
+            {2, 0, 0, 3, 0}
+    };
 
     // https://sudoku.com/fr/difficile/
 

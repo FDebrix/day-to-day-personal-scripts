@@ -76,7 +76,7 @@ public class SudokuSquareTest {
     }
 
     @Test
-    public void test_setBroadcastWinner_NotNull () {
+    public void test_setBroadcastWinner_setNullThrowException () {
         SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE, 0);
 
         assertThrows(IllegalArgumentException.class,
@@ -84,13 +84,13 @@ public class SudokuSquareTest {
     }
 
     @Test
-    public void test_getBroadcastWinner_Null () {
+    public void test_getBroadcastWinner_returnNullWhenNotSet () {
         SudokuSquare square = new SudokuSquare(4, 0, 0);
         assertNull(square.getBroadcastWinner());
     }
 
     @Test
-    public void test_getBroadcastWinner_NotNull () {
+    public void test_getBroadcastWinner_returnProperBroadcastWinner () {
         SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE, 0);
         List<SudokuSquare> squares = Arrays.asList(aSquareWith4PossibleValues);
         BroadcastWinner region = new SudokuRegion(squares);
@@ -98,6 +98,20 @@ public class SudokuSquareTest {
         aSquareWith4PossibleValues.setBroadcastWinner(region);
 
         assertEquals(region, aSquareWith4PossibleValues.getBroadcastWinner());
+    }
+
+    @Test
+    public void test_setInitialValue_noBroadcastWinnerThrowException() {
+        SudokuSquare square = new SudokuSquare(NB_POSSIBLE_VALUE, 0, 0);
+        assertThrows(IllegalStateException.class,
+                () -> square.setInitialValue(1));
+    }
+
+    @Test
+    public void test_setWinnerValue_noBroadcastWinnerThrowException() {
+        SudokuSquare square = new SudokuSquare(NB_POSSIBLE_VALUE, 0, 0);
+        assertThrows(IllegalStateException.class,
+                () -> square.setWinnerValue(1));
     }
 
     @Test

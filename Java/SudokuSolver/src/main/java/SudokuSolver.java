@@ -2,8 +2,6 @@ package main.java;
 
 import java.util.*;
 
-import static main.java.SudokuHelper.allWinnerFound;
-
 
 public class SudokuSolver {
 
@@ -47,6 +45,10 @@ public class SudokuSolver {
 
             if(allWinnerFound(this.sudokuSquares)) break;
         }
+    }
+
+    private boolean allWinnerFound(SudokuSquare[][] sudokuSquares) {
+        return SudokuHelper.getInstance().allWinnerFound(sudokuSquares);
     }
 
     public int[][] getWinnerValues() {

@@ -13,6 +13,18 @@ public class SudokuBuilderTest {
         assertNotNull(getSudokuBuilder().buildSudoku(SUDOKU_id2_9x9_SIMPLE_INPUT));
     }
 
+    @Test
+    public void test_buildSudoku_inputSudokuNotSquare() {
+        assertThrows(IllegalArgumentException.class,
+                () -> getSudokuBuilder().buildSudoku(SUDOKU_INVALID));
+    }
+
+    @Test
+    public void test_buildSudoku_squareButSizeof5() {
+        assertThrows(IllegalArgumentException.class,
+                () -> getSudokuBuilder().buildSudoku(SUDOKU_INVALID_5_5));
+    }
+
     // The "simple" Sudoku is so easy that there is no need to run an algorithm.
     // Just the fact to convert the input int[][] into SudokuSquare[][] is enough to resolve it.
     @Test
@@ -38,7 +50,7 @@ public class SudokuBuilderTest {
                 assertEquals(SUDOKU_id2_9x9_SIMPLE_EXPECTED[i][j], sudokuSquares[i][j].getWinnerValue());
             }
         }
-        SudokuHelper.printlnFoundValues(sudokuSquares);
+        SudokuHelper.getInstance().printlnFoundValues(sudokuSquares);
     }
 
     @Test
@@ -55,6 +67,7 @@ public class SudokuBuilderTest {
                 BroadcastWinner winner = sudokuSquares[i][j].getBroadcastWinner();
                 assertInstanceOf(SudokuRegions.class, winner);
 
+                // TODO to continue
             }
         }
     }

@@ -2,7 +2,18 @@ package main.java;
 
 public class SudokuHelper {
 
-    public static void printlnFoundValues(SudokuSquare[][] sudokuSquares) {
+    private static SudokuHelper instance;
+
+    private SudokuHelper() {}
+
+    public static SudokuHelper getInstance() {
+        if(instance == null)
+            instance = new SudokuHelper();
+        return instance;
+    }
+
+
+    public void printlnFoundValues(SudokuSquare[][] sudokuSquares) {
         for(int i = 0 ; i < sudokuSquares.length ; i++) {
             for (int j = 0; j < sudokuSquares[0].length; j++) {
                 System.out.print(sudokuSquares[i][j].getWinnerValue() + "\t");
@@ -11,7 +22,7 @@ public class SudokuHelper {
         }
     }
 
-    public static void printlnRemainingPossibleValues(SudokuSquare[][] sudokuSquares) {
+    public void printlnRemainingPossibleValues(SudokuSquare[][] sudokuSquares) {
         for(int i = 0 ; i < sudokuSquares.length ; i++) {
             for (int j = 0; j < sudokuSquares[0].length; j++) {
                 System.out.print(sudokuSquares[i][j].toString()+ "\t");
@@ -20,8 +31,10 @@ public class SudokuHelper {
         }
     }
 
+    public boolean allWinnerFound(SudokuSquare[][] sudokuSquares) {
+        if(sudokuSquares == null || sudokuSquares.length == 0)
+            return false;
 
-    public static boolean allWinnerFound(SudokuSquare[][] sudokuSquares) {
         for(int i = 0 ; i < sudokuSquares.length ; i++) {
             for(int j = 0 ; j < sudokuSquares[0].length ; j++) {
                 if (! sudokuSquares[i][j].isWinnerValueFound())
