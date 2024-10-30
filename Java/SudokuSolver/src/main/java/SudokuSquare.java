@@ -192,7 +192,6 @@ public class SudokuSquare {
                             value, possibleValues[value], WINNER_VALUE));
         }
 
-        // TODO to remove after the complete refactoring
         if(broadcastWinner == null) {
             throw new IllegalStateException("Cannot compute a winner value without a broadcast winner");
         }

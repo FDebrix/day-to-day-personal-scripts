@@ -1,7 +1,6 @@
 package main.java;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static main.java.SudokuHelper.allWinnerFound;
 
@@ -71,7 +70,7 @@ public class SudokuSolver {
         validateSizeListOfSquares(listOfSquares);
 
         System.out.println("----------------- BEGINNING OF THE FUNCTION -------------------");
-        System.out.println("handleTwoValuesOnlyAvailableInTwoSquaresOneList BEGIN " + listOfSquares.toString());
+        System.out.println("handleTwoValuesOnlyAvailableInTwoSquaresOneList BEGIN " + listOfSquares);
 
         Map<Integer, List<SudokuSquare>> squaresPerPossibleValues = initSquaresPerPossibleValues(listOfSquares);
 
@@ -128,7 +127,7 @@ public class SudokuSolver {
     }
 
     private Map<Integer, List<SudokuSquare>> initSquaresPerPossibleValues(List<SudokuSquare> listOfSquares) {
-        Map<Integer, List<SudokuSquare>> squaresPerPossibleValues = new HashMap<Integer, List<SudokuSquare>>();
+        Map<Integer, List<SudokuSquare>> squaresPerPossibleValues = new HashMap<>();
 
         for(SudokuSquare aSquare : listOfSquares) {
             int[] thePossibleValuesOfTheSquare = aSquare.getPossibleValues();
@@ -144,8 +143,7 @@ public class SudokuSolver {
 
     private static List<SudokuSquare> getSudokuSquaresForTheValue(Map<Integer, List<SudokuSquare>> squaresPerPossibleValues, Integer onePossibleValueInt) {
         if(! squaresPerPossibleValues.containsKey(onePossibleValueInt)) {
-            List<SudokuSquare> theList = new ArrayList<SudokuSquare>();
-            squaresPerPossibleValues.put(onePossibleValueInt, new ArrayList<SudokuSquare>());
+            squaresPerPossibleValues.put(onePossibleValueInt, new ArrayList<>());
         }
 
         return squaresPerPossibleValues.get(onePossibleValueInt);
@@ -166,7 +164,7 @@ public class SudokuSolver {
     // we know for sure that 2 is the winner value in the position 8. We can update this line to
     //                      8,9 | 3 | 7 | 4 | 5 | 1 | 8,9 | 2 | 6
     private boolean handleOneValuesOnlyAvailableInOneSquare(List<List<SudokuSquare>> listOfSquares) {
-        boolean findAWinner = false;
+        boolean findAWinner = true;
         for(List<SudokuSquare> squares : listOfSquares) {
             boolean findAWinnerOneRun = handleOneValueOnlyAvailableInOneSquareOneList(squares);
             findAWinner &= findAWinnerOneRun;
@@ -177,7 +175,7 @@ public class SudokuSolver {
     }
 
     private List<List<SudokuSquare>> getAllListsOfSquaresWhichShouldContainAllValues() {
-        List<List<SudokuSquare>> allBlocksOfSquares = new ArrayList<List<SudokuSquare>>();
+        List<List<SudokuSquare>> allBlocksOfSquares = new ArrayList<>();
 
         for(int i = 0 ; i < sudokuRowSize ; i++) {
             allBlocksOfSquares.add(getSquaresOfTheRow(i));
@@ -233,10 +231,10 @@ public class SudokuSolver {
     }
 
     private List<List<SudokuSquare>> buildEmptySquaresPerPossibleValues() {
-        List<List<SudokuSquare>> squaresPerPossibleValues = new ArrayList<List<SudokuSquare>>();
+        List<List<SudokuSquare>> squaresPerPossibleValues = new ArrayList<>();
 
         for (int i = 0 ; i < sudokuColSize + 1 ; i++) {
-            squaresPerPossibleValues.add(i, new ArrayList<SudokuSquare>());
+            squaresPerPossibleValues.add(i, new ArrayList<>());
         }
 
         return squaresPerPossibleValues;
@@ -285,94 +283,6 @@ public class SudokuSolver {
         return list;
     }
 
-    // /!\ we assume the squares are in the same region
-    // TODO implement a validation
-    private void setLoserOnARegionExcept(int loserValue, List<SudokuSquare> squaresToNotUpdate) {
-        List<Integer> colsIdToNotSetLoser = squaresToNotUpdate.stream()
-                .map(SudokuSquare::getColId)
-                .collect(Collectors.toList());
-
-        List<Integer> rowsIdToNotSetLoser = squaresToNotUpdate.stream()
-                .map(SudokuSquare::getRowId)
-                .collect(Collectors.toList());
-
-        int[] columnIdsOfRegion = getColumnIdsOfRegionColumnId(
-                getRegionColumnId(squaresToNotUpdate.getFirst().getColId()));
-        int[] rowIdsOfRegion = getRowIdsOfRegionRowId(
-                getRegionRowId(squaresToNotUpdate.getFirst().getRowId()));
-
-        for(int columnIdOfTheRegion : columnIdsOfRegion) {
-            for (int rowIdOfTheRegion : rowIdsOfRegion) {
-                if( ! colsIdToNotSetLoser.contains(columnIdOfTheRegion)
-                        && ! rowsIdToNotSetLoser.contains(rowIdOfTheRegion)) {
-                    sudokuSquares[rowIdOfTheRegion][columnIdOfTheRegion].setLoserValue(loserValue);
-                }
-            }
-        }
-    }
-
-    private void setLoserOnARowExcept(int loserValue, SudokuSquare square) {
-        List<SudokuSquare> squares = Collections.singletonList(square);
-        setLoserOnARowExcept (loserValue, squares);
-    }
-
-    private void setLoserOnARowExcept(int loserValue, List<SudokuSquare> squaresToNotUpdate) {
-        validateSameRow(squaresToNotUpdate);
-        int rowId = squaresToNotUpdate.getFirst().getRowId();
-
-        List<Integer> colsIdToNotSetLoser = squaresToNotUpdate.stream()
-                .map(SudokuSquare::getColId)
-                .collect(Collectors.toList());
-
-        for(int i = 0; i < sudokuColSize ; i++) {
-            if( ! colsIdToNotSetLoser.contains(i) ) {
-                sudokuSquares[rowId][i].setLoserValue(loserValue);
-            }
-        }
-    }
-
-    private void validateSameRow(List<SudokuSquare> squares) {
-        if(squares.size() <= 1)
-            return;
-        int rowIdOfTheFirstSquare = squares.getFirst().getRowId();
-        for(SudokuSquare aSquare : squares) {
-            if(aSquare.getRowId() != rowIdOfTheFirstSquare)
-                throw new IllegalStateException("We need all the squares to have the same row id.");
-        }
-    }
-
-
-    private void setLoserOnAColumnExcept(int loserValue, SudokuSquare square) {
-        List<SudokuSquare> squares = Collections.singletonList(square);
-        setLoserOnAColumnExcept (loserValue, squares);
-    }
-
-    private void setLoserOnAColumnExcept(int loserValue, List<SudokuSquare> squaresToNotUpdate) {
-        validateSameColumn(squaresToNotUpdate);
-
-        List<Integer> rowsIdToNotSetLoser = squaresToNotUpdate.stream()
-                .map(SudokuSquare::getRowId)
-                .collect(Collectors.toList());
-
-        int colId = squaresToNotUpdate.getFirst().getColId();
-
-        for(int i = 0 ; i < sudokuRowSize ; i++) {
-            if( ! rowsIdToNotSetLoser.contains(i)) {
-                sudokuSquares[i][colId].setLoserValue(loserValue);
-            }
-        }
-    }
-
-    private void validateSameColumn(List<SudokuSquare> squares) {
-        if(squares.size() <= 1)
-            return;
-        int colIdOfTheFirstSquare = squares.getFirst().getColId();
-        for(SudokuSquare aSquare : squares) {
-            if(aSquare.getColId() != colIdOfTheFirstSquare)
-                throw new IllegalStateException("We need all the squares to have the same column id.");
-        }
-    }
-
     private int[] getColumnIdsOfRegionColumnId(int regionColumnId) {
         int[] columnIdsOfTheRegion = new int[regionColSize];
 
@@ -391,13 +301,5 @@ public class SudokuSolver {
         }
 
         return rowIdsOfTheRegion;
-    }
-
-    private int getRegionRowId(int rowId) {
-        return rowId / regionRowSize;
-    }
-
-    private int getRegionColumnId(int columnId) {
-        return columnId / regionColSize;
     }
 }
