@@ -42,13 +42,7 @@ public class SudokuBuilder {
     private SudokuSquare[][] convertIntToSudokuSquare(int[][] sudokuToResolve, int regionRowSize, int regionColSize,
                                                       int sudokuRowSize, int sudokuColSize) {
         int nbPossibleValues = sudokuRowSize;
-        SudokuSquare[][] sudokuSquares = new SudokuSquare[sudokuRowSize][sudokuColSize];
-
-        for(int i = 0 ; i < sudokuRowSize ; i++) {
-            for(int j = 0 ; j < sudokuColSize ; j++) {
-                sudokuSquares[i][j] = new SudokuSquare(nbPossibleValues, i, j);
-            }
-        }
+        SudokuSquare[][] sudokuSquares = buildSudokuSquares(sudokuRowSize, sudokuColSize, nbPossibleValues);
 
         for(int i = 0 ; i < sudokuRowSize ; i++) {
             for(int j = 0 ; j < sudokuColSize ; j++) {
@@ -65,6 +59,18 @@ public class SudokuBuilder {
             }
         }
 
+        return sudokuSquares;
+    }
+
+    private SudokuSquare[][] buildSudokuSquares(int sudokuRowSize, int sudokuColSize, int nbPossibleValues) {
+        SudokuSquare[][] sudokuSquares = new SudokuSquare[sudokuRowSize][sudokuColSize];
+
+        for(int i = 0; i < sudokuRowSize; i++) {
+            for(int j = 0; j < sudokuColSize; j++) {
+                sudokuSquares[i][j] = new SudokuSquare(nbPossibleValues, i, j);
+                sudokuSquares[i][j].setBroadcastWinner(new SudokuRegions());
+            }
+        }
         return sudokuSquares;
     }
 

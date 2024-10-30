@@ -78,11 +78,26 @@ public class SudokuSquareTest {
     @Test
     public void test_setBroadcastWinner_NotNull () {
         SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE, 0);
-        List<SudokuSquare> squares = Arrays.asList(aSquareWith4PossibleValues);
-        BroadcastWinner region = new SudokuRegion(squares);
 
         assertThrows(IllegalArgumentException.class,
                 () -> aSquareWith4PossibleValues.setBroadcastWinner(null));
+    }
+
+    @Test
+    public void test_getBroadcastWinner_Null () {
+        SudokuSquare square = new SudokuSquare(4, 0, 0);
+        assertNull(square.getBroadcastWinner());
+    }
+
+    @Test
+    public void test_getBroadcastWinner_NotNull () {
+        SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE, 0);
+        List<SudokuSquare> squares = Arrays.asList(aSquareWith4PossibleValues);
+        BroadcastWinner region = new SudokuRegion(squares);
+
+        aSquareWith4PossibleValues.setBroadcastWinner(region);
+
+        assertEquals(region, aSquareWith4PossibleValues.getBroadcastWinner());
     }
 
     @Test

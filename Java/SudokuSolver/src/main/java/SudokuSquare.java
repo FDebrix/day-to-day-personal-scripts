@@ -1,6 +1,5 @@
 package main.java;
 
-import java.util.List;
 import java.util.StringJoiner;
 
 import static main.java.SudokuSquare.ValueState.*;
@@ -62,6 +61,10 @@ public class SudokuSquare {
             throw new IllegalArgumentException("The input broadcast winner cannot by null");
 
         this.broadcastWinner = theBroadcastWinner;
+    }
+
+    public BroadcastWinner getBroadcastWinner() {
+        return this.broadcastWinner;
     }
 
     public int getRowId() {
@@ -130,15 +133,12 @@ public class SudokuSquare {
         return valueInStatePossibleValue;
     }
 
-    private int countValuesInState_POSSIBLE_VALUE() {
-        int nbOfPossibleValues = 0;
-
-        for (ValueState possibleValue : possibleValues) {
-            if (possibleValue == POSSIBLE_VALUE) {
-                nbOfPossibleValues++;
-            }
-        }
-        return nbOfPossibleValues;
+    // 0 means that the winner value is unknown for now
+    // else that means the winner value is known
+    public void setInitialValue(int value) {
+        if(value == 0)
+            return;
+        setWinnerValue (value);
     }
 
     @Override
@@ -159,6 +159,18 @@ public class SudokuSquare {
     }
 
 
+
+
+    private int countValuesInState_POSSIBLE_VALUE() {
+        int nbOfPossibleValues = 0;
+
+        for (ValueState possibleValue : possibleValues) {
+            if (possibleValue == POSSIBLE_VALUE) {
+                nbOfPossibleValues++;
+            }
+        }
+        return nbOfPossibleValues;
+    }
 
     private void computeLoserValue(int value) {
         // We already set the value as a loser value previously. Nothing to do.
@@ -202,6 +214,7 @@ public class SudokuSquare {
         this.possibleValues[value] = WINNER_VALUE;
         this.foundValue = value;
         set_LOSER_VALUE_toAllValuesExcept(value);
+        broadcastWinner.broadcastWinner(this);
     }
 
     private void set_LOSER_VALUE_toAllValuesExcept(int value) {
@@ -237,14 +250,6 @@ public class SudokuSquare {
         if(nbOfPOSSIBLE_VALUE == 1) {
             computeWinnerValue(lastValuePOSSIBLE_VALUE);
         }
-    }
-
-    // 0 means that the winner value is unknown for now
-    // else that means the winner value is known
-    public void setInitialValue(int value) {
-        if(value == 0)
-            return;
-        setWinnerValue (value);
     }
 
     private void validateNewStateIsWinnerOrLoser(ValueState newState) {

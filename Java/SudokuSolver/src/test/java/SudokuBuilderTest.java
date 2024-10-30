@@ -1,7 +1,6 @@
 package test.java;
 
 import main.java.SudokuBuilder;
-import main.java.SudokuSolver;
 import main.java.SudokuSquare;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +29,19 @@ public class SudokuBuilderTest {
     }
 
     @Test
-    public void test_buildSudoku_inconsistent() {
+    public void test_buildSudoku_lengthFirstRowDifferentOfRowSize() {
+        SudokuBuilder sudokuBuilder = SudokuBuilder.getInstance();
+
+        int[][] sudokuToResolve = {
+                {0, 1, 7, 0, 4, 5, 0, 0, 0},
+                {0, 9, 4, 0, 2, 0, 8}};
+
+        assertThrows(IllegalArgumentException.class,
+                () -> sudokuBuilder.buildSudoku(sudokuToResolve, 3, 4, 1, 7));
+    }
+
+    @Test
+    public void test_buildSudoku_rowsDonTHaveSameSize() {
         SudokuBuilder sudokuBuilder = SudokuBuilder.getInstance();
 
         int[][] sudokuToResolve = {
