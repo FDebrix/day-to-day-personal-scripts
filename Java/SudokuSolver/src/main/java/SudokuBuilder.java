@@ -18,13 +18,13 @@ public class SudokuBuilder {
 
     public SudokuBuilder() { }
 
-    public SudokuSquare[][]  buildSudoku(int[][] theSudokuToConvert) {
+    public SudokuBuilderOutput  buildSudoku(int[][] theSudokuToConvert) {
         validateInputSudoku(theSudokuToConvert);
         sudokuToConvert = theSudokuToConvert;
 
         sudokuRowSize = sudokuToConvert.length;
         sudokuColSize = sudokuToConvert[0].length;
-        validateSudokuSizes9Or4();
+        validateSudokuSizes4Or9();
 
         regionRowSize = sudokuRowSize == 9 ? 3 : 2;
         regionColSize = sudokuColSize == 9 ? 3 : 2;
@@ -34,25 +34,31 @@ public class SudokuBuilder {
         return convertIntToSudokuSquare();
     }
 
+    public class SudokuBuilderOutput {
+        public SudokuSquare[][] allTheSquares;
+        public List<SudokuRegion> allTheRegions;
+    }
+
     private void validateInputSudoku(int[][] theSudokuToConvert) {
         if(theSudokuToConvert.length != theSudokuToConvert[0].length) {
             throw new IllegalArgumentException("The input sudoku is not a square.");
         }
     }
 
-    private void validateSudokuSizes9Or4() {
+    private void validateSudokuSizes4Or9() {
         if(sudokuRowSize != 9 && sudokuRowSize != 4)
             throw new IllegalArgumentException("Only sudoku of size 4 or 9 are allowed. You provided a sudoku of row size " + sudokuRowSize);
     }
 
 
-    private SudokuSquare[][] convertIntToSudokuSquare() {
-
+    private SudokuBuilderOutput convertIntToSudokuSquare() {
         SudokuSquare[][] sudokuSquares = buildSudokuSquaresAndSetDefaultBroadcastWinner();
 
-        createHorizontalRegionsAndAddToSquares(sudokuSquares);
-        createVerticalRegionsAndAddToSquares(sudokuSquares);
-        createSubgridRegionsAndAddToSquare(sudokuSquares);
+        List<SudokuRegion> allTheRegions = new ArrayList<>();
+
+        allTheRegions.addAll(createHorizontalRegionsAndAddToSquares(sudokuSquares));
+        allTheRegions.addAll(createVerticalRegionsAndAddToSquares(sudokuSquares));
+        allTheRegions.addAll(createSubgridRegionsAndAddToSquare(sudokuSquares));
 
         for(int i = 0 ; i < sudokuRowSize ; i++) {
             for(int j = 0 ; j < sudokuColSize ; j++) {
@@ -60,10 +66,15 @@ public class SudokuBuilder {
             }
         }
 
-        return sudokuSquares;
+        SudokuBuilderOutput output = new SudokuBuilderOutput();
+        output.allTheSquares = sudokuSquares;
+        output.allTheRegions = allTheRegions;
+
+        return output;
     }
 
-    private void createSubgridRegionsAndAddToSquare(SudokuSquare[][] sudokuSquares) {
+    private List<SudokuRegion> createSubgridRegionsAndAddToSquare(SudokuSquare[][] sudokuSquares) {
+        List<SudokuRegion> allSubgridRegions = new ArrayList<>();
         int nbSubgridRow = sudokuRowSize / regionRowSize;
         int nbSubgridCol = sudokuColSize / regionColSize;
 
@@ -72,6 +83,7 @@ public class SudokuBuilder {
 
                 List<SudokuSquare> squaresOfTheSubgrid = new ArrayList<>();
                 SudokuRegion subgridRegion = new SudokuRegion(squaresOfTheSubgrid);
+                allSubgridRegions.add(subgridRegion);
 
                 for(int i = 0; i < regionRowSize ; i++) {
                     for (int j = 0 ; j < regionColSize ; j++) {
@@ -84,12 +96,17 @@ public class SudokuBuilder {
                 }
             }
         }
+
+        return allSubgridRegions;
     }
 
-    private void createVerticalRegionsAndAddToSquares(SudokuSquare[][] sudokuSquares) {
+    private List<SudokuRegion> createVerticalRegionsAndAddToSquares(SudokuSquare[][] sudokuSquares) {
+        List<SudokuRegion> allVerticalRegions = new ArrayList<>();
+
         for(int i = 0 ; i < sudokuColSize ; i++) {
             List<SudokuSquare> squaresOnTheCol = new ArrayList<>();
             SudokuRegion verticalRegion = new SudokuRegion(squaresOnTheCol);
+            allVerticalRegions.add(verticalRegion);
 
             for (int j = 0; j < sudokuRowSize; j++) {
                 squaresOnTheCol.add(sudokuSquares[j][i]);
@@ -97,12 +114,17 @@ public class SudokuBuilder {
                         addBroadcastWinner(verticalRegion);
             }
         }
+
+        return allVerticalRegions;
     }
 
-    private void createHorizontalRegionsAndAddToSquares(SudokuSquare[][] sudokuSquares) {
+    private List<SudokuRegion> createHorizontalRegionsAndAddToSquares(SudokuSquare[][] sudokuSquares) {
+        List<SudokuRegion> allHorizontalRegions = new ArrayList<>();
+
         for(int i = 0 ; i < sudokuRowSize ; i++) {
             List<SudokuSquare> squaresOnTheRow = new ArrayList<>();
             SudokuRegion horizontalRegion = new SudokuRegion(squaresOnTheRow);
+            allHorizontalRegions.add(horizontalRegion);
 
             for (int j = 0; j < sudokuColSize; j++) {
                 squaresOnTheRow.add(sudokuSquares[i][j]);
@@ -110,6 +132,8 @@ public class SudokuBuilder {
                         addBroadcastWinner(horizontalRegion);
             }
         }
+
+        return allHorizontalRegions;
     }
 
     private SudokuSquare[][] buildSudokuSquaresAndSetDefaultBroadcastWinner() {

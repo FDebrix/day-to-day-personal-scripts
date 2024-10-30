@@ -2,14 +2,9 @@ package test.java;
 
 import main.java.BroadcastWinner;
 import main.java.SudokuRegion;
-import main.java.SudokuSolver;
 import main.java.SudokuSquare;
 import org.junit.jupiter.api.Test;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,35 +12,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuRegionTest {
 
-
-    @Test
-    public void test_constructor_private () throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        Constructor<SudokuRegion> constructor = SudokuRegion.class.getDeclaredConstructor();
-        assertTrue(Modifier.isPrivate(constructor.getModifiers()));
-        constructor.setAccessible(true);
-        constructor.newInstance();
-    }
-
     @Test
     public void test_constructor_doesNotAcceptNullList () {
         assertThrows(IllegalArgumentException.class,
                 () -> new SudokuRegion(null));
     }
 
-    // TODO clean up
-    /*
-    @Test
-    public void test_constructor_doesNotAcceptEmptyList () {
-        assertThrows(IllegalArgumentException.class,
-                () -> new SudokuRegion(new ArrayList<>()));
-    }
-
-     */
-
     @Test
     public void test_constructor_persistList() {
         SudokuSquare square = new SudokuSquare(4, 1, 1);
-        List<SudokuSquare> squares = Arrays.asList(square);
+        List<SudokuSquare> squares = List.of(square);
         List<SudokuSquare> output;
 
         SudokuRegion region = new SudokuRegion(squares);
@@ -57,7 +33,7 @@ public class SudokuRegionTest {
     @Test
     public void test_broadcastWinner_cannotBeNull () {
         SudokuSquare square1 = new SudokuSquare(4, 1, 1);
-        List<SudokuSquare> squares = Arrays.asList(square1);
+        List<SudokuSquare> squares = List.of(square1);
         SudokuRegion region = new SudokuRegion(squares);
 
         assertThrows(IllegalArgumentException.class,
@@ -67,7 +43,7 @@ public class SudokuRegionTest {
     @Test
     public void test_broadcastWinner_mustBeAWinnerValue () {
         SudokuSquare square1 = new SudokuSquare(4, 1, 1);
-        List<SudokuSquare> squares = Arrays.asList(square1);
+        List<SudokuSquare> squares = List.of(square1);
         SudokuRegion region = new SudokuRegion(squares);
 
         assertThrows(IllegalArgumentException.class,

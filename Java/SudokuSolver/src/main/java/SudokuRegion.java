@@ -7,16 +7,11 @@ public class SudokuRegion implements BroadcastWinner {
     private List<SudokuSquare> squares;
 
     /**
-     * Singleton class
-     */
-    private SudokuRegion () {}
-
-    /**
      * Instantiate a region using a list of squares.
      * @param theSquares The list of squares of the region. Cannot be null or empty.
      */
     public SudokuRegion (List<SudokuSquare> theSquares) {
-        validateListNotNullAndNotEmpty(theSquares) ;
+        validateListNotNull(theSquares) ;
 
         this.squares = theSquares;
     }
@@ -26,9 +21,9 @@ public class SudokuRegion implements BroadcastWinner {
     }
 
     /**
-     * Function call by a square that just found its winner value.
+     * Function call by a square that found its winner value.
      * All the others squares of the region need to be notified.
-     * @param square
+     * @param square The square which has a winner value.
      */
     @Override
     public void broadcastWinner(SudokuSquare square) {
@@ -50,11 +45,8 @@ public class SudokuRegion implements BroadcastWinner {
             throw new IllegalArgumentException("The input square does not have a winner value yet.");
     }
 
-    private void validateListNotNullAndNotEmpty(List<SudokuSquare> theSquares) {
+    private void validateListNotNull(List<SudokuSquare> theSquares) {
         if(theSquares == null)
             throw new IllegalArgumentException("The list provided to the constructor SudokuRegion cannot be null.");
-// TODO TO CLEAN UP
-        //        if(theSquares.isEmpty())
-//            throw new IllegalArgumentException("The list provided to the constructor SudokuRegion cannot be empty.");
     }
 }

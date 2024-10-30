@@ -3,6 +3,8 @@ package test.java;
 import main.java.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static test.java.SudokuTestHelper.*;
 
@@ -32,8 +34,12 @@ public class SudokuBuilderTest {
 
         int nbRows = SUDOKU_id2_9x9_SIMPLE_INPUT.length;
         int nbColumns = SUDOKU_id2_9x9_SIMPLE_INPUT[0].length;
+        int nbRegionsIn9x9Sudoku = 27 ;
+        int nbSquaresPerRegion = 9;
 
-        SudokuSquare[][] sudokuSquares = getSudokuBuilder().buildSudoku(SUDOKU_id2_9x9_SIMPLE_INPUT);
+        SudokuBuilder.SudokuBuilderOutput sudokuBuilderOutput = getSudokuBuilder().buildSudoku(SUDOKU_id2_9x9_SIMPLE_INPUT);
+        SudokuSquare[][] sudokuSquares = sudokuBuilderOutput.allTheSquares;
+        List<SudokuRegion> regions = sudokuBuilderOutput.allTheRegions;
 
         assertEquals(nbRows, sudokuSquares.length);
 
@@ -50,6 +56,12 @@ public class SudokuBuilderTest {
                 assertEquals(SUDOKU_id2_9x9_SIMPLE_EXPECTED[i][j], sudokuSquares[i][j].getWinnerValue());
             }
         }
+
+        assertEquals(nbRegionsIn9x9Sudoku, regions.size());
+
+        for(int i = 0 ; i < regions.size() ; i++)
+            assertEquals(nbSquaresPerRegion, regions.get(i).getSudokuSquares().size());
+
         SudokuHelper.getInstance().printlnFoundValues(sudokuSquares);
     }
 
@@ -59,7 +71,7 @@ public class SudokuBuilderTest {
         int nbColumns = SUDOKU_id1_2x2_INPUT[0].length;
 
         SudokuSquare[][] sudokuSquares =
-                getSudokuBuilder().buildSudoku(SUDOKU_id1_2x2_INPUT);
+                getSudokuBuilder().buildSudoku(SUDOKU_id1_2x2_INPUT).allTheSquares;
 
 
         for(int i = 0 ; i < nbRows ; i++) {
