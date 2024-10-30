@@ -18,8 +18,9 @@ public class SudokuSolver {
     public SudokuSolver (int[][] sudoKuToResolve, int regionRowSize, int regionColSize,
                          int sudokuRowSize, int sudokuColSize) {
 
+        SudokuBuilder builder = new SudokuBuilder();
         // TODO add a light unit test to cover the fact we are validating the input
-        sudokuSquares = SudokuBuilder.getInstance().buildSudoku(sudoKuToResolve, sudokuRowSize, sudokuColSize, regionRowSize, regionColSize);
+        sudokuSquares = builder.buildSudoku(sudoKuToResolve, sudokuRowSize, sudokuColSize, regionRowSize, regionColSize);
 
         this.regionRowSize = regionRowSize;
         this.regionColSize = regionColSize;

@@ -8,19 +8,7 @@ import java.util.List;
  */
 public class SudokuBuilder {
 
-    private static SudokuBuilder sudokuBuilder;
-
-    private SudokuBuilder() { }
-
-    /**
-     * To get the singleton instance
-     * @return
-     */
-    public static SudokuBuilder getInstance() {
-        if(sudokuBuilder == null)
-            sudokuBuilder = new SudokuBuilder();
-        return sudokuBuilder;
-    }
+    public SudokuBuilder() { }
 
     public SudokuSquare[][]  buildSudoku(int[][] sudokuToConvert) {
         int sudokuRowSize = sudokuToConvert.length;
