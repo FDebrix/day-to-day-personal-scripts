@@ -20,7 +20,7 @@ public class SudokuSolver {
 
         SudokuBuilder builder = new SudokuBuilder();
         // TODO add a light unit test to cover the fact we are validating the input
-        sudokuSquares = builder.buildSudoku(sudoKuToResolve, sudokuRowSize, sudokuColSize, regionRowSize, regionColSize);
+        sudokuSquares = builder.buildSudoku(sudoKuToResolve);
 
         this.regionRowSize = regionRowSize;
         this.regionColSize = regionColSize;

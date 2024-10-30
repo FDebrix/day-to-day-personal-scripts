@@ -8,43 +8,51 @@ import java.util.List;
  */
 public class SudokuBuilder {
 
+    private int[][] sudokuToConvert;
+    private int sudokuRowSize;
+    private int sudokuColSize;
+    private int regionRowSize;
+    private int regionColSize;
+
+
     public SudokuBuilder() { }
 
-    public SudokuSquare[][]  buildSudoku(int[][] sudokuToConvert) {
-        int sudokuRowSize = sudokuToConvert.length;
-        int sudokuColSize = sudokuToConvert[0].length;
-        validateSizes(sudokuRowSize, sudokuColSize);
+    public SudokuSquare[][]  buildSudoku(int[][] theSudokuToConvert) {
+        sudokuToConvert = theSudokuToConvert;
 
-        int regionRowSize = sudokuRowSize == 9 ? 3 : sudokuRowSize == 4 ? 2 : -1;
-        int regionColSize = sudokuColSize == 9 ? 3 : sudokuColSize == 4 ? 2 : -1;
-        validateRegionSizes(sudokuRowSize, sudokuColSize);
+        sudokuRowSize = sudokuToConvert.length;
+        sudokuColSize = sudokuToConvert[0].length;
+        validateSizes();
 
-        validateConstructorParameters(
-                sudokuToConvert, regionRowSize, regionColSize, sudokuRowSize, sudokuColSize);
+        regionRowSize = sudokuRowSize == 9 ? 3 : sudokuRowSize == 4 ? 2 : -1;
+        regionColSize = sudokuColSize == 9 ? 3 : sudokuColSize == 4 ? 2 : -1;
+        validateRegionSizes();
 
-        return convertIntToSudokuSquare(sudokuToConvert, sudokuRowSize, sudokuColSize, regionRowSize, regionColSize);
+        validateConstructorParameters();
+
+        return convertIntToSudokuSquare();
     }
 
 
     // TODO to implement
-    private void validateRegionSizes(int sudokuRowSize, int sudokuColSize) {
+    private void validateRegionSizes() {
     }
 
     // TODO to implement
-    private void validateSizes(int sudokuRowSize, int sudokuColSize) {
+    private void validateSizes() {
         // regionRowSize must be equal to regionColSize
         // and let see the valid sizes
     }
-
+/*
     public SudokuSquare[][]  buildSudoku(int[][] sudokuToConvert, int sudokuRowSize, int sudokuColSize,
                                          int regionRowSize, int regionColSize) {
 
         validateConstructorParameters(sudokuToConvert, regionRowSize, regionColSize, sudokuRowSize, sudokuColSize);
 
         return convertIntToSudokuSquare(sudokuToConvert, sudokuRowSize, sudokuColSize, regionRowSize, regionColSize);
-    }
+    }*/
 
-    private SudokuSquare[][] convertIntToSudokuSquare(int[][] sudokuToResolve, int sudokuRowSize, int sudokuColSize, int regionRowSize, int regionColSize) {
+    private SudokuSquare[][] convertIntToSudokuSquare() {
         int nbPossibleValues = sudokuRowSize;
 
         SudokuSquare[][] sudokuSquares = buildSudokuSquaresAndDefaultBroadcastWinner(sudokuRowSize, sudokuColSize, nbPossibleValues);
@@ -55,7 +63,7 @@ public class SudokuBuilder {
 
         for(int i = 0 ; i < sudokuRowSize ; i++) {
             for(int j = 0 ; j < sudokuColSize ; j++) {
-                sudokuSquares[i][j].setInitialValue(sudokuToResolve[i][j]);
+                sudokuSquares[i][j].setInitialValue(sudokuToConvert[i][j]);
             }
         }
 
@@ -127,16 +135,14 @@ public class SudokuBuilder {
     // TODO
     // Let be more drastic and validate that the input is respecting "normal" size
     // https://en.wikipedia.org/wiki/Sudoku#Variations_of_grid_sizes_or_region_shapes
-    private void validateConstructorParameters(int[][] sudoKuToResolve,
-                                               int regionRowSize, int regionColSize,
-                                               int sudokuRowSize, int sudokuColSize) {
+    private void validateConstructorParameters() {
 
-        if(sudoKuToResolve.length != sudokuRowSize)
+        if(sudokuToConvert.length != sudokuRowSize)
             throw new IllegalArgumentException("The number of rows "+ sudokuRowSize
-                    +" is not consistent with the size of the sudoku " + sudoKuToResolve.length + ".");
+                    +" is not consistent with the size of the sudoku " + sudokuToConvert.length + ".");
 
-        for (int i = 0; i < sudoKuToResolve.length ; i++) {
-            int[] aRow = sudoKuToResolve[i];
+        for (int i = 0; i < sudokuToConvert.length ; i++) {
+            int[] aRow = sudokuToConvert[i];
             if (aRow.length != sudokuColSize)
                 throw new IllegalArgumentException("The size " + aRow.length +
                         " of the row " + i + " is not consistent with expectation " +sudokuColSize+ ".");

@@ -4,42 +4,9 @@ import main.java.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static test.java.SudokuTestHelper.*;
 
 public class SudokuBuilderTest {
-
-    @Test
-    public void test_buildSudoku_lengthFirstRowDifferentOfRowSize() {
-        int[][] sudokuToResolve = {
-                {0, 1, 7, 0, 4, 5, 0, 0, 0},
-                {0, 9, 4, 0, 2, 0, 8}};
-
-        assertThrows(IllegalArgumentException.class,
-                () -> getSudokuBuilder().buildSudoku(sudokuToResolve, 1, 7, 3, 4));
-    }
-
-    @Test
-    public void test_buildSudoku_rowsDonTHaveSameSize() {
-        int[][] sudokuToResolve = {
-                {0, 1, 7, 0, 4, 5, 0, 0, 0},
-                {0, 9, 4, 0, 2, 0, 8}};
-
-        assertThrows(IllegalArgumentException.class,
-                () -> getSudokuBuilder().buildSudoku(sudokuToResolve, 2, 9, 3, 4));
-    }
-
-    @Test
-    public void test_buildSudoku_failedOnRegionSideRow() {
-        assertThrows(IllegalArgumentException.class,
-                () -> getSudokuBuilder().buildSudoku(SUDOKU_id2_9x9_SIMPLE_INPUT, 9, 9, 4, 3));
-    }
-
-    @Test
-    public void test_buildSudoku_failedOnRegionSideCol() {
-        assertThrows(IllegalArgumentException.class,
-                () -> getSudokuBuilder().buildSudoku(SUDOKU_id2_9x9_SIMPLE_INPUT, 9, 9, 3, 4));
-    }
 
     @Test
     public void test_buildSudoku_returnIsNotNull() {

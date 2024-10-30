@@ -1,12 +1,10 @@
 package test.java;
 
-import main.java.BroadcastWinner;
 import main.java.SudokuRegion;
 import main.java.SudokuRegions;
 import main.java.SudokuSquare;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
