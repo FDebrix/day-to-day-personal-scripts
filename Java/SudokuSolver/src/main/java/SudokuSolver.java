@@ -3,6 +3,8 @@ package main.java;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static main.java.SudokuHelper.allWinnerFound;
+
 
 public class SudokuSolver {
 
@@ -18,7 +20,7 @@ public class SudokuSolver {
                          int sudokuRowSize, int sudokuColSize) {
 
         // TODO add a light unit test to cover the fact we are validating the input
-        sudokuSquares = SudokuBuilder.getInstance().buildSudoku(sudoKuToResolve, regionRowSize, regionColSize, sudokuRowSize, sudokuColSize);
+        sudokuSquares = SudokuBuilder.getInstance().buildSudoku(sudoKuToResolve, sudokuRowSize, sudokuColSize, regionRowSize, regionColSize);
 
         this.regionRowSize = regionRowSize;
         this.regionColSize = regionColSize;
@@ -34,21 +36,16 @@ public class SudokuSolver {
 
             System.out.println("\t\t\tk " + k);
 
-            boolean foundAWinnerNotDigested = handleWinnerNotDigested();
+            if(allWinnerFound(this.sudokuSquares)) break;
 
-            if(allWinnerFound()) break;
+            boolean foundAWinner = handleOneValuesOnlyAvailableInOneSquare(listOfSquares);
 
-            // As long as #handleWinnerNotDigested is digesting, we don't run deeper algorithms
-            if( !foundAWinnerNotDigested) {
-                boolean foundAWinner = handleOneValuesOnlyAvailableInOneSquare(listOfSquares);
-
-                if(! foundAWinner) {
-                    System.out.println("\t\tSize " + listOfSquares.size());
-                    //handleTwoValuesOnlyAvailableInTwoSquares(listOfSquares);
-                }
-
-                if(allWinnerFound()) break;
+            if(! foundAWinner) {
+                System.out.println("\t\tSize " + listOfSquares.size());
+                //handleTwoValuesOnlyAvailableInTwoSquares(listOfSquares);
             }
+
+            if(allWinnerFound(this.sudokuSquares)) break;
         }
     }
 
@@ -288,57 +285,6 @@ public class SudokuSolver {
         return list;
     }
 
-    // First algorithm: clean up around a winner value.
-    // The algorithm checks one time all the squares of the sudoku:
-    // The square has a winner value but the cleanup was not done on the line, the row and the region.
-    private boolean handleWinnerNotDigested() {
-        boolean foundWinnerNotDigested = false;
-
-        for(int i = 0 ; i < sudokuRowSize ; i++) {
-            for(int j = 0 ; j < sudokuColSize ; j++) {
-                if(isWinnerValueButNotYetDigest(i, j)) {
-                    int winnerValue = sudokuSquares[i][j].getWinnerValue();
-                    setLoserValueToOtherSquares(winnerValue, sudokuSquares[i][j]);
-                    sudokuSquares[i][j].setWinnerValueDigestedAtTheSudokuLayer();
-                    foundWinnerNotDigested = true;
-                }
-            }
-        }
-        return foundWinnerNotDigested;
-    }
-
-    private boolean isWinnerValueButNotYetDigest(int i, int j) {
-        return this.sudokuSquares[i][j].isWinnerValueFound()
-                && !this.sudokuSquares[i][j].winnerValueDigestedAtTheSudokuLayer();
-    }
-
-    private boolean allWinnerFound() {
-        for(int i = 0 ; i < sudokuRowSize ; i++) {
-            for(int j = 0 ; j < sudokuColSize ; j++) {
-                if (! this.sudokuSquares[i][j].isWinnerValueFound())
-                    return false;
-            }
-        }
-        return true;
-    }
-
-    private void setLoserValueToOtherSquares(int loserValue, List<SudokuSquare> squaresToNotUpdate) {
-        setLoserOnAColumnExcept(loserValue, squaresToNotUpdate);
-        setLoserOnARowExcept(loserValue, squaresToNotUpdate);
-        setLoserOnARegionExcept(loserValue, squaresToNotUpdate);
-    }
-
-    private void setLoserValueToOtherSquares(int loserValue, SudokuSquare squareToNotUpdate) {
-        setLoserOnAColumnExcept(loserValue, squareToNotUpdate);
-        setLoserOnARowExcept(loserValue, squareToNotUpdate);
-        setLoserOnARegionExcept(loserValue, squareToNotUpdate);
-    }
-
-    private void setLoserOnARegionExcept(int loserValue, SudokuSquare square) {
-        List<SudokuSquare> squares = Collections.singletonList(square);
-        setLoserOnARegionExcept(loserValue, squares);
-    }
-
     // /!\ we assume the squares are in the same region
     // TODO implement a validation
     private void setLoserOnARegionExcept(int loserValue, List<SudokuSquare> squaresToNotUpdate) {
@@ -453,23 +399,5 @@ public class SudokuSolver {
 
     private int getRegionColumnId(int columnId) {
         return columnId / regionColSize;
-    }
-
-    public void printlnFoundValues() {
-        for(int i = 0 ; i < sudokuRowSize ; i++) {
-            for (int j = 0; j < sudokuColSize; j++) {
-                System.out.print(sudokuSquares[i][j].getWinnerValue() + "\t");
-            }
-            System.out.print("\n");
-        }
-    }
-
-    public void printlnRemainingPossibleValues() {
-        for(int i = 0 ; i < sudokuRowSize ; i++) {
-            for (int j = 0; j < sudokuColSize; j++) {
-                System.out.print(sudokuSquares[i][j].toString()+ "\t");
-            }
-            System.out.print("\n");
-        }
     }
 }

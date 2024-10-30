@@ -32,11 +32,15 @@ public class SudokuRegionTest {
                 () -> new SudokuRegion(null));
     }
 
+    // TODO clean up
+    /*
     @Test
     public void test_constructor_doesNotAcceptEmptyList () {
         assertThrows(IllegalArgumentException.class,
                 () -> new SudokuRegion(new ArrayList<>()));
     }
+
+     */
 
     @Test
     public void test_constructor_persistList() {

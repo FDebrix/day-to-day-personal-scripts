@@ -1,7 +1,6 @@
 package test.java;
 
 import main.java.SudokuSolver;
-import main.java.SudokuSquare;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,74 +10,70 @@ public class SudokuSolverTest {
 
     @Test
     public void test_constructor() {
-        new SudokuSolver(SUDOKU_1_9x9_SIMPLE, 3, 3, 9, 9);
+        new SudokuSolver(SUDOKU_id2_9x9_SIMPLE_INPUT, 3, 3, 9, 9);
     }
 
     @Test
     public void test_run_2x2() {
-        SudokuSolver solver = new SudokuSolver(SUDOKU_1_2x2, 2, 2, 4, 4);
+        SudokuSolver solver = new SudokuSolver(SUDOKU_id1_2x2_INPUT, 2, 2, 4, 4);
 
         solver.resolveTheSudoku();
 
         int[][] output = solver.getWinnerValues();
-        assertEquals(SUDOKU_1_2x2.length, output.length);
-        assertEquals(SUDOKU_1_2x2[0].length, output[0].length);
-        assertArrayEquals(SUDOKU_1_2x2_EXPECTED, output);
+        assertEquals(SUDOKU_id1_2x2_INPUT.length, output.length);
+        assertEquals(SUDOKU_id1_2x2_INPUT[0].length, output[0].length);
+        assertArrayEquals(SUDOKU_id1_2x2_EXPECTED, output);
     }
 
     @Test
     public void test_run_9x9_simple() {
-        SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_SIMPLE, 3, 3, 9, 9);
+        SudokuSolver solver = new SudokuSolver(SUDOKU_id2_9x9_SIMPLE_INPUT, 3, 3, 9, 9);
 
         solver.resolveTheSudoku();
 
         int[][] output = solver.getWinnerValues();
-        assertEquals(SUDOKU_1_9x9_SIMPLE.length, output.length);
-        assertEquals(SUDOKU_1_9x9_SIMPLE[0].length, output[0].length);
-        assertArrayEquals(SUDOKU_1_9x9_SIMPLE_EXPECTED, output);
+        assertEquals(SUDOKU_id2_9x9_SIMPLE_INPUT.length, output.length);
+        assertEquals(SUDOKU_id2_9x9_SIMPLE_INPUT[0].length, output[0].length);
+        assertArrayEquals(SUDOKU_id2_9x9_SIMPLE_EXPECTED, output);
     }
 
     @Test
     public void test_run_9x9_medium() {
-        SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_MEDIUM, 3, 3, 9, 9);
+        SudokuSolver solver = new SudokuSolver(SUDOKU_id3_9x9_MEDIUM_INPUT, 3, 3, 9, 9);
 
         solver.resolveTheSudoku();
 
         int[][] output = solver.getWinnerValues();
-        assertEquals(SUDOKU_1_9x9_MEDIUM.length, output.length);
-        assertEquals(SUDOKU_1_9x9_MEDIUM[0].length, output[0].length);
+        assertEquals(SUDOKU_id3_9x9_MEDIUM_INPUT.length, output.length);
+        assertEquals(SUDOKU_id3_9x9_MEDIUM_INPUT[0].length, output[0].length);
 
-        assertArrayEquals(SUDOKU_1_9x9_MEDIUM_EXPECTED, output);
+        assertArrayEquals(SUDOKU_id3_9x9_MEDIUM_EXPECTED, output);
     }
 
     @Test
     public void test_run_9x9_difficile() {
-        SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_DIFFICILE, 3, 3, 9, 9);
+        SudokuSolver solver = new SudokuSolver(SUDOKU_id4_9x9_DIFFICILE_INPUT, 3, 3, 9, 9);
 
         solver.resolveTheSudoku();
 
         int[][] output = solver.getWinnerValues();
-        assertEquals(SUDOKU_1_9x9_DIFFICILE.length, output.length);
-        assertEquals(SUDOKU_1_9x9_DIFFICILE[0].length, output[0].length);
+        assertEquals(SUDOKU_id4_9x9_DIFFICILE_INPUT.length, output.length);
+        assertEquals(SUDOKU_id4_9x9_DIFFICILE_INPUT[0].length, output[0].length);
 
-        assertArrayEquals(SUDOKU_1_9x9_DIFFICILE_EXPECTED, output);
+        assertArrayEquals(SUDOKU_id4_9x9_DIFFICILE_EXPECTED, output);
     }
 
 
     @Test
     public void test_run_9x9_expert() {
-        SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_EXPERT, 3, 3, 9, 9);
+        SudokuSolver solver = new SudokuSolver(SUDOKU_id5_9x9_EXPERT_INPUT, 3, 3, 9, 9);
 
         solver.resolveTheSudoku();
 
-        System.out.println("\nEXPERT\n");
-        solver.printlnRemainingPossibleValues();
-
         int[][] output = solver.getWinnerValues();
-        assertEquals(SUDOKU_1_9x9_EXPERT.length, output.length);
-        assertEquals(SUDOKU_1_9x9_EXPERT[0].length, output[0].length);
+        assertEquals(SUDOKU_id5_9x9_EXPERT_INPUT.length, output.length);
+        assertEquals(SUDOKU_id5_9x9_EXPERT_INPUT[0].length, output[0].length);
 
-
-        assertArrayEquals(SUDOKU_1_9x9_EXPERT_EXPECTED, output);
+        assertArrayEquals(SUDOKU_id5_9x9_EXPERT_EXPECTED, output);
     }
 }

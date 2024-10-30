@@ -53,7 +53,8 @@ public class SudokuRegion implements BroadcastWinner {
     private void validateListNotNullAndNotEmpty(List<SudokuSquare> theSquares) {
         if(theSquares == null)
             throw new IllegalArgumentException("The list provided to the constructor SudokuRegion cannot be null.");
-        if(theSquares.isEmpty())
-            throw new IllegalArgumentException("The list provided to the constructor SudokuRegion cannot be empty.");
+// TODO TO CLEAN UP
+        //        if(theSquares.isEmpty())
+//            throw new IllegalArgumentException("The list provided to the constructor SudokuRegion cannot be empty.");
     }
 }

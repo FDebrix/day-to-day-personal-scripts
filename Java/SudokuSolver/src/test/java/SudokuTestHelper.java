@@ -5,14 +5,14 @@ public interface SudokuTestHelper {
 
     // https://sudoku.com/fr/difficile/
 
-    public final int[][] SUDOKU_1_2x2 = {
+    int[][] SUDOKU_id1_2x2_INPUT = {
             {0, 0, 0, 4},
             {0, 0, 0, 0},
             {2, 0, 0, 3},
             {4, 0, 1, 2}
     };
 
-    public final int[][] SUDOKU_1_2x2_EXPECTED = {
+    int[][] SUDOKU_id1_2x2_EXPECTED = {
             {1, 2, 3, 4},
             {3, 4, 2, 1},
             {2, 1, 4, 3},
@@ -20,7 +20,7 @@ public interface SudokuTestHelper {
     };
 
 
-    public final int[][] SUDOKU_1_9x9_SIMPLE = {
+    int[][] SUDOKU_id2_9x9_SIMPLE_INPUT = {
             {0, 1, 7, 0, 4, 5, 0, 0, 0},
             {0, 9, 4, 0, 2, 0, 8, 5, 1},
             {0, 6, 0, 8, 0, 0, 0, 7, 3},
@@ -32,7 +32,7 @@ public interface SudokuTestHelper {
             {0, 0, 0, 2, 0, 0, 0, 9, 0}
     };
 
-    public final int[][] SUDOKU_1_9x9_SIMPLE_EXPECTED = {
+    int[][] SUDOKU_id2_9x9_SIMPLE_EXPECTED = {
             {8, 1, 7, 3, 4, 5, 9, 2, 6},
             {3, 9, 4, 7, 2, 6, 8, 5, 1},
             {2, 6, 5, 8, 9, 1, 4, 7, 3},
@@ -45,7 +45,7 @@ public interface SudokuTestHelper {
     };
 
 
-    public final int[][] SUDOKU_1_9x9_MEDIUM = {
+    int[][] SUDOKU_id3_9x9_MEDIUM_INPUT = {
             {0, 6, 0, 0, 1, 2, 0, 5, 0},
             {0, 5, 3, 7, 8, 0, 0, 0, 0},
             {0, 0, 7, 0, 0, 0, 0, 0, 9},
@@ -57,7 +57,7 @@ public interface SudokuTestHelper {
             {0, 0, 6, 0, 0, 0, 2, 7, 0}
     };
 
-    public final int[][] SUDOKU_1_9x9_MEDIUM_EXPECTED = {
+    int[][] SUDOKU_id3_9x9_MEDIUM_EXPECTED = {
             {4, 6, 8, 9, 1, 2, 3, 5, 7},
             {9, 5, 3, 7, 8, 6, 1, 2, 4},
             {1, 2, 7, 4, 5, 3, 8, 6, 9},
@@ -70,7 +70,7 @@ public interface SudokuTestHelper {
     };
 
 
-    public final int[][] SUDOKU_1_9x9_DIFFICILE = {
+    int[][] SUDOKU_id4_9x9_DIFFICILE_INPUT = {
             {7, 3, 4, 0, 9, 0, 0, 0, 0},
             {0, 0, 5, 0, 3, 1, 4, 0, 0},
             {0, 0, 0, 0, 0, 7, 0, 3, 8},
@@ -82,7 +82,7 @@ public interface SudokuTestHelper {
             {0, 0, 0, 6, 0, 0, 0, 0, 0}
     };
 
-    public final int[][] SUDOKU_1_9x9_DIFFICILE_EXPECTED = {
+    int[][] SUDOKU_id4_9x9_DIFFICILE_EXPECTED = {
             {7, 3, 4, 8, 9, 5, 1, 6, 2},
             {6, 8, 5, 2, 3, 1, 4, 7, 9},
             {2, 1, 9, 4, 6, 7, 5, 3, 8},
@@ -95,7 +95,7 @@ public interface SudokuTestHelper {
     };
 
 
-    public final int[][] SUDOKU_1_9x9_EXPERT = {
+    int[][] SUDOKU_id5_9x9_EXPERT_INPUT = {
             {0, 0, 0, 5, 0, 0, 0, 0, 0},
             {0, 0, 0, 8, 4, 2, 7, 9, 5},
             {5, 9, 0, 7, 0, 0, 0, 0, 0},
@@ -107,7 +107,7 @@ public interface SudokuTestHelper {
             {0, 0, 5, 0, 0, 0, 0, 0, 3}
     };
 
-    public final int[][] SUDOKU_1_9x9_EXPERT_EXPECTED = {
+    int[][] SUDOKU_id5_9x9_EXPERT_EXPECTED = {
             {8, 7, 4, 5, 3, 9, 2, 6, 1},
             {1, 6, 3, 8, 4, 2, 7, 9, 5},
             {5, 9, 2, 7, 6, 1, 3, 8, 4},

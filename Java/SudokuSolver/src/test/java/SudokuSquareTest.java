@@ -301,29 +301,6 @@ public class SudokuSquareTest {
     }
 
     @Test
-    public void test_winnerValueDigestedAtTheSudokuLayer() {
-        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
-        assertFalse(theSquare.winnerValueDigestedAtTheSudokuLayer());
-    }
-
-    @Test
-    public void test_setWinnerValueDigestedAtTheSudokuLayer_whenWinnerValueNotFoundYet(){
-        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
-        assertThrows(IllegalStateException.class,
-                () -> theSquare.setWinnerValueDigestedAtTheSudokuLayer());
-    }
-
-    @Test
-    public void test_setWinnerValueDigestedAtTheSudokuLayer_whenWinnerValueFound(){
-        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
-        theSquare.setWinnerValue(3);
-
-        theSquare.setWinnerValueDigestedAtTheSudokuLayer();
-
-        assertTrue(theSquare.winnerValueDigestedAtTheSudokuLayer());
-    }
-
-    @Test
     public void test_toString() {
         SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
 

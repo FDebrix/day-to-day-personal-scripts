@@ -30,9 +30,6 @@ public class SudokuSquare {
     // We can have used possibleValues[0] to save it. But I prefer to keep the code clear.
     private int foundValue = NOT_FOUND_YET;
 
-    // TODO - I am under impression this responsibility should not be in the current class
-    private boolean winnerValueDigestedAtTheSudokuLayer = false;
-
     // The position of the square into the sudoku
     private int rowId = -1;
     private int colId = -1;
@@ -99,17 +96,6 @@ public class SudokuSquare {
 
     public boolean isWinnerValueFound() {
         return this.foundValue != NOT_FOUND_YET;
-    }
-
-    public void setWinnerValueDigestedAtTheSudokuLayer(){
-        if( ! isWinnerValueFound() )
-            throw new IllegalStateException("You cannot digest current square since the winner value was not found yet");
-
-        this.winnerValueDigestedAtTheSudokuLayer = true;
-    }
-
-    public boolean winnerValueDigestedAtTheSudokuLayer() {
-        return winnerValueDigestedAtTheSudokuLayer;
     }
 
     // The returned value can be NOT_FOUND_YET - this is correct
