@@ -2,6 +2,7 @@ package test.java;
 
 import main.java.SudokuBuilder;
 import main.java.SudokuSolver;
+import main.java.SudokuSquare;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Constructor;
@@ -59,5 +60,35 @@ public class SudokuBuilderTest {
     @Test
     public void test_buildSudoku_returnIsNotNull() {
         assertNotNull(SudokuBuilder.getInstance().buildSudoku(SUDOKU_1_9x9_SIMPLE, 3, 3, 9, 9));
+    }
+
+    @Test
+    public void test_buildSudoku(){
+        int nbRows = SUDOKU_1_9x9_SIMPLE.length;
+        int nbColumns = SUDOKU_1_9x9_SIMPLE[0].length;
+
+        SudokuSquare[][] sudokuSquares = SudokuBuilder.getInstance().buildSudoku(SUDOKU_1_9x9_SIMPLE, 3, 3, 9, 9);
+
+        assertEquals(nbRows, sudokuSquares.length);
+
+        for (int i = 0; i < SUDOKU_1_9x9_SIMPLE.length ; i++) {
+            assertEquals(nbColumns, sudokuSquares[i].length);
+        }
+
+        for(int i = 0 ; i < nbRows ; i++) {
+            for (int j = 0; j < nbColumns; j++) {
+
+                assertEquals(i, sudokuSquares[i][j].getRowId());
+                assertEquals(j, sudokuSquares[i][j].getColId());
+
+                if (SUDOKU_1_9x9_SIMPLE[i][j] != 0) {
+                    assertTrue(sudokuSquares[i][j].isWinnerValueFound());
+                    assertEquals(SUDOKU_1_9x9_SIMPLE[i][j], sudokuSquares[i][j].getWinnerValue());
+                }
+                else {
+                    assertFalse(sudokuSquares[i][j].isWinnerValueFound());
+                }
+            }
+        }
     }
 }

@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 public class SudokuSolver {
 
-    private int[][] sudokuToResolve;
     private int regionRowSize = 0;
     private int regionColSize = 0;
     private int sudokuRowSize = 0;
@@ -18,43 +17,15 @@ public class SudokuSolver {
     public SudokuSolver (int[][] sudoKuToResolve, int regionRowSize, int regionColSize,
                          int sudokuRowSize, int sudokuColSize) {
 
-        // TODO add a light unitest to cover the fact we are validating the input
-        SudokuBuilder.getInstance().buildSudoku(sudoKuToResolve, regionRowSize, regionColSize, sudokuRowSize, sudokuColSize);
+        // TODO add a light unit test to cover the fact we are validating the input
+        sudokuSquares = SudokuBuilder.getInstance().buildSudoku(sudoKuToResolve, regionRowSize, regionColSize, sudokuRowSize, sudokuColSize);
 
         this.regionRowSize = regionRowSize;
         this.regionColSize = regionColSize;
         this.sudokuRowSize = sudokuRowSize;
         this.sudokuColSize = sudokuColSize;
-        this.sudokuToResolve = sudoKuToResolve;
-
-        convertArrayToSudokuSquare();
     }
 
-    public int[][] getSudokuToResolve() {
-        return this.sudokuToResolve;
-    }
-
-    public SudokuSquare[][] getSudokuSquaresForTheValue() {
-        return sudokuSquares;
-    }
-
-
-
-    private void convertArrayToSudokuSquare() {
-        int nbPossibleValues = sudokuRowSize;
-        this.sudokuSquares = new SudokuSquare[sudokuRowSize][sudokuColSize];
-
-        for(int i = 0 ; i < sudokuRowSize ; i++) {
-            for(int j = 0 ; j < sudokuColSize ; j++) {
-                this.sudokuSquares[i][j] = new SudokuSquare(nbPossibleValues, i, j);
-                // TODO
-                List<SudokuSquare> squares = Arrays.asList(this.sudokuSquares[i][j]);
-                BroadcastWinner region = new SudokuRegion(squares);
-                this.sudokuSquares[i][j].setBroadcastWinner(region);
-                this.sudokuSquares[i][j].setInitialValue(sudokuToResolve[i][j]);
-            }
-        }
-    }
 
     public void resolveTheSudoku() {
         List<List<SudokuSquare>> listOfSquares = getAllListsOfSquaresWhichShouldContainAllValues() ;

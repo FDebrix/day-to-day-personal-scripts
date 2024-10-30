@@ -1,7 +1,10 @@
 package main.java;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
- * Read the input Sudoku in the format int[][] and return SudokuSquare[][].
+ * Convert the input Sudoku in the format int[][] into SudokuSquare[][].
  */
 public class SudokuBuilder {
 
@@ -9,21 +12,61 @@ public class SudokuBuilder {
 
     private SudokuBuilder() { }
 
+    /**
+     * To get the singleton instance
+     * @return
+     */
     public static SudokuBuilder getInstance() {
         if(sudokuBuilder == null)
             sudokuBuilder = new SudokuBuilder();
         return sudokuBuilder;
     }
 
-    public SudokuSquare[][]  buildSudoku(int[][] sudoKuToResolve, int regionRowSize, int regionColSize,
+    /**
+     *
+     * @param sudokuToConvert
+     * @param regionRowSize
+     * @param regionColSize
+     * @param sudokuRowSize
+     * @param sudokuColSize
+     * @return
+     */
+    public SudokuSquare[][]  buildSudoku(int[][] sudokuToConvert, int regionRowSize, int regionColSize,
                             int sudokuRowSize, int sudokuColSize) {
         validateConstructorParameters(
-                sudoKuToResolve, regionRowSize, regionColSize, sudokuRowSize, sudokuColSize);
+                sudokuToConvert, regionRowSize, regionColSize, sudokuRowSize, sudokuColSize);
 
-        SudokuSquare[][] sudokuSquares = new SudokuSquare[1][1];
-        return sudokuSquares;
+        return convertIntToSudokuSquare(sudokuToConvert, regionRowSize, regionColSize, sudokuRowSize, sudokuColSize);
     }
 
+    private SudokuSquare[][] convertIntToSudokuSquare(int[][] sudokuToResolve, int regionRowSize, int regionColSize,
+                                                      int sudokuRowSize, int sudokuColSize) {
+        int nbPossibleValues = sudokuRowSize;
+        SudokuSquare[][] sudokuSquares = new SudokuSquare[sudokuRowSize][sudokuColSize];
+
+        for(int i = 0 ; i < sudokuRowSize ; i++) {
+            for(int j = 0 ; j < sudokuColSize ; j++) {
+                sudokuSquares[i][j] = new SudokuSquare(nbPossibleValues, i, j);
+            }
+        }
+
+        for(int i = 0 ; i < sudokuRowSize ; i++) {
+            for(int j = 0 ; j < sudokuColSize ; j++) {
+
+                // TODO START
+                // NEED TO IMPLEMENT THE CREATION OF THE regions AND SET PROPERLY WITH
+                // THEIRS RESPECTIVES SQUARES
+                List<SudokuSquare> squares = Arrays.asList(sudokuSquares[i][j]);
+                BroadcastWinner region = new SudokuRegion(squares);
+                sudokuSquares[i][j].setBroadcastWinner(region);
+                // TODO END
+
+                sudokuSquares[i][j].setInitialValue(sudokuToResolve[i][j]);
+            }
+        }
+
+        return sudokuSquares;
+    }
 
     // TODO
     // Let be more drastic and validate that the input is respecting "normal" size

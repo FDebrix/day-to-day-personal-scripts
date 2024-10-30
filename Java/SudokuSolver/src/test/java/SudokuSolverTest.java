@@ -14,46 +14,6 @@ public class SudokuSolverTest {
         new SudokuSolver(SUDOKU_1_9x9_SIMPLE, 3, 3, 9, 9);
     }
 
-
-    @Test
-    public void test_getSudoku() {
-        SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_SIMPLE, 3, 3, 9, 9);
-
-        int[][] sudokuOutput = solver.getSudokuToResolve();
-
-        assertEquals(SUDOKU_1_9x9_SIMPLE, sudokuOutput);
-    }
-
-    @Test
-    public void test_convertArrayToSudokuSquare(){
-        int nbRows = SUDOKU_1_9x9_SIMPLE.length;
-        int nbColumns = SUDOKU_1_9x9_SIMPLE[0].length;
-        SudokuSolver solver = new SudokuSolver(SUDOKU_1_9x9_SIMPLE, 3, 3, 9, 9);
-        SudokuSquare[][] sudokuSquares = solver.getSudokuSquaresForTheValue();
-
-        assertEquals(nbRows, sudokuSquares.length);
-
-        for (int i = 0; i < SUDOKU_1_9x9_SIMPLE.length ; i++) {
-            assertEquals(nbColumns, sudokuSquares[i].length);
-        }
-
-        for(int i = 0 ; i < nbRows ; i++) {
-            for (int j = 0; j < nbColumns; j++) {
-
-                assertEquals(i, sudokuSquares[i][j].getRowId());
-                assertEquals(j, sudokuSquares[i][j].getColId());
-
-                if (SUDOKU_1_9x9_SIMPLE[i][j] != 0) {
-                    assertTrue(sudokuSquares[i][j].isWinnerValueFound());
-                    assertEquals(SUDOKU_1_9x9_SIMPLE[i][j], sudokuSquares[i][j].getWinnerValue());
-                }
-                else {
-                    assertFalse(sudokuSquares[i][j].isWinnerValueFound());
-                }
-            }
-        }
-    }
-
     @Test
     public void test_run_2x2() {
         SudokuSolver solver = new SudokuSolver(SUDOKU_1_2x2, 2, 2, 4, 4);
