@@ -6,6 +6,7 @@ Status : On-going
 -----------------------------------------------------------------------------------------------------------------------
 
 Next Steps
+- Inconsistency to fix : in input 0 means unknown value while in output -1 means unknown value. Let have comment nomenclature.
 - in SudokuSolver, extract the logic of the function handleOneValuesOnlyAvailableInOneSquare() into a new class
 - is it still required for SudokuSquare to have rowId and colId?
 - review the validations at the end of SudokuBuilder
