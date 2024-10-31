@@ -30,14 +30,10 @@ public class SudokuSquare {
     // We can have used possibleValues[0] to save it. But I prefer to keep the code clear.
     private int foundValue = NOT_FOUND_YET;
 
-    // The position of the square into the sudoku
-    private int rowId = -1;
-    private int colId = -1;
-
     private BroadcastWinner broadcastWinner;
 
 
-    public SudokuSquare(int nbPossibleValues, int rowId, int colId) {
+    public SudokuSquare(int nbPossibleValues) {
         validateNbPossibleValues(nbPossibleValues);
 
         this.possibleValues = new ValueState[nbPossibleValues + 1];
@@ -48,9 +44,6 @@ public class SudokuSquare {
         for (int i = 1 ; i < this.possibleValues.length ; i++) {
             this.possibleValues[i] = POSSIBLE_VALUE;
         }
-
-        this.rowId = rowId;
-        this.colId = colId;
     }
 
     public void setBroadcastWinner(BroadcastWinner theBroadcastWinner) {
@@ -62,13 +55,6 @@ public class SudokuSquare {
 
     public BroadcastWinner getBroadcastWinner() {
         return this.broadcastWinner;
-    }
-
-    public int getRowId() {
-        return rowId;
-    }
-    public int getColId() {
-        return colId;
     }
 
     // Used for unittests. Need to revisit to make it protected or package visibility.

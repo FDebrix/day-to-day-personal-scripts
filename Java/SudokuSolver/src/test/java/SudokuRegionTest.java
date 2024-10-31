@@ -20,7 +20,7 @@ public class SudokuRegionTest {
 
     @Test
     public void test_constructor_persistList() {
-        SudokuSquare square = new SudokuSquare(4, 1, 1);
+        SudokuSquare square = new SudokuSquare(4);
         List<SudokuSquare> squares = List.of(square);
         List<SudokuSquare> output;
 
@@ -32,7 +32,7 @@ public class SudokuRegionTest {
 
     @Test
     public void test_broadcastWinner_cannotBeNull () {
-        SudokuSquare square1 = new SudokuSquare(4, 1, 1);
+        SudokuSquare square1 = new SudokuSquare(4);
         List<SudokuSquare> squares = List.of(square1);
         SudokuRegion region = new SudokuRegion(squares);
 
@@ -42,7 +42,7 @@ public class SudokuRegionTest {
 
     @Test
     public void test_broadcastWinner_mustBeAWinnerValue () {
-        SudokuSquare square1 = new SudokuSquare(4, 1, 1);
+        SudokuSquare square1 = new SudokuSquare(4);
         List<SudokuSquare> squares = List.of(square1);
         SudokuRegion region = new SudokuRegion(squares);
 
@@ -52,10 +52,10 @@ public class SudokuRegionTest {
 
     @Test
     public void test_broadcastWinner () {
-        SudokuSquare square1 = new SudokuSquare(4, 1, 1);
+        SudokuSquare square1 = new SudokuSquare(4);
         int winnerValueOfTheSquare1 = 3;
 
-        SudokuSquare square2 = new SudokuSquare(4, 1, 1);
+        SudokuSquare square2 = new SudokuSquare(4);
         int[] remainingPossibleValuesForSquare2 = {1, 2, 4};
 
         List<SudokuSquare> squares = Arrays.asList(square1, square2);

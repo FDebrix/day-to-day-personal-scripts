@@ -43,10 +43,7 @@ public class SudokuSquareTest {
     @Test
     public void test_constructor_getValueState_4PossibleValues() {
         int sizeOfTheOutputTable = NB_POSSIBLE_VALUE + 1;
-        int rowId = 1;
-        int colId = 2;
-        SudokuSquare aSquareWith4PossibleValues =
-                new SudokuSquare(NB_POSSIBLE_VALUE, rowId, 2);
+        SudokuSquare aSquareWith4PossibleValues = new SudokuSquare(NB_POSSIBLE_VALUE);
 
         ValueState[] valueStates = aSquareWith4PossibleValues.getValueState();
 
@@ -56,8 +53,6 @@ public class SudokuSquareTest {
         for (int i = 1 ; i < valueStates.length ; i++) {
             assertEquals(POSSIBLE_VALUE, valueStates[i]);
         }
-        assertEquals(rowId, aSquareWith4PossibleValues.getRowId());
-        assertEquals(colId, aSquareWith4PossibleValues.getColId());
     }
 
     @Test
@@ -85,7 +80,7 @@ public class SudokuSquareTest {
 
     @Test
     public void test_getBroadcastWinner_returnNullWhenNotSet () {
-        SudokuSquare square = new SudokuSquare(4, 0, 0);
+        SudokuSquare square = new SudokuSquare(4);
         assertNull(square.getBroadcastWinner());
     }
 
@@ -102,14 +97,14 @@ public class SudokuSquareTest {
 
     @Test
     public void test_setInitialValue_noBroadcastWinnerThrowException() {
-        SudokuSquare square = new SudokuSquare(NB_POSSIBLE_VALUE, 0, 0);
+        SudokuSquare square = new SudokuSquare(NB_POSSIBLE_VALUE);
         assertThrows(IllegalStateException.class,
                 () -> square.setInitialValue(1));
     }
 
     @Test
     public void test_setWinnerValue_noBroadcastWinnerThrowException() {
-        SudokuSquare square = new SudokuSquare(NB_POSSIBLE_VALUE, 0, 0);
+        SudokuSquare square = new SudokuSquare(NB_POSSIBLE_VALUE);
         assertThrows(IllegalStateException.class,
                 () -> square.setWinnerValue(1));
     }
@@ -374,7 +369,7 @@ public class SudokuSquareTest {
 
 
     private SudokuSquare buildSudokuSquare(int nbPossibleValues, int initialValue) {
-        SudokuSquare square = new SudokuSquare(nbPossibleValues, 0, 0);
+        SudokuSquare square = new SudokuSquare(nbPossibleValues);
         setBroadcastWinner(square);
         square.setInitialValue(initialValue);
 
@@ -382,7 +377,7 @@ public class SudokuSquareTest {
     }
 
     private SudokuSquare buildSudokuSquare(int nbPossibleValues) {
-        SudokuSquare square =  new SudokuSquare(nbPossibleValues, 0, 0);
+        SudokuSquare square =  new SudokuSquare(nbPossibleValues);
         setBroadcastWinner(square);
 
         return square;

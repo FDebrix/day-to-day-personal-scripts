@@ -34,8 +34,8 @@ public class SudokuRegionsTest {
         int[] possibleValues = {1, 2, 3, 4};
         int[] possibleValuesOfSquare2AfterBroadcast = {1, 2, 4};
 
-        SudokuSquare square1 = new SudokuSquare(4, 1, 1);
-        SudokuSquare square2 = new SudokuSquare(4, 1, 2);
+        SudokuSquare square1 = new SudokuSquare(4);
+        SudokuSquare square2 = new SudokuSquare(4);
         List<SudokuSquare> squares = Arrays.asList(square1, square2);
 
         SudokuRegion region = new SudokuRegion(squares);

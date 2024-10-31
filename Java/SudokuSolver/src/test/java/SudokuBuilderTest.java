@@ -49,9 +49,6 @@ public class SudokuBuilderTest {
 
         for(int i = 0 ; i < nbRows ; i++) {
             for (int j = 0; j < nbColumns; j++) {
-                assertEquals(i, sudokuSquares[i][j].getRowId());
-                assertEquals(j, sudokuSquares[i][j].getColId());
-
                 assertTrue(sudokuSquares[i][j].isWinnerValueFound());
                 assertEquals(SUDOKU_id2_9x9_SIMPLE_EXPECTED[i][j], sudokuSquares[i][j].getWinnerValue());
             }

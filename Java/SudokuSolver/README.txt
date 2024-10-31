@@ -7,7 +7,6 @@ Status : On-going
 
 Next Steps
 - in SudokuSolver, extract the logic of the function handleOneValuesOnlyAvailableInOneSquare() into a new class
-- is it still required for SudokuSquare to have rowId and colId?
 - review the validations at the end of SudokuBuilder
 
 

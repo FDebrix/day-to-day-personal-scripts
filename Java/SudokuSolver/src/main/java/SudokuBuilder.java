@@ -141,7 +141,7 @@ public class SudokuBuilder {
 
         for(int i = 0; i < sudokuRowSize; i++) {
             for(int j = 0; j < sudokuColSize; j++) {
-                sudokuSquares[i][j] = new SudokuSquare(nbPossibleValues, i, j);
+                sudokuSquares[i][j] = new SudokuSquare(nbPossibleValues);
                 sudokuSquares[i][j].setBroadcastWinner(new SudokuRegions());
             }
         }
