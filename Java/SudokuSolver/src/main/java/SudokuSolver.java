@@ -10,7 +10,8 @@ public class SudokuSolver {
     private int sudokuRowSize = 0;
     private int sudokuColSize = 0;
 
-    private SudokuSquare[][] sudokuSquares;
+    private SudokuSquare[][] squares;
+    private List<SudokuRegion> regions;
 
 
     public SudokuSolver (int[][] sudoKuToResolve, int regionRowSize, int regionColSize,
@@ -19,7 +20,8 @@ public class SudokuSolver {
         SudokuBuilder builder = new SudokuBuilder();
         // TODO add a light unit test to cover the fact we are validating the input
         SudokuBuilder.SudokuBuilderOutput sudokuBuilderOutput = builder.buildSudoku(sudoKuToResolve);
-        sudokuSquares = sudokuBuilderOutput.allTheSquares;
+        squares = sudokuBuilderOutput.allTheSquares;
+        regions = sudokuBuilderOutput.allTheRegions;
 
         this.regionRowSize = regionRowSize;
         this.regionColSize = regionColSize;
@@ -29,27 +31,25 @@ public class SudokuSolver {
 
 
     public void resolveTheSudoku() {
-        List<List<SudokuSquare>> listOfSquares = getAllListsOfSquaresWhichShouldContainAllValues() ;
+        //List<List<SudokuSquare>> listOfSquares = getAllListsOfSquaresWhichShouldContainAllValues() ;
 
         for(int k = 0 ; k < 20 ; k++) {
 
-            System.out.println("\t\t\tk " + k);
+            if(allWinnerFound()) break;
 
-            if(allWinnerFound(this.sudokuSquares)) break;
-
-            boolean foundAWinner = handleOneValuesOnlyAvailableInOneSquare(listOfSquares);
+            boolean foundAWinner = handleOneValuesOnlyAvailableInOneSquare();
 
             if(! foundAWinner) {
-                System.out.println("\t\tSize " + listOfSquares.size());
+                //System.out.println("\t\tSize " + regions.listOfSquares.size());
                 //handleTwoValuesOnlyAvailableInTwoSquares(listOfSquares);
             }
 
-            if(allWinnerFound(this.sudokuSquares)) break;
+            if(allWinnerFound()) break;
         }
     }
 
-    private boolean allWinnerFound(SudokuSquare[][] sudokuSquares) {
-        return SudokuHelper.getInstance().allWinnerFound(sudokuSquares);
+    private boolean allWinnerFound() {
+        return SudokuHelper.getInstance().allWinnerFound(this.squares);
     }
 
     public int[][] getWinnerValues() {
@@ -57,7 +57,7 @@ public class SudokuSolver {
 
         for(int i = 0; i < sudokuRowSize ; i++) {
             for (int j = 0; j < sudokuColSize ; j++) {
-                result[i][j] = sudokuSquares[i][j].getWinnerValue();
+                result[i][j] = squares[i][j].getWinnerValue();
             }
         }
         return result;
@@ -167,10 +167,10 @@ public class SudokuSolver {
     // 2 is not possible in other squares. Then even if there are 2 possibles values in the position 8,
     // we know for sure that 2 is the winner value in the position 8. We can update this line to
     //                      8,9 | 3 | 7 | 4 | 5 | 1 | 8,9 | 2 | 6
-    private boolean handleOneValuesOnlyAvailableInOneSquare(List<List<SudokuSquare>> listOfSquares) {
+    private boolean handleOneValuesOnlyAvailableInOneSquare() {
         boolean findAWinner = true;
-        for(List<SudokuSquare> squares : listOfSquares) {
-            boolean findAWinnerOneRun = handleOneValueOnlyAvailableInOneSquareOneList(squares);
+        for(SudokuRegion region : regions) {
+            boolean findAWinnerOneRun = handleOneValueOnlyAvailableInOneSquareOneList(region);
             findAWinner &= findAWinnerOneRun;
         }
 
@@ -201,14 +201,13 @@ public class SudokuSolver {
 
 
     // to rename
-    private boolean handleOneValueOnlyAvailableInOneSquareOneList(List<SudokuSquare> listOfSquares) {
-        validateSizeListOfSquares(listOfSquares);
+    private boolean handleOneValueOnlyAvailableInOneSquareOneList(SudokuRegion region) {
 
         boolean findAWinner = false;
 
         List<List<SudokuSquare>> squaresPerPossibleValues = buildEmptySquaresPerPossibleValues();
 
-        for(SudokuSquare aSquare : listOfSquares) {
+        for(SudokuSquare aSquare : region.getSudokuSquares()) {
             if(aSquare.isWinnerValueFound()) {
                 squaresPerPossibleValues.get(aSquare.getWinnerValue()).add(aSquare);
             }
@@ -260,7 +259,7 @@ public class SudokuSolver {
 
         for(int columnIdOfTheRegion : columnIdsOfTheRegion) {
             for (int rowIdOfTheRegion : rowIdsOfTheRegion) {
-                list.add(sudokuSquares[rowIdOfTheRegion][columnIdOfTheRegion]);
+                list.add(squares[rowIdOfTheRegion][columnIdOfTheRegion]);
             }
         }
 
@@ -271,7 +270,7 @@ public class SudokuSolver {
         List<SudokuSquare> list = new ArrayList<>();
 
         for(int i = 0 ; i < sudokuRowSize ; i++) {
-            list.add(sudokuSquares[i][colId]);
+            list.add(squares[i][colId]);
         }
 
         return list;
@@ -281,7 +280,7 @@ public class SudokuSolver {
         List<SudokuSquare> list = new ArrayList<>();
 
         for(int i = 0 ; i < sudokuColSize ; i++) {
-            list.add(sudokuSquares[rowId][i]);
+            list.add(squares[rowId][i]);
         }
 
         return list;

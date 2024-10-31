@@ -16,6 +16,11 @@ public class SudokuBuilder {
     private int nbPossibleValues ;
 
 
+    public static class SudokuBuilderOutput {
+        public SudokuSquare[][] allTheSquares;
+        public List<SudokuRegion> allTheRegions;
+    }
+
     public SudokuBuilder() { }
 
     public SudokuBuilderOutput  buildSudoku(int[][] theSudokuToConvert) {
@@ -32,11 +37,6 @@ public class SudokuBuilder {
         nbPossibleValues = sudokuRowSize;
 
         return convertIntToSudokuSquare();
-    }
-
-    public class SudokuBuilderOutput {
-        public SudokuSquare[][] allTheSquares;
-        public List<SudokuRegion> allTheRegions;
     }
 
     private void validateInputSudoku(int[][] theSudokuToConvert) {
