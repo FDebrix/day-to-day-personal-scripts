@@ -2,6 +2,9 @@ package main.java;
 
 public class SudokuHelper {
 
+    // System.out.println -> for tracking and investigation
+    public static final boolean SOP = true;
+
     private static SudokuHelper instance;
 
     private SudokuHelper() {}
@@ -12,6 +15,19 @@ public class SudokuHelper {
         return instance;
     }
 
+    public int[][] getWinnerValues(SudokuSquare[][] squares) {
+        int sudokuRowSize = squares.length;
+        int sudokuColSize = squares[0].length;
+
+        int[][] result = new int[sudokuRowSize][sudokuColSize];
+
+        for(int i = 0; i < sudokuRowSize ; i++) {
+            for (int j = 0; j < sudokuColSize ; j++) {
+                result[i][j] = squares[i][j].getWinnerValue();
+            }
+        }
+        return result;
+    }
 
     public void printlnFoundValues(SudokuSquare[][] sudokuSquares) {
         for(int i = 0 ; i < sudokuSquares.length ; i++) {

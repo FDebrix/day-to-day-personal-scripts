@@ -367,6 +367,29 @@ public class SudokuSquareTest {
         assertArrayEquals(expectedPossibleValues, outputPossibleValues);
     }
 
+    @Test
+    public void test_getWinnerValueOrPossibleValues_noWinnerValue() {
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
+        int[] expected = {1, 2, 3, 4};
+
+        int[] output = theSquare.getWinnerValueOrPossibleValues();
+
+        assertEquals(NB_POSSIBLE_VALUE, output.length);
+        assertArrayEquals(expected, output);
+    }
+
+    @Test
+    public void test_getWinnerValueOrPossibleValues_winnerValue() {
+        int winnerValue = 2;
+        SudokuSquare theSquare = buildSudokuSquare(NB_POSSIBLE_VALUE);
+        theSquare.setWinnerValue(winnerValue);
+
+        int[] output = theSquare.getWinnerValueOrPossibleValues();
+
+        assertEquals(1, output.length);
+        assertEquals(winnerValue, output[0]);
+}
+
 
     private SudokuSquare buildSudokuSquare(int nbPossibleValues, int initialValue) {
         SudokuSquare square = new SudokuSquare(nbPossibleValues);

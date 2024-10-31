@@ -7,7 +7,7 @@ Status : On-going
 
 Next Steps
 - in SudokuSolver, extract the logic of the function handleOneValuesOnlyAvailableInOneSquare() into a new class
-- review the validations at the end of SudokuBuilder
+- consistency : need to review all the unit tests function name in order to be consistent
 
 
 Vocabulary - https://en.wikipedia.org/wiki/Sudoku

@@ -89,6 +89,11 @@ public class SudokuSquare {
         return this.foundValue;
     }
 
+    public int[] getWinnerValueOrPossibleValues() {
+        if(isWinnerValueFound()) return new int[] { this.foundValue } ;
+        else return getPossibleValues();
+    }
+
     public int[] getPossibleValues() {
         // TODO - we are looping two times on possibleValues
         int nbOfPossibleValues = countValuesInState_POSSIBLE_VALUE();
