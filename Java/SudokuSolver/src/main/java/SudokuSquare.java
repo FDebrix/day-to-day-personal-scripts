@@ -15,7 +15,7 @@ public class SudokuSquare {
         POSSIBLE_VALUE, WINNER_VALUE, LOSER_VALUE
     }
 
-    public static final int NOT_FOUND_YET = -1;
+    public static final int NOT_FOUND_YET = 0;
 
     private static final int MIN_POSSIBLE_VALUES = 4;
 
@@ -122,7 +122,7 @@ public class SudokuSquare {
     // 0 means that the winner value is unknown for now
     // else that means the winner value is known
     public void setInitialValue(int value) {
-        if(value == 0)
+        if(value == NOT_FOUND_YET)
             return;
         setWinnerValue (value);
     }
