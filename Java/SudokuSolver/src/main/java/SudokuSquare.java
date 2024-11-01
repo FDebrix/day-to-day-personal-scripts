@@ -57,6 +57,7 @@ public class SudokuSquare {
         return broadcastWinner;
     }
 
+    // TODO
     // Used for unittests. Need to revisit to make it protected or package visibility.
     public ValueState[] getValueState() {
         return possibleValues;

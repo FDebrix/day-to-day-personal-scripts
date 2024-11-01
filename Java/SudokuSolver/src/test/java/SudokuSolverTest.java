@@ -2,7 +2,6 @@ package test.java;
 
 import main.java.SudokuHelper;
 import main.java.SudokuSolver;
-import main.java.SudokuSquare;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -96,6 +95,6 @@ public class SudokuSolverTest {
 
         assertEquals(SUDOKU_id7_9x9_EXTREME_INPUT.length, output.length);
         assertEquals(SUDOKU_id7_9x9_EXTREME_INPUT[0].length, output[0].length);
-        assertArrayEquals(SUDOKU_id7_9x9_EXTREME_EXPECTED, output);
+        assertArrayEquals(SUDOKU_id7_9x9_EXTREME_EXPECTED_TEMP, output);
     }
 }

@@ -7,10 +7,10 @@ import static main.java.SudokuHelper.SOP;
 
 /**
  * Algorithm to find the value only available in one place.
- *
+ * <br/>
  * Let assume we have a 9 x 9 sudoku. On one row, we have the follow possible values:
  *                      8,9 | 3 | 7 | 4 | 5 | 1 | 8,9 | 2,8 | 6
- *
+ * <br/>
  * Only 3 squares are not resolved yet. In the position 8, we can see the possibles values 2 and 8.
  * 2 is not possible in other squares. Then even if there are 2 possibles values in the position 8,
  * we know for sure that 2 is the winner value in the position 8. We can update this line to

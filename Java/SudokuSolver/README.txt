@@ -1,7 +1,8 @@
 -----------------------------------------------------------------------------------------------------------------------
 Author: frederic.debrix.git@gmail.com
 Coverage : On-going (usage of TDD)
-Status : On-going
+Status : Resolve easy, medium, expert and master sudokus. Implementing algorithm for extreme sudokus.
+         See the class SudokuSolverTest.
 -----------------------------------------------------------------------------------------------------------------------
 
 Next Steps
@@ -85,7 +86,7 @@ This logic is done thanks to the fact to call the instance BroadcastWinner in Su
 [2-3] [4]   [1-3] [1-3]
 
 On the first horizontal region [AA]-[AD], composed of 4 squares, the value 4 is only possible in the square [AD]. Then [AD] is 4.
-On the left vertical region [AA]-[DA], composed of 4 squares, the value is onlu possible in the square [BA]. Then [BA] is 4.
+On the left vertical region [AA]-[DA], composed of 4 squares, the value is only possible in the square [BA]. Then [BA] is 4.
 [1]   [2-3] [2-3] [4]
 [2-4] [2-3] [1-3] [1-4]
 [2-3] [1-3] [4]   [1-3]
