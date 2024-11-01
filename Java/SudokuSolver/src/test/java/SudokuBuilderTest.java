@@ -58,8 +58,6 @@ public class SudokuBuilderTest {
 
         for(int i = 0 ; i < regions.size() ; i++)
             assertEquals(nbSquaresPerRegion, regions.get(i).getSudokuSquares().size());
-
-        SudokuHelper.getInstance().printlnFoundValues(sudokuSquares);
     }
 
     @Test

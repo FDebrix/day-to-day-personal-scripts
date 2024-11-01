@@ -40,13 +40,18 @@ public class SudokuSolver {
             if(allWinnerFound()) break;
         }
 
-        return SudokuHelper.getInstance().getWinnerValues(squares);
+        return SudokuHelper.getInstance().getWinnerValues(this.squares);
     }
 
     private boolean allWinnerFound() {
         return SudokuHelper.getInstance().allWinnerFound(this.squares);
     }
 
+    public void printPossibleValues() {
+        SudokuHelper.getInstance().printlnRemainingPossibleValues(this.squares);
+    }
+
+    /*
     private void handleTwoValuesOnlyAvailableInTwoSquares(List<List<SudokuSquare>> listOfSquares) {
         listOfSquares.forEach(this::handleTwoValuesOnlyAvailableInTwoSquaresOneList);
     }
@@ -138,4 +143,6 @@ public class SudokuSolver {
             square.setLoserValue(valueLoserInOtherSquares);
         }
     }
+
+     */
 }

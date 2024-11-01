@@ -40,6 +40,9 @@ public class OneValueInOneSquareOfTheRegion implements SudokuAlgorithm {
         if(region == null)
             return false;
 
+        if(SudokuHelper.getInstance().allWinnerFound(region))
+            return false;
+
         boolean findAWinner = false;
 
         List<List<SudokuSquare>> squaresPerPossibleValue = getSquaresPerPossibleValues(region);

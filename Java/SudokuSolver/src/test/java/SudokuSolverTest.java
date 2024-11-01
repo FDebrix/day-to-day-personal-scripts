@@ -61,7 +61,6 @@ public class SudokuSolverTest {
         assertArrayEquals(SUDOKU_id4_9x9_DIFFICILE_EXPECTED, output);
     }
 
-
     @Test
     public void test_run_9x9_expert() {
         SudokuSolver solver = new SudokuSolver(SUDOKU_id5_9x9_EXPERT_INPUT);
@@ -72,5 +71,31 @@ public class SudokuSolverTest {
         assertEquals(SUDOKU_id5_9x9_EXPERT_INPUT[0].length, output[0].length);
 
         assertArrayEquals(SUDOKU_id5_9x9_EXPERT_EXPECTED, output);
+    }
+
+    @Test
+    public void test_run_9x9_master() {
+        SudokuSolver solver = new SudokuSolver(SUDOKU_id6_9x9_MASTER_INPUT);
+
+        int[][] output = solver.resolveTheSudoku();
+
+        assertEquals(SUDOKU_id6_9x9_MASTER_INPUT.length, output.length);
+        assertEquals(SUDOKU_id6_9x9_MASTER_INPUT[0].length, output[0].length);
+
+        assertArrayEquals(SUDOKU_id6_9x9_MASTER_EXPECTED, output);
+    }
+
+    @Test
+    public void test_run_9x9_extreme() {
+        SudokuSolver solver = new SudokuSolver(SUDOKU_id7_9x9_EXTREME_INPUT);
+
+        int[][] output = solver.resolveTheSudoku();
+
+        solver.printPossibleValues();
+        SudokuHelper.getInstance().printlnRemainingPossibleValues(output);
+
+        assertEquals(SUDOKU_id7_9x9_EXTREME_INPUT.length, output.length);
+        assertEquals(SUDOKU_id7_9x9_EXTREME_INPUT[0].length, output[0].length);
+        assertArrayEquals(SUDOKU_id7_9x9_EXTREME_EXPECTED, output);
     }
 }

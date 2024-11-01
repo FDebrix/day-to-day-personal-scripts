@@ -6,7 +6,7 @@ Status : On-going
 -----------------------------------------------------------------------------------------------------------------------
 
 Next Steps
-- in SudokuSolver, extract the logic of the function handleOneValuesOnlyAvailableInOneSquare() into a new class
+- in SudokuSolver, extract the logic of the function handleTwoValuesOnlyAvailableInTwoSquares() into a new class
 - consistency : need to review all the unit tests function name in order to be consistent
 
 
