@@ -36,30 +36,30 @@ public class SudokuSquare {
     public SudokuSquare(int nbPossibleValues) {
         validateNbPossibleValues(nbPossibleValues);
 
-        this.possibleValues = new ValueState[nbPossibleValues + 1];
+        possibleValues = new ValueState[nbPossibleValues + 1];
 
         // The index 0 will not be used
-        this.possibleValues[0] = LOSER_VALUE;
+        possibleValues[0] = LOSER_VALUE;
 
-        for (int i = 1 ; i < this.possibleValues.length ; i++) {
-            this.possibleValues[i] = POSSIBLE_VALUE;
+        for (int i = 1 ; i < possibleValues.length ; i++) {
+            possibleValues[i] = POSSIBLE_VALUE;
         }
     }
 
-    public void setBroadcastWinner(BroadcastWinner theBroadcastWinner) {
-        if(theBroadcastWinner == null)
+    public void setBroadcastWinner(BroadcastWinner broadcastWinner) {
+        if(broadcastWinner == null)
             throw new IllegalArgumentException("The input broadcast winner cannot by null");
 
-        this.broadcastWinner = theBroadcastWinner;
+        this.broadcastWinner = broadcastWinner;
     }
 
     public BroadcastWinner getBroadcastWinner() {
-        return this.broadcastWinner;
+        return broadcastWinner;
     }
 
     // Used for unittests. Need to revisit to make it protected or package visibility.
     public ValueState[] getValueState() {
-        return this.possibleValues;
+        return possibleValues;
     }
 
     public void changeStateOfAValue(int value, ValueState newState) {
@@ -81,16 +81,16 @@ public class SudokuSquare {
     }
 
     public boolean isWinnerValueFound() {
-        return this.foundValue != NOT_FOUND_YET;
+        return foundValue != NOT_FOUND_YET;
     }
 
     // The returned value can be NOT_FOUND_YET - this is correct
     public int getWinnerValue() {
-        return this.foundValue;
+        return foundValue;
     }
 
     public int[] getWinnerValueOrPossibleValues() {
-        if(isWinnerValueFound()) return new int[] { this.foundValue } ;
+        if(isWinnerValueFound()) return new int[] { foundValue } ;
         else return getPossibleValues();
     }
 
@@ -160,7 +160,7 @@ public class SudokuSquare {
                             value, possibleValues[value], LOSER_VALUE));
         }
 
-        this.possibleValues[value] = LOSER_VALUE;
+        possibleValues[value] = LOSER_VALUE;
 
         checkAndSetTheUniquePOSSIBLE_VALUE_as_WINNER_VALUE();
     }
@@ -187,14 +187,14 @@ public class SudokuSquare {
             throw new IllegalStateException("Cannot compute a winner value without a broadcast winner");
         }
 
-        this.possibleValues[value] = WINNER_VALUE;
-        this.foundValue = value;
+        possibleValues[value] = WINNER_VALUE;
+        foundValue = value;
         set_LOSER_VALUE_toAllValuesExcept(value);
         broadcastWinner.broadcastWinner(this);
     }
 
     private void set_LOSER_VALUE_toAllValuesExcept(int value) {
-        for (int i = 1 ; i < this.possibleValues.length ; i++) {
+        for (int i = 1 ; i < possibleValues.length ; i++) {
             if(i != value) {
                 setLoserValue(i);
             }
@@ -202,11 +202,11 @@ public class SudokuSquare {
     }
 
     private boolean is_WINNER_VALUE(int value) {
-        return WINNER_VALUE == this.possibleValues[value];
+        return WINNER_VALUE == possibleValues[value];
     }
 
     private boolean is_LOSER_VALUE(int value) {
-        return LOSER_VALUE == this.possibleValues[value];
+        return LOSER_VALUE == possibleValues[value];
     }
 
     private void checkAndSetTheUniquePOSSIBLE_VALUE_as_WINNER_VALUE() {
@@ -216,8 +216,8 @@ public class SudokuSquare {
         int nbOfPOSSIBLE_VALUE = 0;
         int lastValuePOSSIBLE_VALUE = 0;
 
-        for (int i = 1 ; i < this.possibleValues.length ; i++) {
-            if (this.possibleValues[i] == POSSIBLE_VALUE) {
+        for (int i = 1 ; i < possibleValues.length ; i++) {
+            if (possibleValues[i] == POSSIBLE_VALUE) {
                 nbOfPOSSIBLE_VALUE++;
                 lastValuePOSSIBLE_VALUE = i;
             }
@@ -235,7 +235,7 @@ public class SudokuSquare {
     }
 
     private void validateValue (int value) throws IllegalArgumentException {
-        if(value <= 0 || value >= this.possibleValues.length)
+        if(value <= 0 || value >= possibleValues.length)
             throw new IllegalArgumentException(
                     String.format("You can just update the values between %s and %s.", 1, possibleValues.length - 1));
     }

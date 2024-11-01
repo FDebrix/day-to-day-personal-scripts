@@ -26,11 +26,13 @@ public class SudokuBuilder {
         public List<SudokuRegion> allTheRegions;
     }
 
+
     public SudokuBuilder() { }
 
-    public SudokuBuilderOutput  buildSudoku(int[][] theSudokuToConvert) {
-        validateInputSudoku(theSudokuToConvert);
-        sudokuToConvert = theSudokuToConvert;
+
+    public SudokuBuilderOutput buildSudoku(int[][] sudokuToConvert) {
+        validateInputSudoku(sudokuToConvert);
+        this.sudokuToConvert = sudokuToConvert;
 
         sudokuRowSize = sudokuToConvert.length;
         sudokuColSize = sudokuToConvert[0].length;
@@ -50,8 +52,8 @@ public class SudokuBuilder {
         return output;
     }
 
-    private void validateInputSudoku(int[][] theSudokuToConvert) {
-        if(theSudokuToConvert.length != theSudokuToConvert[0].length) {
+    private void validateInputSudoku(int[][] sudoku) {
+        if(sudoku.length != sudoku[0].length) {
             throw new IllegalArgumentException("The input sudoku is not a square.");
         }
     }
@@ -93,8 +95,7 @@ public class SudokuBuilder {
                         int rowId = subgridRowId * regionRowSize + i;
                         int colId = subgridColId * regionColSize + j;
                         squaresOfTheSubgrid.add(allTheSquares[rowId][colId]);
-                        ((SudokuRegions)allTheSquares[rowId][colId].getBroadcastWinner()).
-                                addBroadcastWinner(subgridRegion);
+                        addTheSudokuRegionToTheSquare(subgridRegion, rowId, colId);
                     }
                 }
             }
@@ -113,8 +114,7 @@ public class SudokuBuilder {
 
             for (int j = 0; j < sudokuRowSize; j++) {
                 squaresOnTheCol.add(allTheSquares[j][i]);
-                ((SudokuRegions)allTheSquares[j][i].getBroadcastWinner()).
-                        addBroadcastWinner(verticalRegion);
+                addTheSudokuRegionToTheSquare(verticalRegion, j, i);
             }
         }
 
@@ -131,12 +131,16 @@ public class SudokuBuilder {
 
             for (int j = 0; j < sudokuColSize; j++) {
                 squaresOnTheRow.add(allTheSquares[i][j]);
-                ((SudokuRegions)allTheSquares[i][j].getBroadcastWinner()).
-                        addBroadcastWinner(horizontalRegion);
+                addTheSudokuRegionToTheSquare(horizontalRegion, i, j);
             }
         }
 
         return allHorizontalRegions;
+    }
+
+    private void addTheSudokuRegionToTheSquare(SudokuRegion region, int i, int j) {
+        // TODO - LOW priority - I don't like this hardcoded cast
+        ((SudokuRegions)allTheSquares[i][j].getBroadcastWinner()).addBroadcastWinner(region);
     }
 
     private SudokuSquare[][] buildSudokuSquaresAndSetDefaultBroadcastWinner() {

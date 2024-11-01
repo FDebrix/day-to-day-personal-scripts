@@ -1,5 +1,6 @@
 package main.java;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class SudokuHelper {
@@ -31,8 +32,8 @@ public class SudokuHelper {
         return result;
     }
 
-    public void printlnFoundValues(SudokuSquare[][] sudokuSquares) {
-        for(SudokuSquare[] arrayOfSquares: sudokuSquares) {
+    public void printlnFoundValues(SudokuSquare[][] squares) {
+        for(SudokuSquare[] arrayOfSquares: squares) {
             for (SudokuSquare square : arrayOfSquares) {
                 System.out.print(square.getWinnerValue() + "\t");
             }
@@ -40,8 +41,8 @@ public class SudokuHelper {
         }
     }
 
-    public void printlnRemainingPossibleValues(SudokuSquare[][] sudokuSquares) {
-        for(SudokuSquare[] arrayOfSquares: sudokuSquares) {
+    public void printlnRemainingPossibleValues(SudokuSquare[][] squares) {
+        for(SudokuSquare[] arrayOfSquares: squares) {
             for (SudokuSquare square : arrayOfSquares) {
                 System.out.print(square.toString()+ "\t");
             }
@@ -49,22 +50,21 @@ public class SudokuHelper {
         }
     }
 
-    public void printlnRemainingPossibleValues(int[][] sudokuSquares) {
-        for(int[] arrayOfPossibleValues: sudokuSquares) {
+    public void printlnRemainingPossibleValues(int[][] squares) {
+        for(int[] arrayOfPossibleValues: squares) {
             for (int possibleValue : arrayOfPossibleValues) {
                 System.out.print(possibleValue + "\t");
             }
             System.out.print("\n");
         }
     }
-    public boolean allWinnerFound(SudokuSquare[][] sudokuSquares) {
-        if(sudokuSquares == null || sudokuSquares.length == 0)
+    public boolean allWinnerFound(SudokuSquare[][] squares) {
+        if(squares == null || squares.length == 0)
             return false;
 
-        for(SudokuSquare[] arrayOfSquares: sudokuSquares) {
-            for (SudokuSquare square : arrayOfSquares) {
-                if (! square.isWinnerValueFound())
-                    return false;
+        for(SudokuSquare[] arrayOfSquares: squares) {
+            if( ! allWinnerFound(Arrays.asList(arrayOfSquares))) {
+                return false;
             }
         }
         return true;
@@ -74,8 +74,10 @@ public class SudokuHelper {
         if(region == null)
             return false;
 
-        List<SudokuSquare> squares = region.getSudokuSquares();
+        return allWinnerFound(region.getSudokuSquares());
+    }
 
+    private boolean allWinnerFound(List<SudokuSquare> squares) {
         if(squares == null || squares.isEmpty())
             return false;
 

@@ -8,31 +8,31 @@ public class SudokuRegion implements BroadcastWinner {
 
     /**
      * Instantiate a region using a list of squares.
-     * @param theSquares The list of squares of the region. Cannot be null or empty.
+     * @param squares The list of squares of the region. Cannot be null or empty.
      */
-    public SudokuRegion (List<SudokuSquare> theSquares) {
-        validateListNotNull(theSquares) ;
+    public SudokuRegion (List<SudokuSquare> squares) {
+        validateListNotNull(squares) ;
 
-        this.squares = theSquares;
+        this.squares = squares;
     }
 
     public List<SudokuSquare> getSudokuSquares() {
-        return this.squares;
+        return squares;
     }
 
     /**
      * Function call by a square that found its winner value.
      * All the others squares of the region need to be notified.
-     * @param square The square which has a winner value.
+     * @param winnerSquare The square which has a winner value.
      */
     @Override
-    public void broadcastWinner(SudokuSquare square) {
-        validateInputIsNotNullAndHasWinnerValue(square);
+    public void broadcastWinner(SudokuSquare winnerSquare) {
+        validateInputIsNotNullAndHasWinnerValue(winnerSquare);
 
-        int winnerValue = square.getWinnerValue();
+        int winnerValue = winnerSquare.getWinnerValue();
 
-        for (SudokuSquare aSquare : this.squares) {
-            if(aSquare != square) {
+        for (SudokuSquare aSquare : squares) {
+            if(aSquare != winnerSquare) {
                 aSquare.setLoserValue(winnerValue);
             }
         }
@@ -45,8 +45,8 @@ public class SudokuRegion implements BroadcastWinner {
             throw new IllegalArgumentException("The input square does not have a winner value yet.");
     }
 
-    private void validateListNotNull(List<SudokuSquare> theSquares) {
-        if(theSquares == null)
+    private void validateListNotNull(List<SudokuSquare> squares) {
+        if(squares == null)
             throw new IllegalArgumentException("The list provided to the constructor SudokuRegion cannot be null.");
     }
 }

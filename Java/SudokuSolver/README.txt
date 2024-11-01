@@ -1,6 +1,5 @@
 -----------------------------------------------------------------------------------------------------------------------
 Author: frederic.debrix.git@gmail.com
-Date: 2024-10-30
 Coverage : On-going (usage of TDD)
 Status : On-going
 -----------------------------------------------------------------------------------------------------------------------
@@ -8,6 +7,7 @@ Status : On-going
 Next Steps
 - in SudokuSolver, extract the logic of the function handleTwoValuesOnlyAvailableInTwoSquares() into a new class
 - consistency : need to review all the unit tests function name in order to be consistent
+
 
 
 Vocabulary - https://en.wikipedia.org/wiki/Sudoku
