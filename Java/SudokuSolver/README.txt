@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------------------------------------------------
 Author: frederic.debrix.git@gmail.com
-Coverage : On-going (usage of TDD)
+Coverage : Ongoing (usage of TDD)
 Status : Resolve easy, medium, expert and master sudokus. Implementing algorithm for extreme sudokus.
          See the class SudokuSolverTest.
 -----------------------------------------------------------------------------------------------------------------------
@@ -78,7 +78,7 @@ This logic is done thanks to the fact to call the instance BroadcastWinner in Su
 [CA] [CB] [CC] [CD]
 [DA] [DB] [DC] [DD]
 
-[AA] is 1, [DB] is 4 and [CC] is 4. The suduko is in the state below.
+[AA] is 1, [DB] is 4 and [CC] is 4. The sudoku is in the state below.
 
 [1]   [2-3] [2-3] [2-4]
 [2-4] [2-3] [1-3] [1-4]

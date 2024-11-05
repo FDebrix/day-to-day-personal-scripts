@@ -65,7 +65,7 @@ public class OneValueInOneSquareOfTheRegionTest {
 
         List<SudokuSquare> squares = Arrays.asList(square1, square2, square3, square4);
 
-        SudokuRegion region = new SudokuRegion(squares);
+        SudokuRegion region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
         List<SudokuRegion> regions = List.of(region);
 
         OneValueInOneSquareOfTheRegion algo = new OneValueInOneSquareOfTheRegion();
@@ -86,7 +86,7 @@ public class OneValueInOneSquareOfTheRegionTest {
 
         List<SudokuSquare> squares = Arrays.asList(square1, square2, square3, square4);
 
-        SudokuRegion region = new SudokuRegion(squares);
+        SudokuRegion region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
         List<SudokuRegion> regions = List.of(region);
 
         OneValueInOneSquareOfTheRegion algo = new OneValueInOneSquareOfTheRegion();

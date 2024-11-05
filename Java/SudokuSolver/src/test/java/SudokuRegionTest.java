@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static main.java.SudokuRegion.SudokuRegionType.HORIZONTAL;
+import static main.java.SudokuRegion.SudokuRegionType.VERTICAL;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuRegionTest {
@@ -15,7 +17,17 @@ public class SudokuRegionTest {
     @Test
     public void test_constructor_doesNotAcceptNullList () {
         assertThrows(IllegalArgumentException.class,
-                () -> new SudokuRegion(null));
+                () -> new SudokuRegion(null, HORIZONTAL));
+    }
+
+    @Test
+    public void test_constructor_doesNotAcceptNullRegionType () {
+        SudokuSquare square = new SudokuSquare(4);
+        List<SudokuSquare> squares = List.of(square);
+        List<SudokuSquare> output;
+
+        assertThrows(IllegalArgumentException.class,
+                () -> new SudokuRegion(squares, null));
     }
 
     @Test
@@ -24,18 +36,20 @@ public class SudokuRegionTest {
         List<SudokuSquare> squares = List.of(square);
         List<SudokuSquare> output;
 
-        SudokuRegion region = new SudokuRegion(squares);
+        SudokuRegion region = new SudokuRegion(squares, HORIZONTAL);
         output = region.getSudokuSquares() ;
 
         assertEquals(squares, output);
+        assertEquals(HORIZONTAL, region.getRegionType());
     }
 
     @Test
     public void test_broadcastWinner_cannotBeNull () {
         SudokuSquare square1 = new SudokuSquare(4);
         List<SudokuSquare> squares = List.of(square1);
-        SudokuRegion region = new SudokuRegion(squares);
+        SudokuRegion region = new SudokuRegion(squares, VERTICAL);
 
+        assertEquals(VERTICAL, region.getRegionType());
         assertThrows(IllegalArgumentException.class,
                 () -> region.broadcastWinner(null));
     }
@@ -44,7 +58,7 @@ public class SudokuRegionTest {
     public void test_broadcastWinner_mustBeAWinnerValue () {
         SudokuSquare square1 = new SudokuSquare(4);
         List<SudokuSquare> squares = List.of(square1);
-        SudokuRegion region = new SudokuRegion(squares);
+        SudokuRegion region = new SudokuRegion(squares, HORIZONTAL);
 
         assertThrows(IllegalArgumentException.class,
                 () -> region.broadcastWinner(square1));
@@ -59,7 +73,7 @@ public class SudokuRegionTest {
         int[] remainingPossibleValuesForSquare2 = {1, 2, 4};
 
         List<SudokuSquare> squares = Arrays.asList(square1, square2);
-        BroadcastWinner region = new SudokuRegion(squares);
+        BroadcastWinner region = new SudokuRegion(squares, HORIZONTAL);
 
         square1.setBroadcastWinner(region);
         square2.setBroadcastWinner(region);

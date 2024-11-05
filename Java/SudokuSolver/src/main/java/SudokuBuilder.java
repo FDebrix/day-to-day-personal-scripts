@@ -1,5 +1,7 @@
 package main.java;
 
+import main.java.SudokuRegion.SudokuRegionType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,7 +89,7 @@ public class SudokuBuilder {
             for(int subgridColId = 0 ; subgridColId < nbSubgridCol ; subgridColId ++) {
 
                 List<SudokuSquare> squaresOfTheSubgrid = new ArrayList<>();
-                SudokuRegion subgridRegion = new SudokuRegion(squaresOfTheSubgrid);
+                SudokuRegion subgridRegion = new SudokuRegion(squaresOfTheSubgrid, SudokuRegionType.SUB_GRID);
                 allSubgridRegions.add(subgridRegion);
 
                 for(int i = 0; i < regionRowSize ; i++) {
@@ -109,7 +111,7 @@ public class SudokuBuilder {
 
         for(int i = 0 ; i < sudokuColSize ; i++) {
             List<SudokuSquare> squaresOnTheCol = new ArrayList<>();
-            SudokuRegion verticalRegion = new SudokuRegion(squaresOnTheCol);
+            SudokuRegion verticalRegion = new SudokuRegion(squaresOnTheCol, SudokuRegionType.VERTICAL);
             allVerticalRegions.add(verticalRegion);
 
             for (int j = 0; j < sudokuRowSize; j++) {
@@ -126,7 +128,7 @@ public class SudokuBuilder {
 
         for(int i = 0 ; i < sudokuRowSize ; i++) {
             List<SudokuSquare> squaresOnTheRow = new ArrayList<>();
-            SudokuRegion horizontalRegion = new SudokuRegion(squaresOnTheRow);
+            SudokuRegion horizontalRegion = new SudokuRegion(squaresOnTheRow, SudokuRegionType.HORIZONTAL);
             allHorizontalRegions.add(horizontalRegion);
 
             for (int j = 0; j < sudokuColSize; j++) {

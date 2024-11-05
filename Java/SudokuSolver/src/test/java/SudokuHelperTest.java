@@ -90,7 +90,7 @@ public class SudokuHelperTest {
     @Test
     public void test_allWinnerFoundList_inputEmpty_returnFalse() {
         List<SudokuSquare> sudokuSquares = new ArrayList<>();
-        SudokuRegion region = new SudokuRegion(sudokuSquares);
+        SudokuRegion region = new SudokuRegion(sudokuSquares, SudokuRegion.SudokuRegionType.HORIZONTAL);
         assertFalse(helper.allWinnerFound(region));
     }
 
@@ -99,7 +99,7 @@ public class SudokuHelperTest {
         when(square1.isWinnerValueFound()).thenReturn(true);
         when(square2.isWinnerValueFound()).thenReturn(true);
         List<SudokuSquare> sudokuSquares = Arrays.asList(square1, square2);
-        SudokuRegion region = new SudokuRegion(sudokuSquares);
+        SudokuRegion region = new SudokuRegion(sudokuSquares, SudokuRegion.SudokuRegionType.HORIZONTAL);
 
         assertTrue(helper.allWinnerFound(region));
     }
@@ -109,7 +109,7 @@ public class SudokuHelperTest {
         when(square1.isWinnerValueFound()).thenReturn(true);
         when(square2.isWinnerValueFound()).thenReturn(false);
         List<SudokuSquare> sudokuSquares = Arrays.asList(square1, square2);
-        SudokuRegion region = new SudokuRegion(sudokuSquares);
+        SudokuRegion region = new SudokuRegion(sudokuSquares, SudokuRegion.SudokuRegionType.HORIZONTAL);
 
         assertFalse(helper.allWinnerFound(region));
     }

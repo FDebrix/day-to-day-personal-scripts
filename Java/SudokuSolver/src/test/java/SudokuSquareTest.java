@@ -88,7 +88,7 @@ public class SudokuSquareTest {
     public void test_getBroadcastWinner_returnProperBroadcastWinner () {
         SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE, 0);
         List<SudokuSquare> squares = Arrays.asList(aSquareWith4PossibleValues);
-        BroadcastWinner region = new SudokuRegion(squares);
+        BroadcastWinner region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
 
         aSquareWith4PossibleValues.setBroadcastWinner(region);
 
@@ -408,7 +408,7 @@ public class SudokuSquareTest {
 
     private void setBroadcastWinner(SudokuSquare square) {
         List<SudokuSquare> squares = Arrays.asList(square);
-        BroadcastWinner region = new SudokuRegion(squares);
+        BroadcastWinner region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
         square.setBroadcastWinner(region);
     }
 }

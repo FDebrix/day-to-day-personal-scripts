@@ -6,7 +6,7 @@ import java.util.List;
 import static main.java.SudokuHelper.SOP;
 
 /**
- * Algorithm to find the value only available in one place.
+ * Algorithm to find the values which are available only in one square of a region.
  * <br/>
  * Let assume we have a 9 x 9 sudoku. On one row, we have the follow possible values:
  *                      8,9 | 3 | 7 | 4 | 5 | 1 | 8,9 | 2,8 | 6
