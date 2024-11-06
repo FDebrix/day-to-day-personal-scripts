@@ -8,35 +8,36 @@ import java.util.List;
  */
 public class SudokuRegions implements BroadcastWinner {
 
-    private List<BroadcastWinner> broadcastWinners;
+    private List<SudokuRegion> regions;
 
 
     public SudokuRegions () {
-        broadcastWinners = new ArrayList<>();
+        regions = new ArrayList<>();
     }
 
     @Override
     public void broadcastWinner(SudokuSquare square) {
-        if(broadcastWinners.isEmpty())
+        if(regions.isEmpty())
             return;
 
-        for(BroadcastWinner broadcastWinner : broadcastWinners)
-            broadcastWinner.broadcastWinner(square);
+        for(SudokuRegion region : regions)
+            region.broadcastWinner(square);
     }
 
-    @Override
+//    @Override
     public List<SudokuRegion> getRegions() {
+        /*
         List<SudokuRegion> regions = new ArrayList<>();
-        for(BroadcastWinner broadcastWinner : broadcastWinners) {
-            regions.addAll(broadcastWinner.getRegions());
-        }
+        for(SudokuRegion region : regions) {
+            regions.addAll(region.getRegions());
+        }*/
         return regions;
     }
 
-    public void addBroadcastWinner(BroadcastWinner broadcastWinner) {
-        if(broadcastWinner == null)
-            throw new IllegalArgumentException("The input BroadcastWinner cannot be null");
+    public void addRegion(SudokuRegion region) {
+        if(region == null)
+            throw new IllegalArgumentException("The input region cannot be null");
 
-        broadcastWinners.add(broadcastWinner);
+        regions.add(region);
     }
 }

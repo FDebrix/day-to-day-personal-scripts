@@ -5,7 +5,7 @@ import main.java.SudokuSolver;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static test.java.SudokuTestHelper.*;
+import static test.java.SudokuSolverTestData.*;
 
 public class SudokuSolverTest {
 
@@ -91,10 +91,23 @@ public class SudokuSolverTest {
         int[][] output = solver.resolveTheSudoku();
 
         solver.printPossibleValues();
-        SudokuHelper.getInstance().printlnRemainingPossibleValues(output);
 
         assertEquals(SUDOKU_id7_9x9_EXTREME_INPUT.length, output.length);
         assertEquals(SUDOKU_id7_9x9_EXTREME_INPUT[0].length, output[0].length);
-        assertArrayEquals(SUDOKU_id7_9x9_EXTREME_EXPECTED_TEMP, output);
+        assertArrayEquals(SUDOKU_id7_9x9_EXTREME_EXPECTED, output);
+    }
+
+    @Test
+    public void test_run_9x9_impossible() {
+        SudokuSolver solver = new SudokuSolver(SUDOKU_id7_9x9_IMPOSSIBLE_INPUT);
+
+        int[][] output = solver.resolveTheSudoku();
+
+        solver.printPossibleValues();
+        SudokuHelper.getInstance().printlnRemainingPossibleValues(output);
+
+        assertEquals(SUDOKU_id7_9x9_IMPOSSIBLE_INPUT.length, output.length);
+        assertEquals(SUDOKU_id7_9x9_IMPOSSIBLE_INPUT[0].length, output[0].length);
+        assertArrayEquals(SUDOKU_id7_9x9_IMPOSSIBLE_EXPECTED_TEMP, output);
     }
 }

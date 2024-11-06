@@ -59,6 +59,10 @@ public class SudokuSquare {
         return regions;
     }
 
+    public void addRegion(SudokuRegion region) {
+        regions.addRegion(region);
+    }
+
     // TODO
     // Used for unittests. Need to revisit to make it protected or package visibility.
     public ValueState[] getValueState() {
@@ -186,7 +190,7 @@ public class SudokuSquare {
                             value, possibleValues[value], WINNER_VALUE));
         }
 
-        if(regions == null || regions.getRegions().isEmpty()) {
+        if(regions.getRegions().isEmpty()) {
             throw new IllegalStateException("Cannot compute a winner value without a broadcast winner");
         }
 

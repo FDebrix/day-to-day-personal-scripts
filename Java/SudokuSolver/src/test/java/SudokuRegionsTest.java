@@ -25,7 +25,7 @@ public class SudokuRegionsTest {
     public void test_addBroadcastWinner_nullThrowException() {
         SudokuRegions regions = new SudokuRegions();
         assertThrows(IllegalArgumentException.class,
-                () -> regions.addBroadcastWinner(null));
+                () -> regions.addRegion(null));
     }
 
     @Test
@@ -38,8 +38,8 @@ public class SudokuRegionsTest {
         SudokuRegion region2 = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.VERTICAL);
 
         SudokuRegions regions = new SudokuRegions();
-        regions.addBroadcastWinner(region1);
-        regions.addBroadcastWinner(region2);
+        regions.addRegion(region1);
+        regions.addRegion(region2);
 
         assertNotNull(regions.getRegions());
         assertEquals(2, regions.getRegions().size());
@@ -60,7 +60,7 @@ public class SudokuRegionsTest {
         SudokuRegion region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
 
         SudokuRegions regions = new SudokuRegions();
-        regions.addBroadcastWinner(region);
+        regions.addRegion(region);
 
         square1.setRegions(regions);
         square2.setRegions(regions);

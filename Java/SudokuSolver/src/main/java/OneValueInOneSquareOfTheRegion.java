@@ -22,7 +22,7 @@ public class OneValueInOneSquareOfTheRegion implements SudokuAlgorithm {
         if(regions == null || regions.isEmpty())
             return false;
 
-        if(SOP) System.out.println("OneValueInOneSquareOfTheRegion was call with " + regions.size() + " regions.");
+        if(SOP) System.out.println(this.getClass().getName() + ": The runAlgorithm function is call with " + regions.size() + " regions.");
 
         boolean findAWinner = true;
 
@@ -42,11 +42,13 @@ public class OneValueInOneSquareOfTheRegion implements SudokuAlgorithm {
         if(SudokuHelper.getInstance().allWinnerFound(region))
             return false;
 
+        if(SOP) System.out.println(this.getClass().getName() + ": The runAlgorithm function is run with 1 region" + region.getRegionType() + ".");
+
         boolean findAWinner = false;
 
         List<List<SudokuSquare>> squaresPerPossibleValue = getSquaresPerPossibleValues(region);
 
-        for(int i = 0 ; i < squaresPerPossibleValue.size() ; i++) {
+        for(int i = 1 ; i < squaresPerPossibleValue.size() ; i++) {
             List<SudokuSquare> squaresForOnePossibleValue = squaresPerPossibleValue.get(i);
 
             if(valuePossibleOnlyInOneSquareWithoutWinnerValue(squaresForOnePossibleValue)){

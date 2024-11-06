@@ -1,6 +1,5 @@
 package test.java;
 
-import main.java.BroadcastWinner;
 import main.java.SudokuRegion;
 import main.java.SudokuRegions;
 import main.java.SudokuSquare;
@@ -91,9 +90,9 @@ public class SudokuSquareTest {
     public void test_getBroadcastWinner_returnProperBroadcastWinner () {
         SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE, 0);
         List<SudokuSquare> squares = Arrays.asList(aSquareWith4PossibleValues);
-        BroadcastWinner region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
+        SudokuRegion region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
         SudokuRegions regions = new SudokuRegions();
-        regions.addBroadcastWinner(region);
+        regions.addRegion(region);
 
         aSquareWith4PossibleValues.setRegions(regions);
 
@@ -398,7 +397,7 @@ public class SudokuSquareTest {
 
     private SudokuSquare buildSudokuSquare(int nbPossibleValues, int initialValue) {
         SudokuSquare square = new SudokuSquare(nbPossibleValues);
-        setBroadcastWinner(square);
+        setRegions(square);
         square.setInitialValue(initialValue);
 
         return square;
@@ -406,16 +405,16 @@ public class SudokuSquareTest {
 
     private SudokuSquare buildSudokuSquare(int nbPossibleValues) {
         SudokuSquare square =  new SudokuSquare(nbPossibleValues);
-        setBroadcastWinner(square);
+        setRegions(square);
 
         return square;
     }
 
-    private void setBroadcastWinner(SudokuSquare square) {
+    private void setRegions(SudokuSquare square) {
         List<SudokuSquare> squares = Arrays.asList(square);
-        BroadcastWinner region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
+        SudokuRegion region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
         SudokuRegions regions = new SudokuRegions();
-        regions.addBroadcastWinner(region);
+        regions.addRegion(region);
         square.setRegions(regions);
     }
 }

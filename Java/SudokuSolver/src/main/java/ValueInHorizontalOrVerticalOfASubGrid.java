@@ -2,6 +2,8 @@ package main.java;
 
 import java.util.List;
 
+import static main.java.SudokuHelper.SOP;
+
 /**
  * In a row or a column, if a value is only possible in the same subgrid,
  * this value cannot be possible for the other squares of the subgrid.
@@ -53,7 +55,16 @@ public class ValueInHorizontalOrVerticalOfASubGrid implements SudokuAlgorithm {
         if(regions == null)
             return false;
 
-        return false;
+        if(SOP) System.out.println(this.getClass().getName() + ": The runAlgorithm function was call with " + regions.size() + " regions.");
+
+        boolean findAWinner = true;
+
+        for(SudokuRegion region : regions) {
+            boolean findAWinnerOneRun = runAlgorithm(region);
+            findAWinner &= findAWinnerOneRun;
+        }
+
+        return findAWinner;
     }
 
     @Override
@@ -61,8 +72,84 @@ public class ValueInHorizontalOrVerticalOfASubGrid implements SudokuAlgorithm {
         if(region == null)
             return false;
 
-        region.getSudokuSquares().getFirst().getRegions();
+        if(SudokuHelper.getInstance().allWinnerFound(region))
+            return false;
 
-        return false;
+        // This algorithm is run only on the horizontal or vertical region
+        if( ! regionIsHorizontalOrVertical(region)) {
+            return false;
+        }
+
+        if(SOP) System.out.println(this.getClass().getName() + ": The runAlgorithm function is run with 1 region " + region.getRegionType() + ".");
+
+        boolean setLoserValue = false;
+
+        List<List<SudokuSquare>> squaresPerPossibleValue = getSquaresPerPossibleValues(region);
+
+        for(int i = 1 ; i < squaresPerPossibleValue.size() ; i++) {
+            List<SudokuSquare> squaresForOnePossibleValue = squaresPerPossibleValue.get(i);
+
+            SudokuRegion subgrid = getRegionWithAtLess2ValuesAndValuePossibleInSameSubgrid(squaresForOnePossibleValue);
+
+            if(subgrid != null) {
+                for(SudokuSquare squareOfTheSubgrid : subgrid.getSudokuSquares()) {
+                    if( ! region.getSudokuSquares().contains(squareOfTheSubgrid)) {
+                        squareOfTheSubgrid.setLoserValue(i);
+                    }
+                }
+                setLoserValue = true;
+            }
+        }
+        return setLoserValue;
+    }
+
+    private SudokuRegion getRegionWithAtLess2ValuesAndValuePossibleInSameSubgrid(List<SudokuSquare> squaresForOnePossibleValue) {
+        if(asOneUniqueSquare(squaresForOnePossibleValue))
+            return null;
+
+        SudokuRegion subgridRegionOneTheFirstRegion = getSubGridRegion (squaresForOnePossibleValue.getFirst());
+
+        for(SudokuSquare square : squaresForOnePossibleValue) {
+            SudokuRegion subgrid = getSubGridRegion(square);
+
+            if(subgrid != subgridRegionOneTheFirstRegion) {
+                return null;
+            }
+        }
+
+        return subgridRegionOneTheFirstRegion;
+    }
+
+    private SudokuRegion getSubGridRegion(SudokuSquare square) {
+        List<SudokuRegion> regionsOfTheSquare = square.getRegions().getRegions();
+        SudokuRegion subGridRegion = null;
+
+        for(SudokuRegion region : regionsOfTheSquare) {
+            if(region.getRegionType() == SudokuRegion.SudokuRegionType.SUB_GRID) {
+                subGridRegion = region;
+                break;
+            }
+        }
+
+        if(subGridRegion == null) {
+            throw new IllegalStateException("A square does not have a subgrid");
+        }
+
+        return subGridRegion;
+    }
+
+    // Or this is the winner value
+    // Or this is the last possible value
+    private boolean asOneUniqueSquare(List<SudokuSquare> squaresForOnePossibleValue) {
+        return squaresForOnePossibleValue.size() == 1;
+    }
+
+    private List<List<SudokuSquare>> getSquaresPerPossibleValues(SudokuRegion region) {
+        return SudokuHelper.getInstance().getSquaresPerPossibleValues(region);
+    }
+
+    private static boolean regionIsHorizontalOrVertical(SudokuRegion region) {
+        return (region.getRegionType() == SudokuRegion.SudokuRegionType.HORIZONTAL)
+                || (region.getRegionType() == SudokuRegion.SudokuRegionType.VERTICAL);
     }
 }

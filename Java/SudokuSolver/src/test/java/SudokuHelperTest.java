@@ -134,7 +134,7 @@ public class SudokuHelperTest {
         SudokuRegion region = new SudokuRegion(
                 List.of(square01, square02, square03, square04), HORIZONTAL);
         SudokuRegions regions = new SudokuRegions();
-        regions.addBroadcastWinner(region);
+        regions.addRegion(region);
 
         square01.setRegions(regions);
         square02.setRegions(regions);

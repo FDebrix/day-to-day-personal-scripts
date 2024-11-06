@@ -22,6 +22,14 @@ public class SudokuRegion implements BroadcastWinner {
 
         this.regionType = regionType;
         this.squares = squares;
+
+        registerCurrentRegionIntoAllSquares(squares);
+    }
+
+    private void registerCurrentRegionIntoAllSquares(List<SudokuSquare> squares) {
+        for(SudokuSquare square : squares) {
+            square.addRegion(this);
+        }
     }
 
     public List<SudokuSquare> getSudokuSquares() {
@@ -50,7 +58,7 @@ public class SudokuRegion implements BroadcastWinner {
         }
     }
 
-    @Override
+//    @Override
     public List<SudokuRegion> getRegions() {
         return List.of(this);
     }

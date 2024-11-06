@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static test.java.SudokuTestHelper.*;
+import static test.java.SudokuSolverTestData.*;
 
 public class SudokuBuilderTest {
 

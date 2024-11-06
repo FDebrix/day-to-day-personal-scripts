@@ -19,24 +19,20 @@ public class SudokuSolver {
         squares = sudokuBuilderOutput.allTheSquares;
         regions = sudokuBuilderOutput.allTheRegions;
 
-        if(SOP && allWinnerFound()) { System.out.println("The sudoku was resolved without running algorithms"); }
+        if(SOP && allWinnerFound()) { System.out.println(this.getClass().getName() + ": The sudoku was resolved without running algorithms"); }
     }
 
 
     public int[][] resolveTheSudoku() {
         OneValueInOneSquareOfTheRegion algo1 = new OneValueInOneSquareOfTheRegion();
+        ValueInHorizontalOrVerticalOfASubGrid algo2 = new ValueInHorizontalOrVerticalOfASubGrid();
 
         for(int k = 0 ; k < 20 ; k++) {
 
+            boolean foundAWinner = algo1.runAlgorithm(regions);
             if(allWinnerFound()) break;
 
-            boolean foundAWinner = algo1.runAlgorithm(regions);
-
-            if(! foundAWinner) {
-                //System.out.println("\t\tSize " + regions.listOfSquares.size());
-                //handleTwoValuesOnlyAvailableInTwoSquares(listOfSquares);
-            }
-
+            algo2.runAlgorithm(regions);
             if(allWinnerFound()) break;
         }
 

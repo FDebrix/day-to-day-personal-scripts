@@ -7,5 +7,4 @@ import java.util.List;
  */
 public interface BroadcastWinner {
     public void broadcastWinner(SudokuSquare square);
-    public List<SudokuRegion> getRegions();
 }

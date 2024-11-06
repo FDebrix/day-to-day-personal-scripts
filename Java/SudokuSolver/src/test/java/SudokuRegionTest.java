@@ -86,7 +86,7 @@ public class SudokuRegionTest {
         List<SudokuSquare> squares = Arrays.asList(square1, square2);
         SudokuRegion region = new SudokuRegion(squares, HORIZONTAL);
         SudokuRegions regions = new SudokuRegions();
-        regions.addBroadcastWinner(region);
+        regions.addRegion(region);
 
         square1.setRegions(regions);
         square2.setRegions(regions);
