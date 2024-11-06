@@ -1,8 +1,10 @@
 package main.java;
 
+import java.util.List;
+
 /**
  * In a row or a column, if a value is only possible in the same subgrid,
- * this value cannot be possible for the rest of the row or the rest of the column.
+ * this value cannot be possible for the other squares of the subgrid.
  *
  * Below the first left columns of a real sudoku. For each square, the remaining possible values.
  *          | ----------------------------------------- |
@@ -45,5 +47,22 @@ package main.java;
  * ROW H    | [2,6,7,9]	    [1,2,6,7,8]	    [3]         |
  * ROW I    | [5]	        [1,2,4]		    [2,4]       |
  */
-public class ValueInHorizontalOrVerticalOfASubGrid {
+public class ValueInHorizontalOrVerticalOfASubGrid implements SudokuAlgorithm {
+    @Override
+    public boolean runAlgorithm(List<SudokuRegion> regions) {
+        if(regions == null)
+            return false;
+
+        return false;
+    }
+
+    @Override
+    public boolean runAlgorithm(SudokuRegion region) {
+        if(region == null)
+            return false;
+
+        region.getSudokuSquares().getFirst().getBroadcastWinner();
+
+        return false;
+    }
 }

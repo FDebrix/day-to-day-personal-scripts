@@ -29,6 +29,25 @@ public class SudokuRegionsTest {
     }
 
     @Test
+    public void test_getRegions_returnTheRegion() {
+        SudokuSquare square1 = new SudokuSquare(4);
+        SudokuSquare square2 = new SudokuSquare(4);
+        List<SudokuSquare> squares = Arrays.asList(square1, square2);
+
+        SudokuRegion region1 = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
+        SudokuRegion region2 = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.VERTICAL);
+
+        SudokuRegions regions = new SudokuRegions();
+        regions.addBroadcastWinner(region1);
+        regions.addBroadcastWinner(region2);
+
+        assertNotNull(regions.getRegions());
+        assertEquals(2, regions.getRegions().size());
+        assertEquals(region1, regions.getRegions().get(0));
+        assertEquals(region2, regions.getRegions().get(1));
+    }
+
+    @Test
     public void test_broadcastWinner_broadcastWinnersNotEmpty() {
         int winnerValueOfSquare1 = 3;
         int[] possibleValues = {1, 2, 3, 4};

@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static main.java.SudokuRegion.SudokuRegionType.HORIZONTAL;
-import static main.java.SudokuRegion.SudokuRegionType.VERTICAL;
+import static main.java.SudokuRegion.SudokuRegionType.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SudokuRegionTest {
@@ -53,6 +52,19 @@ public class SudokuRegionTest {
         assertThrows(IllegalArgumentException.class,
                 () -> region.broadcastWinner(null));
     }
+
+    @Test
+    public void test_getRegions_returnTheRegion () {
+        SudokuSquare square1 = new SudokuSquare(4);
+        List<SudokuSquare> squares = List.of(square1);
+        SudokuRegion region = new SudokuRegion(squares, SUB_GRID);
+
+        assertEquals(SUB_GRID, region.getRegionType());
+        assertNotNull(region.getRegions());
+        assertEquals(1, region.getRegions().size());
+        assertEquals(region, region.getRegions().getFirst());
+    }
+
 
     @Test
     public void test_broadcastWinner_mustBeAWinnerValue () {

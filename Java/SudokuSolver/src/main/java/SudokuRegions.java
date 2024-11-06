@@ -24,6 +24,15 @@ public class SudokuRegions implements BroadcastWinner {
             broadcastWinner.broadcastWinner(square);
     }
 
+    @Override
+    public List<SudokuRegion> getRegions() {
+        List<SudokuRegion> regions = new ArrayList<>();
+        for(BroadcastWinner broadcastWinner : broadcastWinners) {
+            regions.addAll(broadcastWinner.getRegions());
+        }
+        return regions;
+    }
+
     public void addBroadcastWinner(BroadcastWinner broadcastWinner) {
         if(broadcastWinner == null)
             throw new IllegalArgumentException("The input BroadcastWinner cannot be null");
