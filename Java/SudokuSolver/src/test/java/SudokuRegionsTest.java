@@ -62,8 +62,8 @@ public class SudokuRegionsTest {
         SudokuRegions regions = new SudokuRegions();
         regions.addBroadcastWinner(region);
 
-        square1.setBroadcastWinner(regions);
-        square2.setBroadcastWinner(regions);
+        square1.setRegions(regions);
+        square2.setRegions(regions);
 
         assertFalse(square1.isWinnerValueFound());
         assertEquals(NOT_FOUND_YET, square1.getWinnerValue());

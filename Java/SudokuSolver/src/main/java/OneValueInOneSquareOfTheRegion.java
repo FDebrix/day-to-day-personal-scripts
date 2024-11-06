@@ -1,6 +1,5 @@
 package main.java;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static main.java.SudokuHelper.SOP;
@@ -59,38 +58,15 @@ public class OneValueInOneSquareOfTheRegion implements SudokuAlgorithm {
         return findAWinner;
     }
 
+    private List<List<SudokuSquare>> getSquaresPerPossibleValues(SudokuRegion region) {
+        return SudokuHelper.getInstance().getSquaresPerPossibleValues(region);
+    }
+
     // Test if:
     // - There is one unique square in the list. That means that the value is only possible in one square for the entire region.
     // - The square did not find yet its winner value. Then, in theory, this square has multiple possible values.
     private boolean valuePossibleOnlyInOneSquareWithoutWinnerValue(List<SudokuSquare> squaresForOnePossibleValue) {
         return squaresForOnePossibleValue.size() == 1
                 && ! squaresForOnePossibleValue.getFirst().isWinnerValueFound();
-    }
-
-    // The index i of the first list contains the list of all the squares who have for possible value i.
-    private List<List<SudokuSquare>> getSquaresPerPossibleValues(SudokuRegion region) {
-        List<List<SudokuSquare>> squaresPerPossibleValues = buildEmptySquaresPerPossibleValues(region);
-
-        for(SudokuSquare aSquare : region.getSudokuSquares()) {
-            int[] values = aSquare.getWinnerValueOrPossibleValues();
-
-            for(int value : values) {
-                squaresPerPossibleValues.get(value).add(aSquare);
-            }
-        }
-
-        return squaresPerPossibleValues;
-    }
-
-    private List<List<SudokuSquare>> buildEmptySquaresPerPossibleValues(SudokuRegion region) {
-        int nbPossibleValues = region.getSudokuSquares().size();
-
-        List<List<SudokuSquare>> squaresPerPossibleValues = new ArrayList<>();
-
-        for (int i = 0 ; i < nbPossibleValues + 1 ; i++) {
-            squaresPerPossibleValues.add(i, new ArrayList<>());
-        }
-
-        return squaresPerPossibleValues;
     }
 }

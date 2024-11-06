@@ -2,6 +2,7 @@ package test.java;
 
 import main.java.BroadcastWinner;
 import main.java.SudokuRegion;
+import main.java.SudokuRegions;
 import main.java.SudokuSquare;
 import main.java.SudokuSquare.ValueState;
 import org.junit.jupiter.api.Test;
@@ -75,13 +76,15 @@ public class SudokuSquareTest {
         SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE, 0);
 
         assertThrows(IllegalArgumentException.class,
-                () -> aSquareWith4PossibleValues.setBroadcastWinner(null));
+                () -> aSquareWith4PossibleValues.setRegions(null));
     }
 
     @Test
-    public void test_getBroadcastWinner_returnNullWhenNotSet () {
+    public void test_getBroadcastWinner_whenRegionsNotSet_returnIsNotNull () {
         SudokuSquare square = new SudokuSquare(4);
-        assertNull(square.getBroadcastWinner());
+        SudokuRegions regions = square.getRegions();
+        assertNotNull(regions);
+        assertTrue(regions.getRegions().isEmpty());
     }
 
     @Test
@@ -89,10 +92,12 @@ public class SudokuSquareTest {
         SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE, 0);
         List<SudokuSquare> squares = Arrays.asList(aSquareWith4PossibleValues);
         BroadcastWinner region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
+        SudokuRegions regions = new SudokuRegions();
+        regions.addBroadcastWinner(region);
 
-        aSquareWith4PossibleValues.setBroadcastWinner(region);
+        aSquareWith4PossibleValues.setRegions(regions);
 
-        assertEquals(region, aSquareWith4PossibleValues.getBroadcastWinner());
+        assertEquals(regions, aSquareWith4PossibleValues.getRegions());
     }
 
     @Test
@@ -409,6 +414,8 @@ public class SudokuSquareTest {
     private void setBroadcastWinner(SudokuSquare square) {
         List<SudokuSquare> squares = Arrays.asList(square);
         BroadcastWinner region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
-        square.setBroadcastWinner(region);
+        SudokuRegions regions = new SudokuRegions();
+        regions.addBroadcastWinner(region);
+        square.setRegions(regions);
     }
 }

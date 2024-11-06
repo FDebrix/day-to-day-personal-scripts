@@ -30,7 +30,8 @@ public class SudokuSquare {
     // We can have used possibleValues[0] to save it. But I prefer to keep the code clear.
     private int foundValue = NOT_FOUND_YET;
 
-    private BroadcastWinner broadcastWinner;
+    // The regions in which the square is.
+    private SudokuRegions regions;
 
 
     public SudokuSquare(int nbPossibleValues) {
@@ -44,17 +45,18 @@ public class SudokuSquare {
         for (int i = 1 ; i < possibleValues.length ; i++) {
             possibleValues[i] = POSSIBLE_VALUE;
         }
+
+        regions = new SudokuRegions();
     }
 
-    public void setBroadcastWinner(BroadcastWinner broadcastWinner) {
-        if(broadcastWinner == null)
-            throw new IllegalArgumentException("The input broadcast winner cannot by null");
+    public void setRegions(SudokuRegions regions) {
+        validateRegionsNotNull(regions);
 
-        this.broadcastWinner = broadcastWinner;
+        this.regions = regions;
     }
 
-    public BroadcastWinner getBroadcastWinner() {
-        return broadcastWinner;
+    public SudokuRegions getRegions() {
+        return regions;
     }
 
     // TODO
@@ -184,14 +186,14 @@ public class SudokuSquare {
                             value, possibleValues[value], WINNER_VALUE));
         }
 
-        if(broadcastWinner == null) {
+        if(regions == null || regions.getRegions().isEmpty()) {
             throw new IllegalStateException("Cannot compute a winner value without a broadcast winner");
         }
 
         possibleValues[value] = WINNER_VALUE;
         foundValue = value;
         set_LOSER_VALUE_toAllValuesExcept(value);
-        broadcastWinner.broadcastWinner(this);
+        regions.broadcastWinner(this);
     }
 
     private void set_LOSER_VALUE_toAllValuesExcept(int value) {
@@ -227,6 +229,11 @@ public class SudokuSquare {
         if(nbOfPOSSIBLE_VALUE == 1) {
             computeWinnerValue(lastValuePOSSIBLE_VALUE);
         }
+    }
+
+    private static void validateRegionsNotNull(SudokuRegions regions) {
+        if(regions == null)
+            throw new IllegalArgumentException("The input broadcast winner cannot by null");
     }
 
     private void validateNewStateIsWinnerOrLoser(ValueState newState) {

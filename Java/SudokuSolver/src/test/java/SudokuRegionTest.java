@@ -1,7 +1,7 @@
 package test.java;
 
-import main.java.BroadcastWinner;
 import main.java.SudokuRegion;
+import main.java.SudokuRegions;
 import main.java.SudokuSquare;
 import org.junit.jupiter.api.Test;
 
@@ -23,7 +23,6 @@ public class SudokuRegionTest {
     public void test_constructor_doesNotAcceptNullRegionType () {
         SudokuSquare square = new SudokuSquare(4);
         List<SudokuSquare> squares = List.of(square);
-        List<SudokuSquare> output;
 
         assertThrows(IllegalArgumentException.class,
                 () -> new SudokuRegion(squares, null));
@@ -85,10 +84,12 @@ public class SudokuRegionTest {
         int[] remainingPossibleValuesForSquare2 = {1, 2, 4};
 
         List<SudokuSquare> squares = Arrays.asList(square1, square2);
-        BroadcastWinner region = new SudokuRegion(squares, HORIZONTAL);
+        SudokuRegion region = new SudokuRegion(squares, HORIZONTAL);
+        SudokuRegions regions = new SudokuRegions();
+        regions.addBroadcastWinner(region);
 
-        square1.setBroadcastWinner(region);
-        square2.setBroadcastWinner(region);
+        square1.setRegions(regions);
+        square2.setRegions(regions);
         square1.setWinnerValue(winnerValueOfTheSquare1);
 
         region.broadcastWinner(square1);

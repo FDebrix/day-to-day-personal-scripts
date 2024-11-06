@@ -141,8 +141,7 @@ public class SudokuBuilder {
     }
 
     private void addTheSudokuRegionToTheSquare(SudokuRegion region, int i, int j) {
-        // TODO - LOW priority - I don't like this hardcoded cast
-        ((SudokuRegions)allTheSquares[i][j].getBroadcastWinner()).addBroadcastWinner(region);
+        allTheSquares[i][j].getRegions().addBroadcastWinner(region);
     }
 
     private SudokuSquare[][] buildSudokuSquaresAndSetDefaultBroadcastWinner() {
@@ -151,7 +150,6 @@ public class SudokuBuilder {
         for(int i = 0; i < sudokuRowSize; i++) {
             for(int j = 0; j < sudokuColSize; j++) {
                 sudokuSquares[i][j] = new SudokuSquare(nbPossibleValues);
-                sudokuSquares[i][j].setBroadcastWinner(new SudokuRegions());
             }
         }
         return sudokuSquares;

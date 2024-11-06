@@ -39,7 +39,7 @@ public class SudokuRegion implements BroadcastWinner {
      */
     @Override
     public void broadcastWinner(SudokuSquare winnerSquare) {
-        validateInputIsNotNullAndHasWinnerValue(winnerSquare);
+        validateInputIsNotNullAndHasNoWinnerValue(winnerSquare);
 
         int winnerValue = winnerSquare.getWinnerValue();
 
@@ -55,7 +55,7 @@ public class SudokuRegion implements BroadcastWinner {
         return List.of(this);
     }
 
-    private void validateInputIsNotNullAndHasWinnerValue(SudokuSquare square) {
+    private void validateInputIsNotNullAndHasNoWinnerValue(SudokuSquare square) {
         if(square == null)
             throw new IllegalArgumentException("The input square cannot be null.");
         if(! square.isWinnerValueFound())

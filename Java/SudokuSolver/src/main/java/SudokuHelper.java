@@ -1,5 +1,6 @@
 package main.java;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,6 +19,13 @@ public class SudokuHelper {
         return instance;
     }
 
+    /**
+     * Return the winner value of an array of SudokuSquare.
+     * Keep in mind that the value 0 means the values is not found yet.
+     * @param squares The squares to return the winner value.
+     * @return The winner values.
+     */
+    // TODO to delete?
     public int[][] getWinnerValues(SudokuSquare[][] squares) {
         int sudokuRowSize = squares.length;
         int sudokuColSize = squares[0].length;
@@ -32,6 +40,10 @@ public class SudokuHelper {
         return result;
     }
 
+    /**
+     * Print the found values of all the squares.
+     * @param squares The squares to print their winner values.
+     */
     public void printlnFoundValues(SudokuSquare[][] squares) {
         for(SudokuSquare[] arrayOfSquares: squares) {
             for (SudokuSquare square : arrayOfSquares) {
@@ -41,6 +53,10 @@ public class SudokuHelper {
         }
     }
 
+    /**
+     * Print the remaining possible values of all the input squares.
+     * @param squares The squares to print their possible values.
+     */
     public void printlnRemainingPossibleValues(SudokuSquare[][] squares) {
         for(SudokuSquare[] arrayOfSquares: squares) {
             for (SudokuSquare square : arrayOfSquares) {
@@ -50,14 +66,24 @@ public class SudokuHelper {
         }
     }
 
-    public void printlnRemainingPossibleValues(int[][] squares) {
-        for(int[] arrayOfPossibleValues: squares) {
+    /**
+     * Print the remaining possible values of all the input squares.
+     * @param squarePossibleValues The squares to print their possible values.
+     */
+    public void printlnRemainingPossibleValues(int[][] squarePossibleValues) {
+        for(int[] arrayOfPossibleValues: squarePossibleValues) {
             for (int possibleValue : arrayOfPossibleValues) {
                 System.out.print(possibleValue + "\t");
             }
             System.out.print("\n");
         }
     }
+
+    /**
+     * Return true if all squares of the provided array found their winner value
+     * @param squares The squares to test
+     * @return true if all squares of the provided array found their winner value
+     */
     public boolean allWinnerFound(SudokuSquare[][] squares) {
         if(squares == null || squares.length == 0)
             return false;
@@ -70,11 +96,46 @@ public class SudokuHelper {
         return true;
     }
 
+    /**
+     * Return true if all squares of the provided region found their winner value
+     * @param region The region to test
+     * @return true if all squares of the provided region found their winner value
+     */
     public boolean allWinnerFound(SudokuRegion region) {
         if(region == null)
             return false;
 
         return allWinnerFound(region.getSudokuSquares());
+    }
+
+    // The index i of the first list contains the list of all the squares who have for possible value i.
+    public List<List<SudokuSquare>> getSquaresPerPossibleValues(SudokuRegion region) {
+        if(region == null)
+            return Arrays.asList();
+
+        List<List<SudokuSquare>> squaresPerPossibleValues = buildEmptySquaresPerPossibleValues(region);
+
+        for(SudokuSquare aSquare : region.getSudokuSquares()) {
+            int[] values = aSquare.getWinnerValueOrPossibleValues();
+
+            for(int value : values) {
+                squaresPerPossibleValues.get(value).add(aSquare);
+            }
+        }
+
+        return squaresPerPossibleValues;
+    }
+
+    private List<List<SudokuSquare>> buildEmptySquaresPerPossibleValues(SudokuRegion region) {
+        int nbPossibleValues = region.getSudokuSquares().size();
+
+        List<List<SudokuSquare>> squaresPerPossibleValues = new ArrayList<>();
+
+        for (int i = 0 ; i < nbPossibleValues + 1 ; i++) {
+            squaresPerPossibleValues.add(i, new ArrayList<>());
+        }
+
+        return squaresPerPossibleValues;
     }
 
     private boolean allWinnerFound(List<SudokuSquare> squares) {

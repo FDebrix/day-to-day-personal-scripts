@@ -71,7 +71,7 @@ public class SudokuBuilderTest {
 
         for(int i = 0 ; i < nbRows ; i++) {
             for (int j = 0; j < nbColumns; j++) {
-                BroadcastWinner winner = sudokuSquares[i][j].getBroadcastWinner();
+                BroadcastWinner winner = sudokuSquares[i][j].getRegions();
                 assertInstanceOf(SudokuRegions.class, winner);
 
                 // TODO to continue
