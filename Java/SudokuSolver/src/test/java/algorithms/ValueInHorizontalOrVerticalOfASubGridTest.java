@@ -1,4 +1,4 @@
-package test.java;
+package test.java.algorithms;
 
 import main.java.*;
 import main.java.algorithms.ValueInHorizontalOrVerticalOfASubGrid;

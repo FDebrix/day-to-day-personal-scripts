@@ -1,4 +1,4 @@
-package test.java;
+package test.java.algorithms;
 
 import main.java.SudokuHelper;
 import main.java.SudokuRegion;
