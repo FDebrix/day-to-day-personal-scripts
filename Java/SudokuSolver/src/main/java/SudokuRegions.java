@@ -24,13 +24,7 @@ public class SudokuRegions implements BroadcastWinner {
             region.broadcastWinner(square);
     }
 
-//    @Override
     public List<SudokuRegion> getRegions() {
-        /*
-        List<SudokuRegion> regions = new ArrayList<>();
-        for(SudokuRegion region : regions) {
-            regions.addAll(region.getRegions());
-        }*/
         return regions;
     }
 

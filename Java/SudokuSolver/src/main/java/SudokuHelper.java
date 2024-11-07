@@ -97,6 +97,27 @@ public class SudokuHelper {
     }
 
     /**
+     * Create a square using a list of possible values without setting any region.
+     * If this function is used with one unique possible value, an IllegalStateException will be thrown
+     * since the square does not have region assigned to it.
+     * @param nbPossibleValues The number of possible values of the square.
+     * @param possibleValues The possible values of the square.
+     * @return The created square.
+     */
+    // TODO to review and maybe to fix the IllegalStateException when there is just one possible value.
+    public SudokuSquare buildSquare(int nbPossibleValues, int... possibleValues) {
+        SudokuSquare square = new SudokuSquare(nbPossibleValues);
+
+        for(int oneOfAllPossibleValues = 1 ; oneOfAllPossibleValues <= nbPossibleValues ; oneOfAllPossibleValues++) {
+            int finalOneOfAllPossibleValues = oneOfAllPossibleValues;
+            if( Arrays.stream(possibleValues).noneMatch(i -> i == finalOneOfAllPossibleValues)) {
+                square.setLoserValue(oneOfAllPossibleValues);
+            }
+        }
+        return square;
+    }
+
+    /**
      * Return true if all squares of the provided region found their winner value
      * @param region The region to test
      * @return true if all squares of the provided region found their winner value
@@ -111,7 +132,7 @@ public class SudokuHelper {
     // The index i of the first list contains the list of all the squares who have for possible value i.
     public List<List<SudokuSquare>> getSquaresPerPossibleValues(SudokuRegion region) {
         if(region == null)
-            return Arrays.asList();
+            return List.of();
 
         List<List<SudokuSquare>> squaresPerPossibleValues = buildEmptySquaresPerPossibleValues(region);
 

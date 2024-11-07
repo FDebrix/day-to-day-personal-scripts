@@ -71,32 +71,11 @@ public class SudokuSquareTest {
     }
 
     @Test
-    public void test_setBroadcastWinner_setNullThrowException () {
-        SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE, 0);
-
-        assertThrows(IllegalArgumentException.class,
-                () -> aSquareWith4PossibleValues.setRegions(null));
-    }
-
-    @Test
     public void test_getBroadcastWinner_whenRegionsNotSet_returnIsNotNull () {
         SudokuSquare square = new SudokuSquare(4);
         SudokuRegions regions = square.getRegions();
         assertNotNull(regions);
         assertTrue(regions.getRegions().isEmpty());
-    }
-
-    @Test
-    public void test_getBroadcastWinner_returnProperBroadcastWinner () {
-        SudokuSquare aSquareWith4PossibleValues = buildSudokuSquare(NB_POSSIBLE_VALUE, 0);
-        List<SudokuSquare> squares = Arrays.asList(aSquareWith4PossibleValues);
-        SudokuRegion region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
-        SudokuRegions regions = new SudokuRegions();
-        regions.addRegion(region);
-
-        aSquareWith4PossibleValues.setRegions(regions);
-
-        assertEquals(regions, aSquareWith4PossibleValues.getRegions());
     }
 
     @Test
@@ -413,8 +392,5 @@ public class SudokuSquareTest {
     private void setRegions(SudokuSquare square) {
         List<SudokuSquare> squares = Arrays.asList(square);
         SudokuRegion region = new SudokuRegion(squares, SudokuRegion.SudokuRegionType.HORIZONTAL);
-        SudokuRegions regions = new SudokuRegions();
-        regions.addRegion(region);
-        square.setRegions(regions);
     }
 }

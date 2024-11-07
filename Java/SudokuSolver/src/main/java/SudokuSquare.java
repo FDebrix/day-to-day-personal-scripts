@@ -17,6 +17,7 @@ public class SudokuSquare {
 
     public static final int NOT_FOUND_YET = 0;
 
+    // A square of a sudoku should have at less 4 possible values, that means this is a 4 X 4 sudoku.
     private static final int MIN_POSSIBLE_VALUES = 4;
 
     // The possible values of the square.
@@ -47,12 +48,6 @@ public class SudokuSquare {
         }
 
         regions = new SudokuRegions();
-    }
-
-    public void setRegions(SudokuRegions regions) {
-        validateRegionsNotNull(regions);
-
-        this.regions = regions;
     }
 
     public SudokuRegions getRegions() {
@@ -233,11 +228,6 @@ public class SudokuSquare {
         if(nbOfPOSSIBLE_VALUE == 1) {
             computeWinnerValue(lastValuePOSSIBLE_VALUE);
         }
-    }
-
-    private static void validateRegionsNotNull(SudokuRegions regions) {
-        if(regions == null)
-            throw new IllegalArgumentException("The input broadcast winner cannot by null");
     }
 
     private void validateNewStateIsWinnerOrLoser(ValueState newState) {

@@ -2,8 +2,6 @@ package main.java;
 
 import java.util.List;
 
-import static main.java.SudokuHelper.SOP;
-
 /**
  * Algorithm to find the values which are available only in one square of a region.
  * <br/>
@@ -15,35 +13,10 @@ import static main.java.SudokuHelper.SOP;
  * we know for sure that 2 is the winner value in the position 8. We can update this line to
  *                      8,9 | 3 | 7 | 4 | 5 | 1 | 8,9 | 2 | 6
  */
-public class OneValueInOneSquareOfTheRegion implements SudokuAlgorithm {
+public class OneValueInOneSquareOfTheRegion extends SudokuAbstractAlgorithm {
 
     @Override
-    public boolean runAlgorithm(List<SudokuRegion> regions) {
-        if(regions == null || regions.isEmpty())
-            return false;
-
-        if(SOP) System.out.println(this.getClass().getName() + ": The runAlgorithm function is call with " + regions.size() + " regions.");
-
-        boolean findAWinner = true;
-
-        for(SudokuRegion region : regions) {
-            boolean findAWinnerOneRun = runAlgorithm(region);
-            findAWinner &= findAWinnerOneRun;
-        }
-
-        return findAWinner;
-    }
-
-    @Override
-    public boolean runAlgorithm(SudokuRegion region) {
-        if(region == null)
-            return false;
-
-        if(SudokuHelper.getInstance().allWinnerFound(region))
-            return false;
-
-        if(SOP) System.out.println(this.getClass().getName() + ": The runAlgorithm function is run with 1 region" + region.getRegionType() + ".");
-
+    protected boolean internalRunAlgorithm(SudokuRegion region) {
         boolean findAWinner = false;
 
         List<List<SudokuSquare>> squaresPerPossibleValue = getSquaresPerPossibleValues(region);
@@ -58,10 +31,6 @@ public class OneValueInOneSquareOfTheRegion implements SudokuAlgorithm {
         }
 
         return findAWinner;
-    }
-
-    private List<List<SudokuSquare>> getSquaresPerPossibleValues(SudokuRegion region) {
-        return SudokuHelper.getInstance().getSquaresPerPossibleValues(region);
     }
 
     // Test if:

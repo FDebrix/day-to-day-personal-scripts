@@ -46,6 +46,8 @@ Classes
 Logic / Algorithms
 ----------------------------------------------------------------------------------------------------
 
+
+----------------------------------------------------------------------------------------------------
 1) When a square finds its winning value, this value is not possible for the other squares of the 3 regions
 
 We have a 4 x 4 sudoku without winning values.
@@ -70,15 +72,17 @@ Let say that in [AA], the winning value is 1, then the value 1 is not available 
 [2-4] [1-4] [1-4] [1-4]
 [2-4] [1-4] [1-4] [1-4]
 
-This logic is done thanks to the fact to call the instance BroadcastWinner in SudokuSquare.
+This logic is done thanks to broadcast to the regions of the square that the square found its winning value.
 
 
-2) When a possible value is only possible in one square of the region
+----------------------------------------------------------------------------------------------------
+2) OneValueInOneSquareOfTheRegion: When a possible value is only possible in one square of the region
 
-[AA] [AB] [AC] [AD]
-[BA] [BB] [BC] [BD]
-[CA] [CB] [CC] [CD]
-[DA] [DB] [DC] [DD]
+[AA] [AB] | [AC] [AD]
+[BA] [BB] | [BC] [BD]
+----------|----------
+[CA] [CB] | [CC] [CD]
+[DA] [DB] | [DC] [DD]
 
 [AA] is 1, [DB] is 4 and [CC] is 4. The sudoku is in the state below.
 
@@ -100,4 +104,30 @@ Then, we can clean up [BD], using the algorithm 1) above.
 [2-3] [1-3] [4]   [1-3]
 [2-3] [4]   [1-3] [1-3]
 
-This logic is implemented in OneValueInOneSquareOfTheRegion.
+
+----------------------------------------------------------------------------------------------------
+3) ValueInHorizontalOrVerticalOfASubGrid: In a row or a column, if a value is only possible
+   in the same subgrid, this value cannot be possible for the other squares of the subgrid.
+
+[AA] [AB] | [AC] [AD]
+[BA] [BB] | [BC] [BD]
+----------|----------
+[CA] [CB] | [CC] [CD]
+[DA] [DB] | [DC] [DD]
+
+Below 2 columns of a sudoku 4 X 4
+[1,4]   [2,3,4] |
+[3,4]   [2,3,4] |
+----------------|
+[1,2,3] [1,2,3] |
+[1,2,3] [1,3,4] |
+
+In the left column, which is a region, the value 4 is only in the top subgrid, [AA] and [BA].
+That means the others squares of the region cannot have the value 4 : [AB] and [BB].
+
+[1,4]   [2,3]   |
+[3,4]   [2,3]   |
+----------------|
+[1,2,3] [1,2,3] |
+[1,2,3] [1,3,4] |
+

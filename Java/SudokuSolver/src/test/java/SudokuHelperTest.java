@@ -16,6 +16,7 @@ import static main.java.SudokuRegion.SudokuRegionType.HORIZONTAL;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static test.java.SudokuSolverTestData.SUDOKU_INVALID_5_5;
 
 public class SudokuHelperTest {
 
@@ -136,11 +137,6 @@ public class SudokuHelperTest {
         SudokuRegions regions = new SudokuRegions();
         regions.addRegion(region);
 
-        square01.setRegions(regions);
-        square02.setRegions(regions);
-        square03.setRegions(regions);
-        square04.setRegions(regions);
-
         square01.setWinnerValue(1);
         square02.setWinnerValue(2);
 
@@ -158,5 +154,23 @@ public class SudokuHelperTest {
         assertArrayEquals(squaresWithPossibleValue2, squaresPerPossibleValues.get(2).toArray());
         assertArrayEquals(squaresWithPossibleValue3, squaresPerPossibleValues.get(3).toArray());
         assertArrayEquals(squaresWithPossibleValue4, squaresPerPossibleValues.get(4).toArray());
+    }
+
+    @Test
+    public void test_buildSquare_expectedBehavior () {
+        SudokuSquare square1 = helper.buildSquare(4, 1, 2, 3);
+        SudokuSquare square2 = helper.buildSquare(4, 1, 2, 3, 4);
+        SudokuSquare square3 = helper.buildSquare(4, 2, 4);
+
+        assertArrayEquals(new int[]{1, 2, 3}, square1.getPossibleValues());
+        assertArrayEquals(new int[]{1, 2, 3, 4}, square2.getPossibleValues());
+        assertArrayEquals(new int[]{2, 4}, square3.getPossibleValues());
+    }
+
+    // Since the square does not have regions set, and since
+    @Test
+    public void test_buildSquare_isNotWorkingWithOneUniquePossibleValue() {
+        assertThrows(IllegalStateException.class,
+                () -> helper.buildSquare(4, 1));
     }
 }

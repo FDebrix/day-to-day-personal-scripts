@@ -2,12 +2,10 @@ package main.java;
 
 import java.util.List;
 
-import static main.java.SudokuHelper.SOP;
-
 /**
  * In a row or a column, if a value is only possible in the same subgrid,
  * this value cannot be possible for the other squares of the subgrid.
- *
+ * <br\>
  * Below the first left columns of a real sudoku. For each square, the remaining possible values.
  *          | ----------------------------------------- |
  *          | COLUMN A       COLUMN B        COLUMN C   |
@@ -23,16 +21,16 @@ import static main.java.SudokuHelper.SOP;
  * ROW G    | [4,6,9]       [1,4,6,8]       [4,6,8,9]   |
  * ROW H    | [2,6,7,9]     [1,2,6,7,8]     [3]         |
  * ROW I    | [5]           [1,2,4]         [2,4,9]     |
- *
- * We have 3 subgrids: [AA-CC], [DA-FC], [GA-IC].
- *
+ * <br\>
+ * We have 3 subgrid: [AA-CC], [DA-FC], [GA-IC].
+ * <br\>
  * In the column A, we must have the value 9. This value is only possible in
  * the bottom subgrid. That means we must have a 9 in [GA] or in [HA].
  * Then we can conclude that this is not possible to have a 9 in [GC] and in [IC].
- *
+ * <br\>
  * In the column B, we must have the value 8. This value is only possible in
  * the bottom subgrid. That means we cannot have an 8 in [GC].
- *
+ * <br\>
  * After the cleanup, we have:
  *          | ----------------------------------------- |
  *          | COLUMN A       COLUMN B        COLUMN C   |
@@ -49,38 +47,14 @@ import static main.java.SudokuHelper.SOP;
  * ROW H    | [2,6,7,9]     [1,2,6,7,8]     [3]         |
  * ROW I    | [5]           [1,2,4]         [2,4]       |
  */
-public class ValueInHorizontalOrVerticalOfASubGrid implements SudokuAlgorithm {
-    @Override
-    public boolean runAlgorithm(List<SudokuRegion> regions) {
-        if(regions == null)
-            return false;
-
-        if(SOP) System.out.println(this.getClass().getName() + ": The runAlgorithm function was call with " + regions.size() + " regions.");
-
-        boolean findAWinner = true;
-
-        for(SudokuRegion region : regions) {
-            boolean findAWinnerOneRun = runAlgorithm(region);
-            findAWinner &= findAWinnerOneRun;
-        }
-
-        return findAWinner;
-    }
+public class ValueInHorizontalOrVerticalOfASubGrid extends SudokuAbstractAlgorithm {
 
     @Override
-    public boolean runAlgorithm(SudokuRegion region) {
-        if(region == null)
-            return false;
-
-        if(SudokuHelper.getInstance().allWinnerFound(region))
-            return false;
-
+    protected boolean internalRunAlgorithm(SudokuRegion region) {
         // This algorithm is run only on the horizontal or vertical region
         if( ! regionIsHorizontalOrVertical(region)) {
             return false;
         }
-
-        if(SOP) System.out.println(this.getClass().getName() + ": The runAlgorithm function is run with 1 region " + region.getRegionType() + ".");
 
         boolean setLoserValue = false;
 
@@ -142,10 +116,6 @@ public class ValueInHorizontalOrVerticalOfASubGrid implements SudokuAlgorithm {
     // Or this is the last possible value
     private boolean asOneUniqueSquare(List<SudokuSquare> squaresForOnePossibleValue) {
         return squaresForOnePossibleValue.size() == 1;
-    }
-
-    private List<List<SudokuSquare>> getSquaresPerPossibleValues(SudokuRegion region) {
-        return SudokuHelper.getInstance().getSquaresPerPossibleValues(region);
     }
 
     private static boolean regionIsHorizontalOrVertical(SudokuRegion region) {
