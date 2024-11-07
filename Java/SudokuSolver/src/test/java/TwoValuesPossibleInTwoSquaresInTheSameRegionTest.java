@@ -3,7 +3,7 @@ package test.java;
 import main.java.SudokuHelper;
 import main.java.SudokuRegion;
 import main.java.SudokuSquare;
-import main.java.TwoValuesPossibleInTwoSquaresInTheSameRegion;
+import main.java.algorithms.TwoValuesPossibleInTwoSquaresInTheSameRegion;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

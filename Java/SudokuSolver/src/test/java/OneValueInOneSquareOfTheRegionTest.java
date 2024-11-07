@@ -1,6 +1,6 @@
 package test.java;
 
-import main.java.OneValueInOneSquareOfTheRegion;
+import main.java.algorithms.OneValueInOneSquareOfTheRegion;
 import main.java.SudokuRegion;
 import main.java.SudokuSquare;
 import org.junit.jupiter.api.BeforeEach;

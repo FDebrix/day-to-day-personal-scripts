@@ -1,5 +1,9 @@
 package main.java;
 
+import main.java.algorithms.OneValueInOneSquareOfTheRegion;
+import main.java.algorithms.TwoValuesPossibleInTwoSquaresInTheSameRegion;
+import main.java.algorithms.ValueInHorizontalOrVerticalOfASubGrid;
+
 import java.util.*;
 
 import static main.java.SudokuHelper.SOP;

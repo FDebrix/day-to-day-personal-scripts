@@ -1,6 +1,7 @@
 package test.java;
 
 import main.java.*;
+import main.java.algorithms.ValueInHorizontalOrVerticalOfASubGrid;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

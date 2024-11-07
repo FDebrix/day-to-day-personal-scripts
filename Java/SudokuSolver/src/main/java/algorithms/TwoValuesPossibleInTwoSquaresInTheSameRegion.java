@@ -1,4 +1,7 @@
-package main.java;
+package main.java.algorithms;
+
+import main.java.SudokuRegion;
+import main.java.SudokuSquare;
 
 import java.util.Arrays;
 import java.util.List;
