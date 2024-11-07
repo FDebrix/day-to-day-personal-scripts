@@ -104,7 +104,6 @@ public class SudokuSolverTest {
         int[][] output = solver.resolveTheSudoku();
 
         solver.printPossibleValues();
-        SudokuHelper.getInstance().printlnRemainingPossibleValues(output);
 
         assertEquals(SUDOKU_id7_9x9_IMPOSSIBLE_INPUT.length, output.length);
         assertEquals(SUDOKU_id7_9x9_IMPOSSIBLE_INPUT[0].length, output[0].length);

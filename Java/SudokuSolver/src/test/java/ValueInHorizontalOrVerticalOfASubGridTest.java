@@ -36,6 +36,7 @@ public class ValueInHorizontalOrVerticalOfASubGridTest {
         List<SudokuRegion> regionsToRunAlgo = Arrays.asList(verticalRegion);
 
         ValueInHorizontalOrVerticalOfASubGrid algorithm = new ValueInHorizontalOrVerticalOfASubGrid();
+
         assertThrows(IllegalStateException.class,
                 () -> algorithm.runAlgorithm(regionsToRunAlgo));
     }
