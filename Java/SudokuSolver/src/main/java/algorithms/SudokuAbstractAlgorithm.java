@@ -18,11 +18,11 @@ public abstract class SudokuAbstractAlgorithm implements SudokuAlgorithm {
 
         if(SOP) System.out.println(this.getClass().getName() + ": The runAlgorithm function was call with " + regions.size() + " regions.");
 
-        boolean findAWinner = true;
+        boolean findAWinner = false;
 
         for(SudokuRegion region : regions) {
             boolean findAWinnerOneRun = runAlgorithm(region);
-            findAWinner &= findAWinnerOneRun;
+            findAWinner |= findAWinnerOneRun;
         }
 
         return findAWinner;

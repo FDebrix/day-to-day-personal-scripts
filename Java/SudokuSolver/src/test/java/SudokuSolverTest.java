@@ -1,6 +1,5 @@
 package test.java;
 
-import main.java.SudokuHelper;
 import main.java.SudokuSolver;
 import org.junit.jupiter.api.Test;
 
