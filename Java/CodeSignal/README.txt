@@ -1,0 +1,1 @@
+I am exercising using https://learn.codesignal.com/. I will keep in git the interesting ones.
