@@ -1,14 +1,16 @@
 -----------------------------------------------------------------------------------------------------------------------
 Author: frederic.debrix.git@gmail.com
 Coverage : Ongoing (usage of TDD)
-Status : Resolve easy, medium, expert and master sudokus.
-         Implementing algorithm for extreme sudokus.
-         See the class SudokuSolverTest.
+Status : Resolve easy, medium, expert, master and extreme sudokus. See the class SudokuSolverTest.
+
+
+         BLOCKED ON one impossible sudoku. I need to figure out the algorithm before being able to implement it!
+
 -----------------------------------------------------------------------------------------------------------------------
 
 Next Steps
-- in SudokuSolver, extract the logic of the function handleTwoValuesOnlyAvailableInTwoSquares() into a new class
-- when we initialize the SudokuRegion with its SudokuSquares, we should "register" the region in the square.
+- Javadoc
+- Update current file
 - consistency : need to review all the unit tests function name in order to be consistent
 
 
