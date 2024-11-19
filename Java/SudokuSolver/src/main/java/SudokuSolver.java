@@ -1,6 +1,7 @@
 package main.java;
 
 import main.java.algorithms.OneValueInOneSquareOfTheRegion;
+import main.java.algorithms.TwoSquaresHaveSameTwoPossibleValuesInTheSameRegion;
 import main.java.algorithms.TwoValuesPossibleInTwoSquaresInTheSameRegion;
 import main.java.algorithms.ValueInHorizontalOrVerticalOfASubGrid;
 
@@ -37,6 +38,8 @@ public class SudokuSolver {
         boolean algo2FoundWinner = false;
         TwoValuesPossibleInTwoSquaresInTheSameRegion algo3 = new TwoValuesPossibleInTwoSquaresInTheSameRegion();
         boolean algo3FoundWinner = false;
+        TwoSquaresHaveSameTwoPossibleValuesInTheSameRegion algo4 = new TwoSquaresHaveSameTwoPossibleValuesInTheSameRegion();
+        boolean algo4FoundWinner = false;
 
         for (int i = 0; i < 20; i++) {
 
@@ -46,6 +49,8 @@ public class SudokuSolver {
                         + " after running the algorithm " + OneValueInOneSquareOfTheRegion.class.getName());
                 break;
             }
+            System.out.println("Iteration " + i+1  + ",  "+   OneValueInOneSquareOfTheRegion.class.getName());
+            printPossibleValues();
 
             algo2FoundWinner = algo2.runAlgorithm(regions);
             if (allWinnerFound()) {
@@ -53,6 +58,8 @@ public class SudokuSolver {
                         + " after running the algorithm " + ValueInHorizontalOrVerticalOfASubGrid.class.getName());
                 break;
             }
+            System.out.println("Iteration " + i+1  + ",  "+   ValueInHorizontalOrVerticalOfASubGrid.class.getName());
+            printPossibleValues();
 
             algo3FoundWinner = algo3.runAlgorithm(regions);
             if (allWinnerFound()) {
@@ -60,8 +67,19 @@ public class SudokuSolver {
                         + " after running the algorithm " + TwoValuesPossibleInTwoSquaresInTheSameRegion.class.getName());
                 break;
             }
+            System.out.println("Iteration " + i+1  + ",  "+   TwoValuesPossibleInTwoSquaresInTheSameRegion.class.getName());
+            printPossibleValues();
 
-            if( !algo1FoundWinner && !algo2FoundWinner && !algo3FoundWinner) {
+            algo4FoundWinner = algo4.runAlgorithm(regions);
+            if (allWinnerFound()) {
+                if (SOP) System.out.println("The sudoku was resolved after the iteration " + i+1
+                        + " after running the algorithm " + TwoSquaresHaveSameTwoPossibleValuesInTheSameRegion.class.getName());
+                break;
+            }
+            System.out.println("Iteration " + i+1 + ",  "+  TwoSquaresHaveSameTwoPossibleValuesInTheSameRegion.class.getName());
+            printPossibleValues();
+
+            if( !algo1FoundWinner && !algo2FoundWinner && !algo3FoundWinner && !algo4FoundWinner ) {
                 System.out.println("During the iteration " + i+1 + ", all algorithms were run but no winner were found. The resolver is blocked. Please implement a new algorithm.");
                 break;
             }

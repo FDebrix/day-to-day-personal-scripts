@@ -7,7 +7,7 @@ import java.util.List;
 public class SudokuHelper {
 
     // System.out.println -> for tracking and investigation
-    public static final boolean SOP = false;
+    public static final boolean SOP = true;
 
     private static SudokuHelper instance;
 

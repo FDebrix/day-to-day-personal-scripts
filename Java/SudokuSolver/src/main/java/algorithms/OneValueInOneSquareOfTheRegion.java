@@ -5,6 +5,8 @@ import main.java.SudokuSquare;
 
 import java.util.List;
 
+import static main.java.SudokuHelper.SOP;
+
 /**
  * Algorithm to find the values which are available only in one square of a region.
  * <br/>
@@ -28,6 +30,7 @@ public class OneValueInOneSquareOfTheRegion extends SudokuAbstractAlgorithm {
             List<SudokuSquare> squaresForOnePossibleValue = squaresPerPossibleValue.get(i);
 
             if(valuePossibleOnlyInOneSquareWithoutWinnerValue(squaresForOnePossibleValue)){
+                if(SOP) System.out.println("The value " + i + " was found in the region.");
                 squaresForOnePossibleValue.getFirst().setWinnerValue(i);
                 findAWinner = true;
             }

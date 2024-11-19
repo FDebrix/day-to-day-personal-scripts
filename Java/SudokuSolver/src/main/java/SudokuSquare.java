@@ -1,7 +1,9 @@
 package main.java;
 
+import java.util.Arrays;
 import java.util.StringJoiner;
 
+import static main.java.SudokuHelper.SOP;
 import static main.java.SudokuSquare.ValueState.*;
 
 /**
@@ -99,6 +101,10 @@ public class SudokuSquare {
     public int[] getPossibleValues() {
         // TODO - we are looping two times on possibleValues
         int nbOfPossibleValues = countValuesInState_POSSIBLE_VALUE();
+
+        if(isWinnerValueFound() && nbOfPossibleValues != 0) {
+            throw new IllegalStateException("When a winner value is found, there is no more possible value.");
+        }
 
         int[] valueInStatePossibleValue = new int[nbOfPossibleValues];
         int indexForNextPossibleValue = 0;
@@ -226,6 +232,7 @@ public class SudokuSquare {
         }
 
         if(nbOfPOSSIBLE_VALUE == 1) {
+            if(SOP) System.out.println("Only remain one possible value" + lastValuePOSSIBLE_VALUE);
             computeWinnerValue(lastValuePOSSIBLE_VALUE);
         }
     }

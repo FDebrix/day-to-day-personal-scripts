@@ -40,7 +40,7 @@ public class TwoValuesPossibleInTwoSquaresInTheSameRegionTest {
      * [1,3]   [2,4]
      */
     @Test
-    public void test_runAlgorithm_expectedBehavior () {
+    public void test_runAlgorithm_2SamePossibleValuesIn2Squares () {
         SudokuSquare squareAA = HELPER.buildSquare(4, 2, 4);
         SudokuSquare squareAB = HELPER.buildSquare(4, 1, 2, 3);
         SudokuSquare squareBA = HELPER.buildSquare(4, 1, 2, 3, 4);
